@@ -1,0 +1,44 @@
+{
+  "synthetic": true,
+  "source": "Offline Windows System.Speech synthesis; no microphone or playback",
+  "sampleRate": 16000,
+  "channels": 1,
+  "bitsPerSample": 16,
+  "fixtures": [
+    {
+      "sha256": "c6a25f6453aab49d7f26e52f339364098283764b0687992702576a88a767184f",
+      "voice": "Microsoft Zira Desktop",
+      "file": "weekly-question.wav",
+      "bytes": 89646,
+      "text": "How did my sleep change this week?"
+    },
+    {
+      "sha256": "282876a6793f75d5f25aa1da4f1475c13cd4d8d899b09c12f3cf0daabf062d12",
+      "voice": "Microsoft Zira Desktop",
+      "file": "walking-question.wav",
+      "bytes": 78286,
+      "text": "How much walking did I record?"
+    },
+    {
+      "sha256": "90a28512aeeaa07c1aba17720a3999e1bcebf50cf252ef6e4ce58be4eee0fc98",
+      "voice": "Microsoft Zira Desktop",
+      "file": "overview-question.wav",
+      "bytes": 80206,
+      "text": "Give me an overview of my week."
+    },
+    {
+      "sha256": "2422aecf10541271d1cafaef452c51c18e79fcc6c879af6d71e1b6156524a984",
+      "voice": "Microsoft Zira Desktop",
+      "file": "heartbeat-question.wav",
+      "bytes": 83726,
+      "text": "When was my heartbeat high this week?"
+    },
+    {
+      "sha256": "07667c4b66d807cd326cb2ffc5f961617bc861e58a24f1c407d3142c1491cf7f",
+      "voice": "Microsoft Zira Desktop",
+      "file": "monthly-heartbeat-question.wav",
+      "bytes": 94926,
+      "text": "When was my heart rate highest last month?"
+    }
+  ]
+}

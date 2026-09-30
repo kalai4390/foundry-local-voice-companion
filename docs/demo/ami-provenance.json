@@ -1,0 +1,208 @@
+{
+  "product": "Ami",
+  "version": "0.3.3-preview",
+  "apkSha256": "1789c0ea6bc254fbbf1adbae13f0947feb0dfef2e8b0bf33d965c4466637bd28",
+  "recordedDateUtc": "2026-09-30",
+  "localDate": "2026-09-30",
+  "localTimeZone": "Asia/Kolkata",
+  "syntheticOnly": true,
+  "microphoneUsed": false,
+  "audiblePlaybackRequested": false,
+  "sourceSession": {
+    "runId": "publication-20260930T033224574Z",
+    "originalCaptureStatus": "captured_pending_visual_review",
+    "sourceManifestSha256": "601592025ccc20eaacc01a4cb5a8383e86665624a66a74f120beb059645113e9",
+    "selection": "Both completed clips and all five compositor screenshots, plus the first speech-video frame",
+    "screenTimeout": {
+      "adjustmentRequested": true,
+      "changed": false,
+      "restored": null,
+      "originalMilliseconds": 600000
+    },
+    "existingScreenTimeoutPreserved": true
+  },
+  "priorInterruptedSession": {
+    "runId": "publication-20260929T190430084Z",
+    "originalOverallStatus": "failed",
+    "sourceManifestSha256": "0fbe6545ba4e293bf80c9f416212fae248be174302ed46c86d2646bd9c18a4bc",
+    "originalSessionReclassifiedAsSuccessful": false,
+    "reason": "Android auto-lock prevented the remaining capture steps after the first speech segment and its screenshot were written",
+    "assetsFromThatSessionSelectedHere": false,
+    "retainedPrivately": "Original failed capture and the earlier source archive remain unchanged"
+  },
+  "videos": [
+    {
+      "file": "ami-audio.mp4",
+      "method": "Android screenrecord; system bars cropped; 30-fps resampling without speed adjustment; final still held to source duration; no inserted answers",
+      "sourceDurationSeconds": 32.48,
+      "durationSeconds": 32.47,
+      "durationDeltaMs": 10.0,
+      "frameRate": 30,
+      "dimensions": "720x1460",
+      "silent": true,
+      "benchmark": false,
+      "matchingRun": "audio-20260930T033234499Z",
+      "sourceEventSha256": "bb38dbd00d793094a37c44625cd5dbd86e04b5d4580631029ebef8ad296fdb3c",
+      "sourceVideoSha256": "d9d39eb8aad703e17066983a534b408daff39350cae8cfa46df265fa57a41414",
+      "transform": "System bars cropped; timestamps resampled to constant frame rate without speed adjustment; final still held to source container duration; no soundtrack or inserted answers"
+    },
+    {
+      "file": "ami-recap.mp4",
+      "method": "Android screenrecord; system bars cropped; 30-fps resampling without speed adjustment; final still held to source duration; no inserted answers",
+      "sourceDurationSeconds": 22.1,
+      "durationSeconds": 22.1,
+      "durationDeltaMs": 0.0,
+      "frameRate": 30,
+      "dimensions": "720x1460",
+      "silent": true,
+      "benchmark": false,
+      "matchingRun": "debrief-20260930T033328831Z",
+      "sourceEventSha256": "cbb556c86f45f861fda115f98ea86886c5c4a148c8cdb333cbe7c4accaabcba8",
+      "sourceVideoSha256": "c94fc5b080a118015d00cfd60b676bf94efe490a4a6946caf28c3e59a990ff7d",
+      "transform": "System bars cropped; timestamps resampled to constant frame rate without speed adjustment; final still held to source container duration; no soundtrack or inserted answers"
+    }
+  ],
+  "images": [
+    {
+      "file": "ami-answer.png",
+      "method": "Android screencap, cropped to exclude system bars",
+      "dimensions": "1080x2190",
+      "syntheticBadgeVerified": true
+    },
+    {
+      "file": "ami-recap.png",
+      "method": "Android screencap, cropped to exclude system bars",
+      "dimensions": "1080x2190",
+      "syntheticBadgeVerified": true
+    },
+    {
+      "file": "ami-today.png",
+      "method": "Android screencap, cropped to exclude system bars",
+      "dimensions": "1080x2190",
+      "syntheticBadgeVerified": true
+    },
+    {
+      "file": "ami-evidence.png",
+      "method": "Android screencap, cropped to exclude system bars",
+      "dimensions": "1080x2190",
+      "syntheticBadgeVerified": true
+    },
+    {
+      "file": "ami-privacy.png",
+      "method": "Android screencap, cropped to exclude system bars",
+      "dimensions": "1080x2190",
+      "syntheticBadgeVerified": true
+    },
+    {
+      "file": "ami-welcome.png",
+      "method": "First decoded frame of the current actual audio screen recording; not a separate screenshot or recreated UI",
+      "dimensions": "720x1460"
+    }
+  ],
+  "voice": {
+    "file": "ami-warm.wav",
+    "sourceRun": "voice-20260929T190356318Z",
+    "producer": "Installed offline Android TTS, not Foundry",
+    "voice": "en-IN-language",
+    "style": "Warm",
+    "text": "Hi, I'm Ami. We can take this at your pace. A little perspective on your day, or just a gentle moment to pause. This is a voice preview, not your health data.",
+    "liveRecording": false,
+    "soundtrackForVideo": false,
+    "playedAloudDuringTest": false
+  },
+  "review": {
+    "fullSizeImagesViewed": true,
+    "videoContactSheetRatePerSecond": 4,
+    "audioContactSheetsViewed": 7,
+    "recapContactSheetsViewed": 5,
+    "finalVideoFramesViewed": true,
+    "bothClipsDecodedEndToEnd": true,
+    "sampledFramesShowSyntheticAmiOnly": true,
+    "fullHumanAvReviewComplete": false,
+    "audibleQualityAssessed": false,
+    "status": "complete_synthetic_capture_independently_reviewed"
+  },
+  "evidence": "../evidence/ami-capture-validation.json",
+  "retainedSourceEvents": [
+    {
+      "name": "audio-20260930T033234499Z.jsonl",
+      "sha256": "bb38dbd00d793094a37c44625cd5dbd86e04b5d4580631029ebef8ad296fdb3c"
+    },
+    {
+      "name": "capture-20260930T033359184Z.jsonl",
+      "sha256": "98a77ff42cfe8a559c088bab3dfd573e81e04438aed0d7dd1f656195e8680fb3"
+    },
+    {
+      "name": "capture-20260930T033406679Z.jsonl",
+      "sha256": "2f4a34e6cd10fc52a1d63614089f59eaf0840c2c834769909b05f72e4cc7b49b"
+    },
+    {
+      "name": "capture-20260930T033414047Z.jsonl",
+      "sha256": "14be196543553c53dd4b2397aa488e8ab0998c4bd6d15abec6d84ec2726f4f1d"
+    },
+    {
+      "name": "debrief-20260930T033328831Z.jsonl",
+      "sha256": "cbb556c86f45f861fda115f98ea86886c5c4a148c8cdb333cbe7c4accaabcba8"
+    },
+    {
+      "name": "welcome-20260930T033225804Z.jsonl",
+      "sha256": "5091853c026b1e93b5a708a4db6de3c9f5b3dab4d37d51e229821d87ea3bc13e"
+    },
+    {
+      "name": "welcome-20260930T033319954Z.jsonl",
+      "sha256": "1a35859ce3802066482a19f885f9ab441b938739ad79b1735f05bb81a6602c42"
+    },
+    {
+      "name": "voice-20260929T190356318Z.jsonl",
+      "sha256": "53250b40003fd54e76ab353a6242e19485f80e60948a8f66f4b708e45187f8af"
+    }
+  ],
+  "assets": [
+    {
+      "file": "ami-answer.png",
+      "bytes": 162803,
+      "sha256": "2cdf0de99ca2784fa249fe942c8069b5df4fd4806d8c812ffb4b6817117a4be6"
+    },
+    {
+      "file": "ami-audio.mp4",
+      "bytes": 703630,
+      "sha256": "36570ae744ed86d50e219ed2e4a4bce6ce65393e54704ee8a2e2a522c6422640"
+    },
+    {
+      "file": "ami-evidence.png",
+      "bytes": 200027,
+      "sha256": "f81a34891bd91198a8bd0c31e1545f56896e5fcf06b0bf2f5363bd397cc446f1"
+    },
+    {
+      "file": "ami-privacy.png",
+      "bytes": 179361,
+      "sha256": "caae5863f6b79f11959a63a0c72ac8d630545b185fb9ef4eb1f9d50f38917aab"
+    },
+    {
+      "file": "ami-recap.mp4",
+      "bytes": 452029,
+      "sha256": "4a7c0f1e1cd4622459a6e3fb6338b0a590f4c74d7cae509a74eb03df175f16f5"
+    },
+    {
+      "file": "ami-recap.png",
+      "bytes": 198055,
+      "sha256": "39ecaf036e367bf8f8f63e58a40a666739ffbae79d7027815edb8ddb342b0018"
+    },
+    {
+      "file": "ami-today.png",
+      "bytes": 202497,
+      "sha256": "7d586a727713af4395383b5fba339a071c2c5b3aa67bbcdd44cf4a9585b8dedf"
+    },
+    {
+      "file": "ami-warm.wav",
+      "bytes": 536204,
+      "sha256": "120890928a7ff738d6af996d850c9b8b635b545f5dd4c69c5ce3a8e4d0dbbaee"
+    },
+    {
+      "file": "ami-welcome.png",
+      "bytes": 271989,
+      "sha256": "4b0f80d75e2bbd376c7a5daae3f80a4a94df5f2ecf8111751393b5cb3ece6ece"
+    }
+  ],
+  "exclusions": "No raw system bars, device identifiers, owner paths, personal records or private diagnostics are included. Historical Daylight assets retain their separate provenance. The Warm introduction remains a separate earlier matching-build voice run, not a video soundtrack."
+}

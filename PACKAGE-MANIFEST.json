@@ -1,0 +1,538 @@
+{
+  "product": "Ami",
+  "generatedAtUtc": "2026-09-30T05:41:26.1687875Z",
+  "policy": "Explicit source/document/media allowlist; no Git history, runtime logs, SDK/model binaries, APKs, tools, caches or signing keys",
+  "validation": {
+    "localLinksChecked": 182,
+    "mediaChecksumsMatch": true,
+    "reproducedBuildInputsMatch": true,
+    "configuredOwnerIdentifierScanPassed": true,
+    "approvedRepositoryUrl": "https://github.com/kalai4390/ami-foundry-local",
+    "ownerScanExemption": "Only the exact explicitly approved repository URL and owner/repository label; unrelated owner/device metadata remains blocked",
+    "scanIsNotAComprehensiveSecretAudit": true
+  },
+  "publication": "This packaging step writes a local archive only. Remote publication requires a separate authorized operation; no license grant is implied.",
+  "fileCountExcludingThisManifest": 104,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 8,
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 93,
+      "sha256": "913c84b5516b90525ff7b406e25df2ea65884a2065954729c87bb4a26eeb30e2"
+    },
+    {
+      "path": "app/build.gradle.kts",
+      "bytes": 1542,
+      "sha256": "ff099597b93f2b9071c9b0a81c11aba956fd64f37670ca70262c76a2e4d080c6"
+    },
+    {
+      "path": "app/src/debug/AndroidManifest.xml",
+      "bytes": 251,
+      "sha256": "0ba37ef65c2d2e3906a82571f99058b4a5c3a233977c7d4a07e8bf2a298b8705"
+    },
+    {
+      "path": "app/src/debug/java/dev/daylight/local/DebugReceiver.kt",
+      "bytes": 1165,
+      "sha256": "a8158d855508415732c391d50c167a2b9daec2b1d5644983711644580e0f5580"
+    },
+    {
+      "path": "app/src/main/AndroidManifest.xml",
+      "bytes": 2674,
+      "sha256": "8538df452e781584a4827edaa8e01f5e7164db7301f65fc6e4b613388eb9fc57"
+    },
+    {
+      "path": "app/src/main/assets/fixtures.json",
+      "bytes": 1494,
+      "sha256": "373583da65ee1856b733d99d805f1f147b0ef3d5060c8d5ebe0e03d1cea23d71"
+    },
+    {
+      "path": "app/src/main/assets/heartbeat-question.wav",
+      "bytes": 83726,
+      "sha256": "2422aecf10541271d1cafaef452c51c18e79fcc6c879af6d71e1b6156524a984"
+    },
+    {
+      "path": "app/src/main/assets/monthly-heartbeat-question.wav",
+      "bytes": 94926,
+      "sha256": "07667c4b66d807cd326cb2ffc5f961617bc861e58a24f1c407d3142c1491cf7f"
+    },
+    {
+      "path": "app/src/main/assets/overview-question.wav",
+      "bytes": 80206,
+      "sha256": "90a28512aeeaa07c1aba17720a3999e1bcebf50cf252ef6e4ce58be4eee0fc98"
+    },
+    {
+      "path": "app/src/main/assets/walking-question.wav",
+      "bytes": 78286,
+      "sha256": "282876a6793f75d5f25aa1da4f1475c13cd4d8d899b09c12f3cf0daabf062d12"
+    },
+    {
+      "path": "app/src/main/assets/weekly-question.wav",
+      "bytes": 89646,
+      "sha256": "c6a25f6453aab49d7f26e52f339364098283764b0687992702576a88a767184f"
+    },
+    {
+      "path": "app/src/main/java/dev/daylight/local/data/HealthReader.kt",
+      "bytes": 11001,
+      "sha256": "2f5aab5c9dc40dfcb6f3cd91e3eb12bb799d23a8cecdef26a7a0bdcf5ca139b5"
+    },
+    {
+      "path": "app/src/main/java/dev/daylight/local/data/PrivateMemory.kt",
+      "bytes": 4314,
+      "sha256": "9d384fdab794324b41dc3b2c7a2e43a796cfa4dd216ac94fc2f1a41a6ed5cc0c"
+    },
+    {
+      "path": "app/src/main/java/dev/daylight/local/DebugRunner.kt",
+      "bytes": 29671,
+      "sha256": "713cdceb5853ee18449bd79a16b997d3dee00b097e4e57277d6906670abecf14"
+    },
+    {
+      "path": "app/src/main/java/dev/daylight/local/inference/AudioReadiness.kt",
+      "bytes": 808,
+      "sha256": "c019ea9734fe072380f495ee8fce83087d9ce0ad9fa206b0075e32359e3e81e6"
+    },
+    {
+      "path": "app/src/main/java/dev/daylight/local/inference/FoundryRuntime.kt",
+      "bytes": 12206,
+      "sha256": "8eaa0d7fc1acf830e2321fbe5b47f7de5175e35cd8d3dc3adb3fd72208fe579a"
+    },
+    {
+      "path": "app/src/main/java/dev/daylight/local/inference/LocalSpeaker.kt",
+      "bytes": 8360,
+      "sha256": "6c75aaf1bac1de5f7cac952ff69a2edc98b64fb431966d362c29b8127b6b135c"
+    },
+    {
+      "path": "app/src/main/java/dev/daylight/local/inference/ShortRecorder.kt",
+      "bytes": 3980,
+      "sha256": "a6f35019344a09466417c0993db2fd2e15286ba4751e9e87fc3271ec7923dfa9"
+    },
+    {
+      "path": "app/src/main/java/dev/daylight/local/MainActivity.kt",
+      "bytes": 39091,
+      "sha256": "cdf7205ca9cf15abbe9fcf450874965c83e78e45d691cbbc2244a7a34bbafc79"
+    },
+    {
+      "path": "app/src/main/java/dev/daylight/local/PrivacyActivity.kt",
+      "bytes": 5327,
+      "sha256": "1652e754309c00538befdd8bee732e9ede055726c487512deb5c66dd74e80ab9"
+    },
+    {
+      "path": "app/src/main/java/dev/daylight/local/Reminders.kt",
+      "bytes": 3871,
+      "sha256": "170f959bcac06adfa571e0f6d32ed2f3a1c62c0f2d0022fc1e962e05ee63c36c"
+    },
+    {
+      "path": "app/src/main/java/dev/daylight/local/ui/DaylightDrawables.kt",
+      "bytes": 4271,
+      "sha256": "bb44a511d1d90bf7f14ad41cc49c3cdd0359397f6561bda900061027c7311237"
+    },
+    {
+      "path": "app/src/main/java/dev/daylight/local/ui/DaylightScreen.kt",
+      "bytes": 15522,
+      "sha256": "5f6c12cd30e0990353d555d814f73c315eeed39054027a95a1dd5989a0ecfb18"
+    },
+    {
+      "path": "app/src/main/java/dev/daylight/local/ui/DaylightTrendView.kt",
+      "bytes": 7244,
+      "sha256": "9b8c22ee4bb7a7ec0a7c14f03630c010e2b26971eee82d8ef813012e9f7b0622"
+    },
+    {
+      "path": "app/src/main/java/dev/daylight/local/ui/DaylightUi.kt",
+      "bytes": 10529,
+      "sha256": "24f80195232d87a82804faa8f9e9b8eab0e1b6d1e5c32e4f668801b70e329ddc"
+    },
+    {
+      "path": "app/src/main/java/dev/daylight/local/ui/EvidencePrivacyPanels.kt",
+      "bytes": 13592,
+      "sha256": "a990eed65c87953dbce21c1aa8b9fe0ad25f39d2985bc6e499527a8a5bc973f6"
+    },
+    {
+      "path": "app/src/main/java/dev/daylight/local/ui/TalkPanel.kt",
+      "bytes": 15910,
+      "sha256": "721259f9066b991889c409678efa84502b12010582abe7059d9a7fff839ec757"
+    },
+    {
+      "path": "app/src/main/java/dev/daylight/local/ui/TodayPanel.kt",
+      "bytes": 10902,
+      "sha256": "69224240c6c5125c3c71a0043c80f0a6fe2b91667d2a88ee393074fea5ca2a76"
+    },
+    {
+      "path": "app/src/main/java/dev/daylight/local/ui/UiModels.kt",
+      "bytes": 1970,
+      "sha256": "e583127b52a76b3da1c0f6af32ef479596a213debad929a0aa8c4efbcf404964"
+    },
+    {
+      "path": "app/src/main/java/dev/daylight/local/ui/VoiceOrb.kt",
+      "bytes": 3461,
+      "sha256": "2b4f94e1eb432a153dc5434c4901fd82c1891d0154d3736936837f8bd71c4cd6"
+    },
+    {
+      "path": "app/src/main/java/dev/daylight/local/ui/VoiceSettingsDialog.kt",
+      "bytes": 3803,
+      "sha256": "a9d0cb138ed80c23c7d7a4d3865b2a59c412643b94c4f0629822b3e422865404"
+    },
+    {
+      "path": "app/src/main/res/drawable/ic_daylight.xml",
+      "bytes": 695,
+      "sha256": "ea68a02de75d4b0d65965a7ea3b65088a24b9cc5aa8f45c065841fb4b675c5b5"
+    },
+    {
+      "path": "app/src/main/res/values/styles.xml",
+      "bytes": 602,
+      "sha256": "b3ccc036905ab535e2b7d53ac9246e36963be847e81b4e84a7e34a59226e0b66"
+    },
+    {
+      "path": "build.gradle.kts",
+      "bytes": 207,
+      "sha256": "5be403416c805ee92867fbf3fb153232347641a09764f190e74b98e45c3be8f9"
+    },
+    {
+      "path": "core/build.gradle.kts",
+      "bytes": 254,
+      "sha256": "0bb9d7f3c348af9dc4b2731ba00c24947017e658da3a41e58874f0882594e3ea"
+    },
+    {
+      "path": "core/src/main/kotlin/dev/daylight/core/CompanionEngine.kt",
+      "bytes": 42335,
+      "sha256": "603b63a8738a26153b1c25b9f85aa00c4e9aea1ed9e0b867611ced26fa03b719"
+    },
+    {
+      "path": "core/src/main/kotlin/dev/daylight/core/DebriefOrganizer.kt",
+      "bytes": 4708,
+      "sha256": "1e73c1e6942da02124e6d5cda8ef1e27379a6e04306d18ebf0bee9116dc9df31"
+    },
+    {
+      "path": "core/src/main/kotlin/dev/daylight/core/Domain.kt",
+      "bytes": 2571,
+      "sha256": "03e0e6447ccafa434f518666c1dbf2a4d8dd7073de95aa06c8d386d74a6c4436"
+    },
+    {
+      "path": "core/src/main/kotlin/dev/daylight/core/HeartRateAnalysis.kt",
+      "bytes": 10185,
+      "sha256": "9187c8986dc1d1ae772f88f8e77b0f236d88e868979f415210b12dd51951c87a"
+    },
+    {
+      "path": "core/src/main/kotlin/dev/daylight/core/HeartRateQueries.kt",
+      "bytes": 6847,
+      "sha256": "1bb41755b85b3d995306a84b66a77cc2feec5edc3b0d2915f5d1b1597c56eb13"
+    },
+    {
+      "path": "core/src/main/kotlin/dev/daylight/core/HeartRateReadPolicy.kt",
+      "bytes": 1086,
+      "sha256": "fe1c829568aaf201d595bdc61457c6a55e1a041aa8575de38f1889f0b625362d"
+    },
+    {
+      "path": "core/src/main/kotlin/dev/daylight/core/IntervalMath.kt",
+      "bytes": 908,
+      "sha256": "ba2835a5a68e5c8e187b980ca74105a535a3b47b50d24c754e4d9da93b755c70"
+    },
+    {
+      "path": "core/src/main/kotlin/dev/daylight/core/SpeechEndpoint.kt",
+      "bytes": 1258,
+      "sha256": "cd758cefbaf385da6cea4f07bf65c65a88599faf66089e56647f3a60a2822824"
+    },
+    {
+      "path": "core/src/main/kotlin/dev/daylight/core/SyntheticData.kt",
+      "bytes": 2784,
+      "sha256": "3b3e314e9ca6553750d1dc1140fb1107231b307034fd7e7e1676cb40947eff2a"
+    },
+    {
+      "path": "core/src/main/kotlin/dev/daylight/core/VoiceExperience.kt",
+      "bytes": 5026,
+      "sha256": "3496f0dd36475268a2e5c4112af66b9a824158016a6cfe6eaee2436f3d2bc47b"
+    },
+    {
+      "path": "core/src/test/kotlin/dev/daylight/core/CompanionEngineTest.kt",
+      "bytes": 15142,
+      "sha256": "ee5e770d858fc26cfd59a0e0d700007fe3e543b9b1728f4a1a2c90989033939e"
+    },
+    {
+      "path": "core/src/test/kotlin/dev/daylight/core/CompanionRoutingTest.kt",
+      "bytes": 26586,
+      "sha256": "00e362c1890259c98e425df4740f79b9f3ca708b65dcdd33f6efa265399d92b7"
+    },
+    {
+      "path": "core/src/test/kotlin/dev/daylight/core/DebriefOrganizerTest.kt",
+      "bytes": 10051,
+      "sha256": "7b4f0c5de80e87995dbfa15aded5a056abdd2e2a39cf62ecb595bed1eb9e7daa"
+    },
+    {
+      "path": "core/src/test/kotlin/dev/daylight/core/HeartRateAnalysisTest.kt",
+      "bytes": 12836,
+      "sha256": "8fffa8d8ce760cb74bc1d140f863abf7c43e85c44a3032bcf8e246cb4d7466a2"
+    },
+    {
+      "path": "core/src/test/kotlin/dev/daylight/core/HeartRateConversationTest.kt",
+      "bytes": 11825,
+      "sha256": "836acafb2157eb08d37f71cd4e9de42eac164e88c5658db0e4f46a4586e25825"
+    },
+    {
+      "path": "core/src/test/kotlin/dev/daylight/core/HeartRateReadPolicyTest.kt",
+      "bytes": 2770,
+      "sha256": "2d417745c8baa692e2c06a2ddb81c91f8d5ab9caac6f815d2d19e77d3356b27d"
+    },
+    {
+      "path": "core/src/test/kotlin/dev/daylight/core/IntervalMathTest.kt",
+      "bytes": 2750,
+      "sha256": "964896ab2610805bc7fad6b964ae0033eec5ddb3de394df00b5bd17844c563d7"
+    },
+    {
+      "path": "core/src/test/kotlin/dev/daylight/core/SnapshotAvailabilityTest.kt",
+      "bytes": 5558,
+      "sha256": "ee8e2e72455531d853b481945642e9586c7f7aa0f9c88d4cf1f577fd5656036f"
+    },
+    {
+      "path": "core/src/test/kotlin/dev/daylight/core/SpeechEndpointTest.kt",
+      "bytes": 2515,
+      "sha256": "9e25b5a013d14420ffb88ddb59c1dc1c38b64558220a2f0de17e3e3e95bb497f"
+    },
+    {
+      "path": "core/src/test/kotlin/dev/daylight/core/SpokenReplyTest.kt",
+      "bytes": 7757,
+      "sha256": "bca24b738b091ac6a41dbed41d67fa67ed060b97481a5c3c4f604ed18c03aeff"
+    },
+    {
+      "path": "core/src/test/kotlin/dev/daylight/core/SyntheticDataTest.kt",
+      "bytes": 3922,
+      "sha256": "acbc9c7617bd48a488ea51645ce5a71567ab72783cfd9d0f352047bfdb66addd"
+    },
+    {
+      "path": "core/src/test/kotlin/dev/daylight/core/VoiceAudioAvailabilityTest.kt",
+      "bytes": 1606,
+      "sha256": "fdba837bc1076823c617bf29dff2891bc41b63fbaefa9a183f823243d5358225"
+    },
+    {
+      "path": "core/src/test/kotlin/dev/daylight/core/VoiceExperienceTest.kt",
+      "bytes": 3510,
+      "sha256": "00cc8ee10ba6048b2cd1b7297cf661b1fcc2d26a60e9d8779ba7431f11f8c964"
+    },
+    {
+      "path": "docs/architecture.png",
+      "bytes": 470513,
+      "sha256": "ba4bcf1d08c7c9db6546998795569f52ab682a8931e132904db8a109917040a1"
+    },
+    {
+      "path": "docs/architecture.svg",
+      "bytes": 7034,
+      "sha256": "cd6a357cee110dde54c5da7aa570fa42936437125e2a777773f0041bd51bdbf5"
+    },
+    {
+      "path": "docs/AUTHOR-RUNBOOK.md",
+      "bytes": 16758,
+      "sha256": "4866d2651510aa5413245cd6efa740b1204ecce697ca5083b2115fe5050f1e46"
+    },
+    {
+      "path": "docs/BLOG.md",
+      "bytes": 28001,
+      "sha256": "f2a40e6795f3df2b76eaf93d7782e3a748e544940504b4c832814e6e92876035"
+    },
+    {
+      "path": "docs/DEMO-GUIDE.md",
+      "bytes": 9396,
+      "sha256": "dd4125bcd476d6bc03ea914b5e02fa06609eea5161793077c6f03e625cdd806e"
+    },
+    {
+      "path": "docs/demo/ami-answer.png",
+      "bytes": 162803,
+      "sha256": "2cdf0de99ca2784fa249fe942c8069b5df4fd4806d8c812ffb4b6817117a4be6"
+    },
+    {
+      "path": "docs/demo/ami-audio.mp4",
+      "bytes": 703630,
+      "sha256": "36570ae744ed86d50e219ed2e4a4bce6ce65393e54704ee8a2e2a522c6422640"
+    },
+    {
+      "path": "docs/demo/ami-evidence.png",
+      "bytes": 200027,
+      "sha256": "f81a34891bd91198a8bd0c31e1545f56896e5fcf06b0bf2f5363bd397cc446f1"
+    },
+    {
+      "path": "docs/demo/ami-privacy.png",
+      "bytes": 179361,
+      "sha256": "caae5863f6b79f11959a63a0c72ac8d630545b185fb9ef4eb1f9d50f38917aab"
+    },
+    {
+      "path": "docs/demo/ami-provenance.json",
+      "bytes": 8092,
+      "sha256": "ea5dba2df56c179b94f32f46a5fee832f658b8b3d6d2e63c83bc5b0fd3f0109d"
+    },
+    {
+      "path": "docs/demo/ami-recap.mp4",
+      "bytes": 452029,
+      "sha256": "4a7c0f1e1cd4622459a6e3fb6338b0a590f4c74d7cae509a74eb03df175f16f5"
+    },
+    {
+      "path": "docs/demo/ami-recap.png",
+      "bytes": 198055,
+      "sha256": "39ecaf036e367bf8f8f63e58a40a666739ffbae79d7027815edb8ddb342b0018"
+    },
+    {
+      "path": "docs/demo/ami-today.png",
+      "bytes": 202497,
+      "sha256": "7d586a727713af4395383b5fba339a071c2c5b3aa67bbcdd44cf4a9585b8dedf"
+    },
+    {
+      "path": "docs/demo/ami-warm.wav",
+      "bytes": 536204,
+      "sha256": "120890928a7ff738d6af996d850c9b8b635b545f5dd4c69c5ce3a8e4d0dbbaee"
+    },
+    {
+      "path": "docs/demo/ami-welcome.png",
+      "bytes": 271989,
+      "sha256": "4b0f80d75e2bbd376c7a5daae3f80a4a94df5f2ecf8111751393b5cb3ece6ece"
+    },
+    {
+      "path": "docs/demo/audio.mp4",
+      "bytes": 598546,
+      "sha256": "b8754951429e800046d68f4c67a494c2e0193490cece930376cc51f183335e36"
+    },
+    {
+      "path": "docs/demo/audio.png",
+      "bytes": 166928,
+      "sha256": "fa8acd7405b9f798edbd6efebd873241b7ae7bc31a4d4e60c5c8282ab93c8d8b"
+    },
+    {
+      "path": "docs/demo/debrief.mp4",
+      "bytes": 572568,
+      "sha256": "dad719b9f6813342b8944f521debbac52d1b000ee265607ef564e314d31c7eb9"
+    },
+    {
+      "path": "docs/demo/debrief.png",
+      "bytes": 202596,
+      "sha256": "0bba6e0978ebb1fc095c74402d82e3ee3ddf338a4173859163354e3e214c7800"
+    },
+    {
+      "path": "docs/demo/evidence.png",
+      "bytes": 202584,
+      "sha256": "30f2f5e83783ba302ee5cd963f5cf8f5d665cc0ccab3b7b2315cfa91f1561969"
+    },
+    {
+      "path": "docs/demo/privacy.png",
+      "bytes": 184182,
+      "sha256": "02aa8b23aec4d58be2e7eec2b36be79c1eef909681a46d7c495518fd1c8bb7e6"
+    },
+    {
+      "path": "docs/demo/provenance.json",
+      "bytes": 5887,
+      "sha256": "4b8bdd96d2b3781b80224eec3b2f229f7eab41e1dbcee3adf7450c268196bfdf"
+    },
+    {
+      "path": "docs/demo/today.png",
+      "bytes": 204198,
+      "sha256": "be3541f4cfeb2ac6069ad2a272552a45bde692ca6558ed0d3c05eade0d71fcf5"
+    },
+    {
+      "path": "docs/demo/warm.wav",
+      "bytes": 545564,
+      "sha256": "2130debc9dd7093dd733fb8ebe54b8b174a3ea3938b0095f9874a3e2c7e60006"
+    },
+    {
+      "path": "docs/DEVICE-FINDINGS.md",
+      "bytes": 5345,
+      "sha256": "2ba85ecfe0e70f1a557c15036beb6123c752dc69ad485790c7b4c58da9ccbeaf"
+    },
+    {
+      "path": "docs/evidence/ami-capture-validation.json",
+      "bytes": 18935,
+      "sha256": "588a6c4f09c69cbdeef8de0185fe827780af8cd329f75c3f84aa5f9f53f2d826"
+    },
+    {
+      "path": "docs/evidence/ami-device-followup.json",
+      "bytes": 5000,
+      "sha256": "4fdb4bd6839b0e239ff6dfe3203cea8f7cfe5fa0ea5ccb31688200a7bc083b6d"
+    },
+    {
+      "path": "docs/evidence/ami-phone-validation.json",
+      "bytes": 44388,
+      "sha256": "e39e9f22d20199778de47a718ba37f7a1aba7e3abaa573291496911ac02f07fe"
+    },
+    {
+      "path": "docs/evidence/reproducibility.json",
+      "bytes": 11367,
+      "sha256": "24e66efad9eb526a2c5d06fabbb5c94a9e1c4f5bb6c2551202b31683ba2d4332"
+    },
+    {
+      "path": "docs/index.html",
+      "bytes": 2289678,
+      "sha256": "d6f6a9fe1c791dfa42631016658b5a11e1fe4f9d03fe703d1b53c69347f68f79"
+    },
+    {
+      "path": "docs/SHOWCASE-VALIDATION.md",
+      "bytes": 4985,
+      "sha256": "55d24be1e182c6cbc22a847e4fe2cc17d6823cb3bce61b96a4a8b8f6765198b5"
+    },
+    {
+      "path": "docs/validation-results.json",
+      "bytes": 4249,
+      "sha256": "1610028b11e73c696764eb3e6216844c69522ece8ca09330de3e531553520f76"
+    },
+    {
+      "path": "docs/VALIDATION.md",
+      "bytes": 8946,
+      "sha256": "c8e8fa28009fef3929040977a288738b7dce98b34ceb2f91f1612dee49db52cb"
+    },
+    {
+      "path": "gradle.properties",
+      "bytes": 128,
+      "sha256": "b7af64a3756b879ff74823e69c3d00e7e10c45977fbaa9648ecb14f1f360e2d4"
+    },
+    {
+      "path": "README.md",
+      "bytes": 8781,
+      "sha256": "ba91f0b560bf56e25de22b83f8b55f5f1a7cb2ee3b04ed233e2ae394ace38414"
+    },
+    {
+      "path": "scripts/build-blog-preview.ps1",
+      "bytes": 3639,
+      "sha256": "b3dca5bb4c4c0c824ac9d5fc560f97e769c63ccf76e4490427db512be1c27181"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "bytes": 2070,
+      "sha256": "b0094e4177f6e5575a05346084bc06659c369fd2e03d5bb02e86fa351a9c790d"
+    },
+    {
+      "path": "scripts/capture-demo.ps1",
+      "bytes": 10747,
+      "sha256": "e50ed16ff2f80eae38fb0cee6783149f13d101ecee5bfc83f432c72de2131d9b"
+    },
+    {
+      "path": "scripts/make-fixtures.ps1",
+      "bytes": 1929,
+      "sha256": "d0553172306841bcf315714b34b83dba5e4f713e72bf657193d05be45746ed76"
+    },
+    {
+      "path": "scripts/package-repository.ps1",
+      "bytes": 9666,
+      "sha256": "9180a6139dad03b398758be247957dcffe5650a18b5e8bdbbcc90c6e93bb8be1"
+    },
+    {
+      "path": "scripts/prepare-demo-video.ps1",
+      "bytes": 3546,
+      "sha256": "15d41137cc70e0bed4de523a8b2e59c17927d54d014186e81028a37cf7a65c94"
+    },
+    {
+      "path": "scripts/resume-device.ps1",
+      "bytes": 4286,
+      "sha256": "61f90151e9b707f161c68664854abd5edc7eb16127cfdf5c0d28e496e752101b"
+    },
+    {
+      "path": "scripts/run-device.ps1",
+      "bytes": 6851,
+      "sha256": "1de3f10005356bb09e7d37a8cd230026c1e024dae440b0ec6804b855bea64464"
+    },
+    {
+      "path": "scripts/validate-build.ps1",
+      "bytes": 6161,
+      "sha256": "21a8cf394e23bc280f74d3688b6117119aaa8eb4c5d2cdd4d29260e8600df094"
+    },
+    {
+      "path": "settings.gradle.kts",
+      "bytes": 332,
+      "sha256": "ef58f78af3ecc2969b1ed9757062f77d340b58292d8d6e012177bb75152d1dcf"
+    }
+  ]
+}

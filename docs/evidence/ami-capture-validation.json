@@ -1,0 +1,537 @@
+{
+  "product": "Ami",
+  "version": "0.3.3-preview",
+  "apkSha256": "1789c0ea6bc254fbbf1adbae13f0947feb0dfef2e8b0bf33d965c4466637bd28",
+  "capturedAtUtc": "2026-09-30T03:32:24.5771953Z",
+  "localCaptureDate": "2026-09-30",
+  "localTimeZone": "Asia/Kolkata",
+  "deviceClass": "Motorola moto g35 5G, Android 16",
+  "data": "Synthetic fixtures only; no personal health records",
+  "sourcePolicy": "Explicit event/field allowlist; started-event permission inventories, device identifiers, owner paths, raw host logs and private diagnostics excluded",
+  "capture": {
+    "runId": "publication-20260930T033224574Z",
+    "sourceManifestSha256": "601592025ccc20eaacc01a4cb5a8383e86665624a66a74f120beb059645113e9",
+    "originalCaptureStatus": "captured_pending_visual_review",
+    "clips": 2,
+    "compositorScreenshots": 5,
+    "screenTimeout": {
+      "adjustmentRequested": true,
+      "changed": false,
+      "restored": null,
+      "originalMilliseconds": 600000
+    },
+    "timeoutAfterCaptureMilliseconds": 600000,
+    "settingsNote": "The existing ten-minute timeout was sufficient and remained unchanged; no physical short-timeout restoration branch was exercised"
+  },
+  "results": {
+    "syntheticAsrPassed": 5,
+    "calculatedAnswerContractsPassed": 5,
+    "recapContractsAccepted": 4,
+    "emptyAndSingleCategoryComputedWithoutModel": true,
+    "healthReadAttemptsPerCompletedRun": 0,
+    "microphoneUsed": false,
+    "audiblePlaybackRequested": false,
+    "radiosChanged": false,
+    "healthPermissionsChanged": false
+  },
+  "clockNote": "Event times use the phone clock; source filenames use the host clock. Script and screenrecord durations are not latency benchmarks",
+  "runs": [
+    {
+      "sourceFile": "audio-20260930T033234499Z.jsonl",
+      "sourceSha256": "bb38dbd00d793094a37c44625cd5dbd86e04b5d4580631029ebef8ad296fdb3c",
+      "events": [
+        {
+          "event": "model_states",
+          "atUtc": "2026-09-30T03:32:36.038666Z",
+          "elapsedMs": 19,
+          "syntheticOnly": true,
+          "models": [
+            {
+              "name": "qwen2.5-0.5b-instruct-generic-cpu:4",
+              "cached": true,
+              "sizeMb": 822,
+              "provider": "CPUExecutionProvider"
+            },
+            {
+              "name": "openai-whisper-tiny-generic-cpu:4",
+              "cached": true,
+              "sizeMb": 131,
+              "provider": "CPUExecutionProvider"
+            }
+          ]
+        },
+        {
+          "event": "audio_pipeline",
+          "atUtc": "2026-09-30T03:32:36.044897Z",
+          "elapsedMs": 25,
+          "syntheticOnly": true,
+          "modelRoutingUsed": false,
+          "answerPath": "Foundry Local ASR followed by deterministic routing and calculated answers",
+          "microphoneUsed": false,
+          "audiblePlayback": false
+        },
+        {
+          "event": "asr_case",
+          "atUtc": "2026-09-30T03:32:39.978287Z",
+          "elapsedMs": 3958,
+          "syntheticOnly": true,
+          "fixture": "weekly-question.wav",
+          "expected": "How did my sleep change this week?",
+          "transcript": "How did my sleep change this week?",
+          "normalizedExactMatch": true,
+          "inferenceMs": 1740,
+          "loadMs": 2185
+        },
+        {
+          "event": "voice_answer",
+          "atUtc": "2026-09-30T03:32:40.006867Z",
+          "elapsedMs": 3987,
+          "syntheticOnly": true,
+          "fixture": "weekly-question.wav",
+          "topic": "SLEEP",
+          "expectedTopic": "SLEEP",
+          "pass": true,
+          "spokenAnswer": "In this demo, not your own records: Looking at the last seven complete days, leaving today out. Sleep sessions averaged about 6 hours and 43 minutes per recorded day, with records on 6 of seven days. The preceding week's average was about 7 hours and 23 minutes, with records on 6 of seven days. Recorded days can be incomplete; missing records aren't zero. Sleep sessions aren't a measure of time asleep. The full numbers and coverage are in Evidence.",
+          "languageModelUsed": false
+        },
+        {
+          "event": "asr_case",
+          "atUtc": "2026-09-30T03:32:41.603418Z",
+          "elapsedMs": 5583,
+          "syntheticOnly": true,
+          "fixture": "walking-question.wav",
+          "expected": "How much walking did I record?",
+          "transcript": "How much walking did I record?",
+          "normalizedExactMatch": true,
+          "inferenceMs": 1591,
+          "loadMs": 1
+        },
+        {
+          "event": "voice_answer",
+          "atUtc": "2026-09-30T03:32:41.629227Z",
+          "elapsedMs": 5609,
+          "syntheticOnly": true,
+          "fixture": "walking-question.wav",
+          "topic": "ACTIVITY",
+          "expectedTopic": "ACTIVITY",
+          "pass": true,
+          "spokenAnswer": "In this demo, not your own records: Looking at the last seven complete days, leaving today out. Steps averaged 5733.3 steps per recorded day, with records on 6 of seven days. The preceding week's average was 3366.7 steps, with records on 6 of seven days. Recorded days can be incomplete; missing records aren't zero. The full numbers and coverage are in Evidence.",
+          "languageModelUsed": false
+        },
+        {
+          "event": "asr_case",
+          "atUtc": "2026-09-30T03:32:43.706199Z",
+          "elapsedMs": 7686,
+          "syntheticOnly": true,
+          "fixture": "overview-question.wav",
+          "expected": "Give me an overview of my week.",
+          "transcript": "Give me an overview of my week.",
+          "normalizedExactMatch": true,
+          "inferenceMs": 2069,
+          "loadMs": 1
+        },
+        {
+          "event": "voice_answer",
+          "atUtc": "2026-09-30T03:32:43.744133Z",
+          "elapsedMs": 7724,
+          "syntheticOnly": true,
+          "fixture": "overview-question.wav",
+          "topic": "BRIEF",
+          "expectedTopic": "BRIEF",
+          "pass": true,
+          "spokenAnswer": "In this demo, not your own records: Looking at the last seven complete days, leaving today out. Steps averaged 5733.3 steps per recorded day, with records on 6 of seven days. Sleep sessions averaged about 6 hours and 43 minutes per recorded day, with records on 6 of seven days. Recorded exercise averaged 21.7 minutes per recorded day, with records on 6 of seven days. Recorded days can be incomplete; missing records aren't zero. Sleep sessions aren't a measure of time asleep. The full numbers and coverage are in Evidence.",
+          "languageModelUsed": false
+        },
+        {
+          "event": "asr_case",
+          "atUtc": "2026-09-30T03:32:45.505695Z",
+          "elapsedMs": 9486,
+          "syntheticOnly": true,
+          "fixture": "heartbeat-question.wav",
+          "expected": "When was my heartbeat high this week?",
+          "transcript": "When was my heartbeat high this week?",
+          "normalizedExactMatch": true,
+          "inferenceMs": 1754,
+          "loadMs": 1
+        },
+        {
+          "event": "voice_answer",
+          "atUtc": "2026-09-30T03:32:45.531645Z",
+          "elapsedMs": 9512,
+          "syntheticOnly": true,
+          "fixture": "heartbeat-question.wav",
+          "topic": "HEART_RATE",
+          "expectedTopic": "HEART_RATE",
+          "pass": true,
+          "spokenAnswer": "In this synthetic demo, not your own records: the highest recorded heart rate this calendar week so far was 131 beats per minute on Tuesday, 29 September at 5:10 PM, in Asia/Kolkata. I have readings on 3 of 3 days in that window. That's the highest sample I can see, not a judgement that it was medically too high.",
+          "languageModelUsed": false
+        },
+        {
+          "event": "asr_case",
+          "atUtc": "2026-09-30T03:32:47.349845Z",
+          "elapsedMs": 11330,
+          "syntheticOnly": true,
+          "fixture": "monthly-heartbeat-question.wav",
+          "expected": "When was my heart rate highest last month?",
+          "transcript": "When was my heart rate highest last month?",
+          "normalizedExactMatch": true,
+          "inferenceMs": 1810,
+          "loadMs": 1
+        },
+        {
+          "event": "voice_answer",
+          "atUtc": "2026-09-30T03:32:47.368669Z",
+          "elapsedMs": 11349,
+          "syntheticOnly": true,
+          "fixture": "monthly-heartbeat-question.wav",
+          "topic": "HEART_RATE",
+          "expectedTopic": "HEART_RATE",
+          "pass": true,
+          "spokenAnswer": "In this synthetic demo, not your own records: the highest recorded heart rate in August 2026 was 153 beats per minute on Monday, 10 August at 4:40 PM, in Asia/Kolkata. I have readings on 1 of 31 days in that window. That's the highest sample I can see, not a judgement that it was medically too high.",
+          "languageModelUsed": false
+        },
+        {
+          "event": "tts_voice",
+          "atUtc": "2026-09-30T03:32:47.51603Z",
+          "elapsedMs": 11496,
+          "syntheticOnly": true,
+          "available": true,
+          "voice": "en-IN-language",
+          "networkRequired": false
+        },
+        {
+          "event": "tts_file",
+          "atUtc": "2026-09-30T03:32:50.984693Z",
+          "elapsedMs": 14965,
+          "syntheticOnly": true,
+          "pass": true,
+          "bytes": 1141964,
+          "synthesisMs": 3468,
+          "playedAloud": false,
+          "sourceFixture": "monthly-heartbeat-question.wav",
+          "inputCharacters": 300,
+          "textSource": "Actual voice_answer.spokenAnswer from this same synthetic run"
+        },
+        {
+          "event": "asr_summary",
+          "atUtc": "2026-09-30T03:32:50.985496Z",
+          "elapsedMs": 14965,
+          "syntheticOnly": true,
+          "passed": 5,
+          "total": 5,
+          "source": "Distinct Microsoft desktop synthetic-English utterances; not live microphone or accent evaluation"
+        },
+        {
+          "event": "voice_answer_summary",
+          "atUtc": "2026-09-30T03:32:50.98603Z",
+          "elapsedMs": 14966,
+          "syntheticOnly": true,
+          "passed": 5,
+          "total": 5,
+          "modelRoutingUsed": false,
+          "allPassed": true
+        },
+        {
+          "event": "completed",
+          "atUtc": "2026-09-30T03:32:51.265661Z",
+          "elapsedMs": 15246,
+          "syntheticOnly": true,
+          "status": "runtime_pass",
+          "healthReadAttempts": 0
+        }
+      ]
+    },
+    {
+      "sourceFile": "capture-20260930T033359184Z.jsonl",
+      "sourceSha256": "98a77ff42cfe8a559c088bab3dfd573e81e04438aed0d7dd1f656195e8680fb3",
+      "events": [
+        {
+          "event": "completed",
+          "atUtc": "2026-09-30T03:34:01.024124Z",
+          "elapsedMs": 322,
+          "syntheticOnly": true,
+          "status": "runtime_pass",
+          "healthReadAttempts": 0
+        }
+      ]
+    },
+    {
+      "sourceFile": "capture-20260930T033406679Z.jsonl",
+      "sourceSha256": "2f4a34e6cd10fc52a1d63614089f59eaf0840c2c834769909b05f72e4cc7b49b",
+      "events": [
+        {
+          "event": "completed",
+          "atUtc": "2026-09-30T03:34:08.486547Z",
+          "elapsedMs": 316,
+          "syntheticOnly": true,
+          "status": "runtime_pass",
+          "healthReadAttempts": 0
+        }
+      ]
+    },
+    {
+      "sourceFile": "capture-20260930T033414047Z.jsonl",
+      "sourceSha256": "14be196543553c53dd4b2397aa488e8ab0998c4bd6d15abec6d84ec2726f4f1d",
+      "events": [
+        {
+          "event": "completed",
+          "atUtc": "2026-09-30T03:34:15.87561Z",
+          "elapsedMs": 312,
+          "syntheticOnly": true,
+          "status": "runtime_pass",
+          "healthReadAttempts": 0
+        }
+      ]
+    },
+    {
+      "sourceFile": "debrief-20260930T033328831Z.jsonl",
+      "sourceSha256": "cbb556c86f45f861fda115f98ea86886c5c4a148c8cdb333cbe7c4accaabcba8",
+      "events": [
+        {
+          "event": "model_states",
+          "atUtc": "2026-09-30T03:33:30.598653Z",
+          "elapsedMs": 20,
+          "syntheticOnly": true,
+          "models": [
+            {
+              "name": "qwen2.5-0.5b-instruct-generic-cpu:4",
+              "cached": true,
+              "sizeMb": 822,
+              "provider": "CPUExecutionProvider"
+            },
+            {
+              "name": "openai-whisper-tiny-generic-cpu:4",
+              "cached": true,
+              "sizeMb": 131,
+              "provider": "CPUExecutionProvider"
+            }
+          ]
+        },
+        {
+          "event": "debrief_case",
+          "atUtc": "2026-09-30T03:33:30.633734Z",
+          "elapsedMs": 55,
+          "syntheticOnly": true,
+          "fixture": "empty",
+          "promptVersion": "evidence-card-options-v3",
+          "offeredIds": [],
+          "offeredNumericIds": [],
+          "selectedIds": [],
+          "status": "NO_RECENT_RECORDS",
+          "freeFormTextDisplayed": false
+        },
+        {
+          "event": "debrief_case",
+          "atUtc": "2026-09-30T03:33:30.673573Z",
+          "elapsedMs": 94,
+          "syntheticOnly": true,
+          "fixture": "one-category",
+          "promptVersion": "evidence-card-options-v3",
+          "offeredIds": [
+            "STEPS"
+          ],
+          "offeredNumericIds": [
+            1
+          ],
+          "selectedIds": [
+            "STEPS"
+          ],
+          "status": "COMPUTED",
+          "freeFormTextDisplayed": false
+        },
+        {
+          "event": "debrief_case",
+          "atUtc": "2026-09-30T03:33:37.638693Z",
+          "elapsedMs": 7060,
+          "syntheticOnly": true,
+          "fixture": "steps-sleep",
+          "promptVersion": "evidence-card-options-v3",
+          "offeredIds": [
+            "STEPS",
+            "SLEEP"
+          ],
+          "offeredNumericIds": [
+            1,
+            2
+          ],
+          "selectedIds": [
+            "SLEEP",
+            "STEPS"
+          ],
+          "status": "MODEL_ORGANIZED",
+          "inferenceMs": 2192,
+          "loadMs": 4718,
+          "freeFormTextDisplayed": false
+        },
+        {
+          "event": "debrief_case",
+          "atUtc": "2026-09-30T03:33:39.945489Z",
+          "elapsedMs": 9366,
+          "syntheticOnly": true,
+          "fixture": "sleep-exercise",
+          "promptVersion": "evidence-card-options-v3",
+          "offeredIds": [
+            "SLEEP",
+            "EXERCISE"
+          ],
+          "offeredNumericIds": [
+            2,
+            3
+          ],
+          "selectedIds": [
+            "EXERCISE",
+            "SLEEP"
+          ],
+          "status": "MODEL_ORGANIZED",
+          "inferenceMs": 2260,
+          "loadMs": 0,
+          "freeFormTextDisplayed": false
+        },
+        {
+          "event": "debrief_case",
+          "atUtc": "2026-09-30T03:33:42.270779Z",
+          "elapsedMs": 11692,
+          "syntheticOnly": true,
+          "fixture": "steps-exercise",
+          "promptVersion": "evidence-card-options-v3",
+          "offeredIds": [
+            "STEPS",
+            "EXERCISE"
+          ],
+          "offeredNumericIds": [
+            1,
+            3
+          ],
+          "selectedIds": [
+            "EXERCISE",
+            "STEPS"
+          ],
+          "status": "MODEL_ORGANIZED",
+          "inferenceMs": 2280,
+          "loadMs": 1,
+          "freeFormTextDisplayed": false
+        },
+        {
+          "event": "debrief_case",
+          "atUtc": "2026-09-30T03:33:45.233527Z",
+          "elapsedMs": 14654,
+          "syntheticOnly": true,
+          "fixture": "all-categories",
+          "promptVersion": "evidence-card-options-v3",
+          "offeredIds": [
+            "STEPS",
+            "SLEEP",
+            "EXERCISE"
+          ],
+          "offeredNumericIds": [
+            1,
+            2,
+            3
+          ],
+          "selectedIds": [
+            "STEPS",
+            "SLEEP"
+          ],
+          "status": "MODEL_ORGANIZED",
+          "inferenceMs": 2882,
+          "loadMs": 1,
+          "freeFormTextDisplayed": false
+        },
+        {
+          "event": "debrief_summary",
+          "atUtc": "2026-09-30T03:33:45.234213Z",
+          "elapsedMs": 14655,
+          "syntheticOnly": true,
+          "modelAttempts": 4,
+          "contractAccepted": 4,
+          "allModelContractsAccepted": true,
+          "personalDataUsed": false,
+          "rankingUsefulnessEvaluated": false,
+          "scope": "Output contract only, not medical quality, helpfulness or production reliability"
+        },
+        {
+          "event": "completed",
+          "atUtc": "2026-09-30T03:33:45.565826Z",
+          "elapsedMs": 14987,
+          "syntheticOnly": true,
+          "status": "runtime_pass",
+          "healthReadAttempts": 0
+        }
+      ]
+    },
+    {
+      "sourceFile": "welcome-20260930T033225804Z.jsonl",
+      "sourceSha256": "5091853c026b1e93b5a708a4db6de3c9f5b3dab4d37d51e229821d87ea3bc13e",
+      "events": [
+        {
+          "event": "model_states",
+          "atUtc": "2026-09-30T03:32:27.349923Z",
+          "elapsedMs": 39,
+          "syntheticOnly": true,
+          "models": [
+            {
+              "name": "qwen2.5-0.5b-instruct-generic-cpu:4",
+              "cached": true,
+              "sizeMb": 822,
+              "provider": "CPUExecutionProvider"
+            },
+            {
+              "name": "openai-whisper-tiny-generic-cpu:4",
+              "cached": true,
+              "sizeMb": 131,
+              "provider": "CPUExecutionProvider"
+            }
+          ]
+        },
+        {
+          "event": "completed",
+          "atUtc": "2026-09-30T03:32:27.625646Z",
+          "elapsedMs": 315,
+          "syntheticOnly": true,
+          "status": "runtime_pass",
+          "healthReadAttempts": 0
+        }
+      ]
+    },
+    {
+      "sourceFile": "welcome-20260930T033319954Z.jsonl",
+      "sourceSha256": "1a35859ce3802066482a19f885f9ab441b938739ad79b1735f05bb81a6602c42",
+      "events": [
+        {
+          "event": "model_states",
+          "atUtc": "2026-09-30T03:33:21.604164Z",
+          "elapsedMs": 104,
+          "syntheticOnly": true,
+          "models": [
+            {
+              "name": "qwen2.5-0.5b-instruct-generic-cpu:4",
+              "cached": true,
+              "sizeMb": 822,
+              "provider": "CPUExecutionProvider"
+            },
+            {
+              "name": "openai-whisper-tiny-generic-cpu:4",
+              "cached": true,
+              "sizeMb": 131,
+              "provider": "CPUExecutionProvider"
+            }
+          ]
+        },
+        {
+          "event": "completed",
+          "atUtc": "2026-09-30T03:33:21.885159Z",
+          "elapsedMs": 385,
+          "syntheticOnly": true,
+          "status": "runtime_pass",
+          "healthReadAttempts": 0
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "No live microphone or speaker/listening-quality assessment",
+    "No personal Samsung record verification",
+    "No radio-isolation or zero-egress claim",
+    "No model-ranking usefulness or unrestricted dialogue evaluation"
+  ]
+}

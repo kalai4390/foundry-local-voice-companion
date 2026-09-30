@@ -1,0 +1,137 @@
+{
+  "product": "Ami",
+  "version": "0.3.4-preview",
+  "generatedAtUtc": "2026-09-30T05:29:15.6365466Z",
+  "apkSha256": "67b9093a7ffbbac0cb177226f92b567b79a173445fd24e6c0111e9d2762f35fa",
+  "installedApkHashMatches": true,
+  "deviceClass": "Motorola moto g35 5G, Android 16",
+  "scope": "Limited current-build replay and sanitized manual diagnosis; not a new full SDK replay or live AV pass",
+  "currentBuild": {
+    "coreTests": 171,
+    "coreSuites": 13,
+    "smokePassed": 8,
+    "monthlyConversationPassed": 3,
+    "fullAsrRecapVoiceSuiteReplayed": false
+  },
+  "voice": {
+    "earlierLiveMicrophoneAttemptsAcceptedAsPass": false,
+    "greetingSuggestionChipIsNotTranscriptEvidence": true,
+    "syntheticFileTranscriptObserved": true,
+    "audioFocusRefusalObserved": true,
+    "audioModesObserved": [
+      "MODE_IN_CALL",
+      "MODE_IN_COMMUNICATION"
+    ],
+    "reservedAudioModeForCurrentGuard": "MODE_IN_COMMUNICATION",
+    "microphonePreflightGuardShown": true,
+    "microphoneOff": true,
+    "microphonePermissionDialogShown": false,
+    "typedGreetingWorked": true,
+    "temporaryVoiceFilesRemaining": 0,
+    "speakerPreflightGuardVerified": false,
+    "completeLiveMicToSpeakerTurnVerified": false,
+    "subjectiveListeningQualityAssessed": false,
+    "note": "A static suggestion chip is not a successful transcript. No call was ended, recorded or overridden to complete testing."
+  },
+  "health": {
+    "existingWatchConnectionRestored": true,
+    "bluetoothEnabledForWatch": true,
+    "samsungBasicHeartRateUiHadEntries": true,
+    "amiSamsungOriginSnapshotHadNoUsableTotals": true,
+    "inspectedWeeklyHeartRateQueryHadNoUsableSamples": true,
+    "inspectedHealthConnectStepsWerePhoneOrigin": true,
+    "nativeHistoryWasInspectedAfterTheAmiRead": true,
+    "readAfterNativeHistoryInspectionCompleted": false,
+    "upstreamSharingCauseEstablished": false,
+    "personalHeartRateIntegrationComplete": false,
+    "sourceFilterBroadened": false,
+    "accountCloudSyncSettingsChanged": false,
+    "numericalRecordsExported": false,
+    "nativeUiChange": "Heart rate shortcut added to Samsung Health home for inspection; no measurement edited or created"
+  },
+  "runner": {
+    "externalScreenReturnPhysicalRegressionPassed": true,
+    "failedOriginalStartupRetained": true,
+    "startupEvidenceReportingMock": {
+      "mockOnly": true,
+      "clearTopFlagRequired": true,
+      "hostTimeoutHandled": true,
+      "applicationEventsObserved": 0,
+      "nonexistentApplicationEvidenceNotAdvertised": true,
+      "hostReportSaved": true,
+      "realPhoneUsed": false
+    }
+  },
+  "runs": [
+    {
+      "sourceFile": "smoke-20260930T050742738Z.jsonl",
+      "sourceSha256": "a4dd020e857beaab8a4db78f48c85d2eab7c09b2534f17e2fe4965096a45b019",
+      "apkVersion": "0.3.4-preview",
+      "purpose": "Current installed-build synthetic replay",
+      "events": [
+        {
+          "event": "core_summary",
+          "atUtc": "2026-09-30T05:07:48.769701Z",
+          "elapsedMs": 152,
+          "syntheticOnly": true,
+          "passed": 8,
+          "total": 8,
+          "allPassed": true
+        },
+        {
+          "event": "conversation_summary",
+          "atUtc": "2026-09-30T05:07:48.826321Z",
+          "elapsedMs": 208,
+          "syntheticOnly": true,
+          "passed": 3,
+          "total": 3,
+          "allPassed": true
+        },
+        {
+          "event": "completed",
+          "atUtc": "2026-09-30T05:07:48.826615Z",
+          "elapsedMs": 208,
+          "syntheticOnly": true,
+          "status": "runtime_pass",
+          "healthReadAttempts": 0
+        }
+      ]
+    },
+    {
+      "sourceFile": "welcome-20260930T050748485Z.jsonl",
+      "sourceSha256": "b63257b3e15674fd868b6057372c45aeb4bf8427ec6e736c409e7c8df11f9ac4",
+      "apkVersion": "0.3.4-preview",
+      "purpose": "Current installed-build synthetic replay",
+      "events": [
+        {
+          "event": "completed",
+          "atUtc": "2026-09-30T05:07:50.423663Z",
+          "elapsedMs": 534,
+          "syntheticOnly": true,
+          "status": "runtime_pass",
+          "healthReadAttempts": 0
+        }
+      ]
+    },
+    {
+      "sourceFile": "welcome-20260930T045401448Z.jsonl",
+      "sourceSha256": "df2d89e5f4fab1c360437efea52bf7f8c600bb8f439dba9e010fb344b7fa6f26",
+      "apkVersion": "0.3.3-preview",
+      "purpose": "Regression: return from external Health Connect data screen",
+      "events": [
+        {
+          "event": "completed",
+          "atUtc": "2026-09-30T04:54:03.23307Z",
+          "elapsedMs": 357,
+          "syntheticOnly": true,
+          "status": "runtime_pass",
+          "healthReadAttempts": 0
+        }
+      ]
+    }
+  ],
+  "mediaVersion": "0.3.3-preview",
+  "mediaRecapturedForCurrentBuild": false,
+  "radiosDisabledForIsolationTest": false,
+  "privacy": "Explicit field allowlist. No health values, private transcripts, microphone audio, call content, account names, device identifiers, private screenshots, permission inventories or owner paths are included."
+}

@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "product": "Ami",
+  "assetBrand": "Daylight",
+  "recordedVersion": "0.3.2-preview",
+  "recordedApkSha256": "e71b540aa6d2c766ea21151ee6ed6f6fdb71628da02949444ca3daf25509e011",
+  "currentVersion": "0.3.3-preview",
+  "currentVersionDeviceCapturesAvailable": false,
+  "captureRun": "publication-20260927T192118722Z",
+  "capturedAtUtc": "2026-09-27T19:21:18.7277385Z",
+  "syntheticOnly": true,
+  "healthReadAttempts": 0,
+  "microphoneUsed": false,
+  "audiblePlaybackRequested": false,
+  "healthPermissionsChanged": false,
+  "radiosChanged": false,
+  "screenshots": "Actual Android screencap; cropped from 1080x2400 to 1080x2190, removing 108 top and 102 bottom pixels; app text is not altered",
+  "clips": [
+    {
+      "file": "audio.mp4",
+      "rawSha256": "1237174b5bfaf1f79a01928c8f09c500738bf7263ff8242038ac9961daa695fc",
+      "sourceDurationSeconds": 29.02,
+      "durationSeconds": 29.03,
+      "frameRate": 30,
+      "dimensions": "720x1460"
+    },
+    {
+      "file": "debrief.mp4",
+      "rawSha256": "9b170635f0f20a86dc9ef6b6d46abe1c830f32e5e1e44fdecbdaf906d797f7ba",
+      "sourceDurationSeconds": 32.6,
+      "durationSeconds": 32.6,
+      "frameRate": 30,
+      "dimensions": "720x1460"
+    }
+  ],
+  "videoTransform": "Actual Android screenrecord; system bars cropped; original timeline resampled to 30 fps without speed adjustment; final still held to source container duration; silent; no inserted or repainted answers",
+  "timingInterpretation": "Includes host/ADB setup and bounded test-runner work; not an end-to-end latency benchmark",
+  "voice": {
+    "file": "warm.wav",
+    "producer": "Installed offline Android TTS, not Foundry",
+    "sourceRun": "voice-20260927T191535062Z",
+    "style": "Warm",
+    "text": "Hi, I'm Daylight. We can take this at your pace. A little perspective on your day, or just a gentle moment to pause. This is a voice preview, not your health data.",
+    "liveRecording": false,
+    "soundtrackForVideos": false
+  },
+  "review": {
+    "fullSizeScreenshotsViewed": true,
+    "videoContactSheetRatePerSecond": 1,
+    "videoContactSheetsViewed": true,
+    "clipsDecodedEndToEnd": true,
+    "fullHumanAvReviewComplete": false,
+    "audibleQualityAssessed": false,
+    "status": "historical_draft_assets_pending_human_av_review_and_ami_recapture"
+  },
+  "retainedSourceEvents": [
+    {
+      "name": "audio-20260927T192128798Z.jsonl",
+      "sha256": "13b797eb9e2f4d5dd1f46d053f5e01d22248a150c41b5683fcc8cc2f9cb95f1e",
+      "status": "runtime_pass",
+      "syntheticOnly": true,
+      "healthReadAttempts": 0
+    },
+    {
+      "name": "debrief-20260927T192207822Z.jsonl",
+      "sha256": "795375f0c6adb28860f6505b900f5b5eac3405db25e1f644d24ea04778049c59",
+      "status": "runtime_pass",
+      "syntheticOnly": true,
+      "healthReadAttempts": 0
+    },
+    {
+      "name": "voice-20260927T191535062Z.jsonl",
+      "sha256": "3a8eb416526e01ee973b4c53e365c2517b23bdbdca033cd216329b8db4977351",
+      "status": "runtime_pass",
+      "syntheticOnly": true,
+      "healthReadAttempts": 0
+    }
+  ],
+  "syntheticSummaries": [
+    {
+      "passed": 5,
+      "total": 5,
+      "source": "Distinct Microsoft desktop synthetic-English utterances; not live microphone or accent evaluation",
+      "event": "asr_summary",
+      "atUtc": "2026-09-27T19:21:46.085081Z",
+      "elapsedMs": 11780,
+      "syntheticOnly": true
+    },
+    {
+      "passed": 5,
+      "total": 5,
+      "modelRoutingUsed": false,
+      "allPassed": true,
+      "event": "voice_answer_summary",
+      "atUtc": "2026-09-27T19:21:46.085685Z",
+      "elapsedMs": 11781,
+      "syntheticOnly": true
+    },
+    {
+      "modelAttempts": 4,
+      "contractAccepted": 4,
+      "allModelContractsAccepted": true,
+      "personalDataUsed": false,
+      "rankingUsefulnessEvaluated": false,
+      "scope": "Output contract only, not medical quality, helpfulness or production reliability",
+      "event": "debrief_summary",
+      "atUtc": "2026-09-27T19:22:27.921973Z",
+      "elapsedMs": 14582,
+      "syntheticOnly": true
+    },
+    {
+      "stylesPassed": 3,
+      "cancellationPassed": true,
+      "recoveryPassed": true,
+      "audibleQualityAssessed": false,
+      "liveMicrophoneAssessed": false,
+      "autoplayPolicy": "Host tests; microphone/sample gestures only. Typed/debug input does not autoplay.",
+      "event": "voice_summary",
+      "atUtc": "2026-09-27T19:15:42.206334Z",
+      "elapsedMs": 1612,
+      "syntheticOnly": true
+    }
+  ],
+  "assets": [
+    {
+      "file": "audio.mp4",
+      "sha256": "b8754951429e800046d68f4c67a494c2e0193490cece930376cc51f183335e36",
+      "bytes": 598546
+    },
+    {
+      "file": "audio.png",
+      "sha256": "fa8acd7405b9f798edbd6efebd873241b7ae7bc31a4d4e60c5c8282ab93c8d8b",
+      "bytes": 166928
+    },
+    {
+      "file": "debrief.mp4",
+      "sha256": "dad719b9f6813342b8944f521debbac52d1b000ee265607ef564e314d31c7eb9",
+      "bytes": 572568
+    },
+    {
+      "file": "debrief.png",
+      "sha256": "0bba6e0978ebb1fc095c74402d82e3ee3ddf338a4173859163354e3e214c7800",
+      "bytes": 202596
+    },
+    {
+      "file": "evidence.png",
+      "sha256": "30f2f5e83783ba302ee5cd963f5cf8f5d665cc0ccab3b7b2315cfa91f1561969",
+      "bytes": 202584
+    },
+    {
+      "file": "privacy.png",
+      "sha256": "02aa8b23aec4d58be2e7eec2b36be79c1eef909681a46d7c495518fd1c8bb7e6",
+      "bytes": 184182
+    },
+    {
+      "file": "today.png",
+      "sha256": "be3541f4cfeb2ac6069ad2a272552a45bde692ca6558ed0d3c05eade0d71fcf5",
+      "bytes": 204198
+    },
+    {
+      "file": "warm.wav",
+      "sha256": "2130debc9dd7093dd733fb8ebe54b8b174a3ea3938b0095f9874a3e2c7e60006",
+      "bytes": 545564
+    }
+  ],
+  "exclusions": "Raw system-bar recordings, device identifiers, host paths, private diagnostics and personal health records are not in this publication manifest. Raw files remain in ignored local runtime storage."
+}
