@@ -8,6 +8,8 @@ Current source: **Ami 0.3.4-preview**, with call-aware voice checks and the Heal
 
 **Your data. Your voice. Your phone.** A native Android reference implementation that combines local speech recognition, permissioned wearable context, calculated answers and an installed offline voice.
 
+**New physical-microphone demo:** the [46-second current-build recording](./docs/demo/ami-microphone.mp4) captures actual Android TTS output after a known question is played from a laptop speaker into the phone microphone. No direct ASR file injection or added voiceover is used. A separate unmirrored turn, replay, interruption and Stop also completed; [reconnection evidence](./docs/evidence/ami-reconnect-validation.json) and [media provenance](./docs/demo/ami-microphone-provenance.json) distinguish these checks from human voice-quality evaluation. The personal-data blocker is now directly observed: Health Connect's Samsung-specific source screen shows **No data**, despite the required permissions.
+
 - [Read the hands-on blog](./docs/BLOG.md).
 - [Watch the actual device demos and inspect the screenshots](./docs/DEMO-GUIDE.md).
 - [Check the evidence and limitations](./docs/SHOWCASE-VALIDATION.md).

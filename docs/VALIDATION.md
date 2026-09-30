@@ -28,7 +28,7 @@ The author APK is identified by its hash, not by the display name alone. A clean
 
 ## Current build follow-up
 
-The installed `0.3.4-preview` hash matches the current build manifest. Smoke passes 8/8 and monthly conversation 3/3, with zero HealthReader calls in the completed synthetic runs. The reserved-communication microphone preflight and a typed greeting were observed successfully; no temporary microphone file remained. Speaker completion, a complete live turn and radio isolation are not verified. The [follow-up evidence](./evidence/ami-device-followup.json) also separates a real external-screen launch regression from a mocked startup-timeout check.
+The installed `0.3.4-preview` hash matches the current build manifest. Smoke passes 8/8 and monthly conversation 3/3, with zero HealthReader calls in the completed synthetic runs. The reserved-communication microphone preflight and a typed greeting were observed successfully; no temporary microphone file remained. The later [reconnection evidence](./evidence/ami-reconnect-validation.json) establishes controlled acoustic microphone turns through expected editable transcripts and Android TTS completion, plus replay, interruption and Stop. Human speech/listening quality and radio isolation remain unverified. The [initial follow-up evidence](./evidence/ami-device-followup.json) separately preserves the reserved-audio attempt, real external-screen launch regression and mocked startup-timeout check.
 
 ## Recorded 0.3.3-preview SDK replay
 
@@ -70,8 +70,10 @@ The capture script offers a reversible three-minute idle-timeout extension and s
 
 ## Remaining acceptance gates
 
-- **Personal Samsung heart-rate data:** reconnecting the watch and inspecting Samsung's basic history did not establish usable Samsung-origin samples in Ami's inspected requests. The upstream sharing cause remains open; see [device findings](./DEVICE-FINDINGS.md).
-- **Live voice:** Android reserved audio for calls/communication during the follow-up. The new microphone guard is verified, not a complete microphone → transcript → answer → audible playback pass. Noise, accent, interruption and listening quality remain open.
+The additional `0.3.4-preview` [microphone video](./demo/ami-microphone.mp4) is 46.02 seconds with actual captured Android TTS output, not a voiceover. The question is a known laptop-speaker stimulus received by the phone microphone, not a direct-file ASR call. Output is redirected during capture. The [provenance](./demo/ami-microphone-provenance.json) records hashes, cropping, 20-fps resampling, idle trimming and 24 dB amplification. The final clip decodes without errors; its two-fps contact sheet and full-size poster were reviewed. It does not replace the older baseline's evidence or a person's listening assessment.
+
+- **Personal Samsung heart-rate data:** a fresh weekly query still lacked usable readings. Health Connect's Samsung-specific **See app data** screen independently reported **No data**, despite the required grants. The upstream sharing cause remains open; see [device findings](./DEVICE-FINDINGS.md).
+- **Human voice quality:** controlled microphone → transcript → calculated reply → Android TTS completion, interruption and Stop now pass. Human accents, quiet speech, room noise and subjective listening remain unevaluated. The initial reserved-audio speaker-guard assertion remains unverified.
 - **Disconnected operation:** a separately consented radio-off cold start after provisioning; no such measurement is claimed here.
 - **Performance:** controlled cold/warm latency, thermal behavior, RAM and battery evaluation. Download sizes are not RAM measurements.
 - **Broader AI:** freer grounded conversation, streaming dialogue, embedded deployment, other models and fine-tuning remain experiments, not implemented guarantees.

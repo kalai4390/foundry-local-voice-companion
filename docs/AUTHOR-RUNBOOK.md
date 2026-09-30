@@ -14,6 +14,8 @@ Ami **0.3.4-preview** is installed in place on the Motorola g35 with a hash matc
 
 The article now uses a **complete September 30, 2026 capture**: a 32.47-second speech clip, a 22.10-second recap clip, five actual compositor screenshots and a welcome video frame. The separate Ami Warm preview remains from the earlier matching-build voice run. [Media provenance](./demo/ami-provenance.json) and [sanitized capture evidence](./evidence/ami-capture-validation.json) bind those assets to the installed APK and passing checks. All images, 12 four-fps contact sheets and both final video frames were inspected; both clips decode end to end. The phone's existing ten-minute screen timeout remained unchanged. The earlier auto-lock attempt remains failed; historical Daylight media retains its original label in the [demo guide](./DEMO-GUIDE.md). Personal Samsung heart-rate availability, live microphone/listening quality and disconnected operation remain separate gates.
 
+**Later reconnection update:** the unchanged `0.3.4-preview` app now has a separate [46-second microphone demonstration](./demo/ami-microphone.mp4) with captured Android TTS output. Known questions played from the laptop speaker reached the physical phone microphone, produced new editable transcripts and reached playback completion. Replay, interruption and Stop also passed; no temporary microphone files remained. This closes the controlled acoustic path, not human listening/accent evaluation. Health Connect's **Samsung Health → See app data** screen independently reported **No data**, despite the required grants. See [reconnection evidence](./evidence/ami-reconnect-validation.json) and [new media provenance](./demo/ami-microphone-provenance.json); the earlier baseline media is unchanged.
+
 ## 1. Windows setup and build
 
 Use the repository root as your working directory. No cloud deployment, Docker container or npm install is required for this Android project.
@@ -102,13 +104,13 @@ Raw results land under ignored `runtime/results/`. They can contain device/permi
 5. Select **Recap my week · experimental** and read the confirmation. Show whether Qwen selected valid cards or the app used its labelled calculated fallback.
 6. **Privacy:** explain model preparation, separate permissions and deliberate local check-ins. Do not open real notes or personal data during publication capture.
 
-### Owner-supervised voice test — still required
+### Human voice and listening quality — still required
 
 In synthetic mode, open **Voice & pace**, preview a voice and choose it yourself. These previews are deliberate audible actions. Tap **Talk to Ami**, say “Hello Ami”, then ask about sleep. The visible transcript should match your words and the reply should be understandable. Test **Done**, **Cancel turn**, **Stop voice**, **Listen again** and **Interrupt & talk**. Typed questions must remain quiet.
 
 The microphone has a 20-second cap; a trailing-quiet heuristic can finish a turn. It is not a wake word, always-on recorder or validated speech detector. Try quiet speech, pauses and room noise before calling the interaction natural. Record voice ID/style and listening observations separately from measured load/inference time.
 
-First check that no call or voice/video session is using the phone. Ami `0.3.4-preview` checks Android audio mode and refuses to start its microphone or speaker while audio is reserved. It does not end another session. In the real follow-up, the microphone guard and typed greeting worked, but an audible reply and a complete live turn were not verified. See [device findings](./DEVICE-FINDINGS.md). When checking recognition, require a newly added user bubble and **Edit heard question**; the always-present **Hello Ami** suggestion chip is not evidence of a recognized greeting.
+First check that no call or voice/video session is using the phone. Ami `0.3.4-preview` checks Android audio mode and refuses to start its microphone or speaker while audio is reserved. It does not end another session. The initial reserved-audio attempt verified the microphone guard and a typed greeting; later normal-audio checks completed the controlled acoustic path, replay, interruption and Stop. Neither establishes subjective listening quality. See [device findings](./DEVICE-FINDINGS.md). Require a newly added user bubble and **Edit heard question**; the always-present **Hello Ami** suggestion chip is not evidence of recognition.
 
 For a deliberate no-microphone demo, tap **Play a sample conversation**. Label it as prerecorded synthetic speech processed by the real SDK—not live microphone recognition. Automated tests do not perform this audible action.
 
@@ -137,7 +139,36 @@ The script produces actual compositor screenshots and two bounded, **silent** An
 
 The voice suite separately writes Warm, Clear and Unhurried WAV previews. Select the matching run's actual Ami introduction, not a renamed Daylight file. A preview is neither microphone input nor the soundtrack to a different answer. If an end-to-end audible demonstration is needed, make a separately labelled, owner-supervised recording.
 
-### Media review gate
+### Capture the physical-microphone demonstration
+
+This is separate from `capture-demo.ps1`, which remains a silent, no-microphone regression capture. Use synthetic mode only, an unlocked foreground app, cached models and no call or other voice session. First perform an unmirrored turn and resolve the microphone permission through Android's normal dialog. Do not automatically grant health permissions or capture personal screens.
+
+1. Run `run-device.ps1 -Mode welcome` to start from a labelled, empty synthetic conversation. Confirm the badge and microphone-off state.
+2. Use your reviewed scrcpy installation to capture **actual device-output audio**, not microphone input. The following Windows example creates no visible helper window and never wakes the phone. The crop is specific to the tested unmodified 1080×2400 display; other devices need measured insets.
+
+```powershell
+New-Item -ItemType Directory -Path .\runtime -Force | Out-Null
+$recording = Join-Path (Resolve-Path .\runtime).Path ('microphone-' + (Get-Date -Format yyyyMMdd-HHmmss) + '.mp4')
+$capture = Start-Process -FilePath 'C:\tools\scrcpy\scrcpy.exe' -WindowStyle Hidden -PassThru -ArgumentList "--select-usb --no-power-on --no-window --no-control --no-audio-playback --audio-source=output --audio-codec=aac --time-limit=70 --max-size=1600 --crop=1080:2190:0:108 --record=`"$recording`""
+```
+
+3. Tap **Talk to Ami** on the phone. To reproduce the controlled acoustic input, immediately play the repository fixture through the laptop loudspeaker near the phone; this is not a direct-file SDK invocation:
+
+```powershell
+Add-Type -AssemblyName System.Windows.Extensions
+$player = [System.Media.SoundPlayer]::new((Resolve-Path .\app\src\main\assets\heartbeat-question.wav).Path)
+try { $player.PlaySync() } finally { $player.Dispose() }
+```
+
+4. Confirm the new question bubble, **Edit heard question**, calculated answer, speaking status and return to microphone-off. The video's output track does not include the external input question. `--audio-source=output` redirects phone output while capturing; never treat that recording as a physical-speaker listening check.
+5. Wait for the bounded capture to exit before opening another app or any personal data. Stop and reject the capture if a call, notification, lock screen or unexpected transcript appears. Review the raw file before selecting any asset.
+6. Separately, without mirroring, test **Listen again → Interrupt & talk**, play the sleep fixture, and use **Stop voice**. Confirm the new sleep transcript and microphone-off state. Keep only sanitized outcomes, not raw microphone recordings.
+
+The selected author clip is 46.02 seconds. It was cropped during capture, resampled to 20 fps without speed adjustment, trimmed only after the turn, and amplified by 24 dB after measuring the quiet device-output track. Do not blindly apply that gain to another recording. Its [provenance](./demo/ami-microphone-provenance.json) binds the file and poster hashes; a full decode, two-fps contact-sheet review and full-size poster inspection passed. Human listening remains a separate review.
+
+### Media review checklist
+
+For the local article preview, run `scripts/build-blog-preview.ps1 -InlineMedia`. This embeds the reviewed videos and voice sample so the file-based preview does not depend on media range requests; it does not autoplay them. The individual media files and download links remain available. Keep generated HTML and package checksums together when exporting this variant.
 
 - View every full-size screenshot and the entire recordings; decode all clips end to end.
 - Confirm synthetic badges, the unaltered answer and provenance; reject notifications, lock screens, private notes or personal health values.

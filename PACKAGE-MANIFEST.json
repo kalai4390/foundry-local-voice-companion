@@ -1,9 +1,9 @@
 {
   "product": "Ami",
-  "generatedAtUtc": "2026-09-30T05:41:26.1687875Z",
+  "generatedAtUtc": "2026-09-30T06:42:20.2086119Z",
   "policy": "Explicit source/document/media allowlist; no Git history, runtime logs, SDK/model binaries, APKs, tools, caches or signing keys",
   "validation": {
-    "localLinksChecked": 182,
+    "localLinksChecked": 219,
     "mediaChecksumsMatch": true,
     "reproducedBuildInputsMatch": true,
     "configuredOwnerIdentifierScanPassed": true,
@@ -12,7 +12,7 @@
     "scanIsNotAComprehensiveSecretAudit": true
   },
   "publication": "This packaging step writes a local archive only. Remote publication requires a separate authorized operation; no license grant is implied.",
-  "fileCountExcludingThisManifest": 104,
+  "fileCountExcludingThisManifest": 108,
   "files": [
     {
       "path": ".gitattributes",
@@ -321,18 +321,18 @@
     },
     {
       "path": "docs/AUTHOR-RUNBOOK.md",
-      "bytes": 16758,
-      "sha256": "4866d2651510aa5413245cd6efa740b1204ecce697ca5083b2115fe5050f1e46"
+      "bytes": 21116,
+      "sha256": "6276f81dd68d986476cf337945fa71603da4e6d48ee6297ec55691892360e4a9"
     },
     {
       "path": "docs/BLOG.md",
-      "bytes": 28001,
-      "sha256": "f2a40e6795f3df2b76eaf93d7782e3a748e544940504b4c832814e6e92876035"
+      "bytes": 30371,
+      "sha256": "47caaa7db3760269b6e1a006b53556ff949be31323b59dcd1a97d6986f7a55b5"
     },
     {
       "path": "docs/DEMO-GUIDE.md",
-      "bytes": 9396,
-      "sha256": "dd4125bcd476d6bc03ea914b5e02fa06609eea5161793077c6f03e625cdd806e"
+      "bytes": 10828,
+      "sha256": "be1f0796d7b8a700727867b1be8dd97eb450faa87c72fda8879b652f3006d81c"
     },
     {
       "path": "docs/demo/ami-answer.png",
@@ -348,6 +348,21 @@
       "path": "docs/demo/ami-evidence.png",
       "bytes": 200027,
       "sha256": "f81a34891bd91198a8bd0c31e1545f56896e5fcf06b0bf2f5363bd397cc446f1"
+    },
+    {
+      "path": "docs/demo/ami-microphone-provenance.json",
+      "bytes": 1973,
+      "sha256": "67cb88862ccff8e1df75034be6f2be2753bad59bd2cd50c8f7e7f52015bc0061"
+    },
+    {
+      "path": "docs/demo/ami-microphone.mp4",
+      "bytes": 1063344,
+      "sha256": "a7b3248fa562696dec7cf3cde4437cdb51e5ed4b4128ab1d84c5daf120d7a16e"
+    },
+    {
+      "path": "docs/demo/ami-microphone.png",
+      "bytes": 364811,
+      "sha256": "e903734d932f28854b8c33efa16e716301cf863a72816fb6addae90b9710a40c"
     },
     {
       "path": "docs/demo/ami-privacy.png",
@@ -431,8 +446,8 @@
     },
     {
       "path": "docs/DEVICE-FINDINGS.md",
-      "bytes": 5345,
-      "sha256": "2ba85ecfe0e70f1a557c15036beb6123c752dc69ad485790c7b4c58da9ccbeaf"
+      "bytes": 8347,
+      "sha256": "823c14db8178b109e70ef13904caecf8ad80b1ffb8dfd235c75d03452e7fcf6e"
     },
     {
       "path": "docs/evidence/ami-capture-validation.json",
@@ -450,19 +465,24 @@
       "sha256": "e39e9f22d20199778de47a718ba37f7a1aba7e3abaa573291496911ac02f07fe"
     },
     {
+      "path": "docs/evidence/ami-reconnect-validation.json",
+      "bytes": 3535,
+      "sha256": "e982371dff2a4d2a3398f45e16fc8e9c9669a10b6b595a7c1b6c63c654d4ac44"
+    },
+    {
       "path": "docs/evidence/reproducibility.json",
       "bytes": 11367,
       "sha256": "24e66efad9eb526a2c5d06fabbb5c94a9e1c4f5bb6c2551202b31683ba2d4332"
     },
     {
       "path": "docs/index.html",
-      "bytes": 2289678,
-      "sha256": "d6f6a9fe1c791dfa42631016658b5a11e1fe4f9d03fe703d1b53c69347f68f79"
+      "bytes": 3710061,
+      "sha256": "f31421786e68362bd6f0eeb0a11259224a56e194fd0189a724d52dd4df1f7740"
     },
     {
       "path": "docs/SHOWCASE-VALIDATION.md",
-      "bytes": 4985,
-      "sha256": "55d24be1e182c6cbc22a847e4fe2cc17d6823cb3bce61b96a4a8b8f6765198b5"
+      "bytes": 5822,
+      "sha256": "d308f1dc3657e5ae28fb6dc4c303eea12034eaffb54682fe59f864e6d353b28e"
     },
     {
       "path": "docs/validation-results.json",
@@ -471,8 +491,8 @@
     },
     {
       "path": "docs/VALIDATION.md",
-      "bytes": 8946,
-      "sha256": "c8e8fa28009fef3929040977a288738b7dce98b34ceb2f91f1612dee49db52cb"
+      "bytes": 9897,
+      "sha256": "7e6f859d65b85ccdf1eda97d4d246a399b472a01915f7bca1e2de9c746ff13bf"
     },
     {
       "path": "gradle.properties",
@@ -481,8 +501,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 8781,
-      "sha256": "ba91f0b560bf56e25de22b83f8b55f5f1a7cb2ee3b04ed233e2ae394ace38414"
+      "bytes": 9489,
+      "sha256": "2227be96de031a75720b1abeba83e5b376a9348521e5d6f0c98dae42ccc41eed"
     },
     {
       "path": "scripts/build-blog-preview.ps1",
@@ -506,8 +526,8 @@
     },
     {
       "path": "scripts/package-repository.ps1",
-      "bytes": 9666,
-      "sha256": "9180a6139dad03b398758be247957dcffe5650a18b5e8bdbbcc90c6e93bb8be1"
+      "bytes": 9955,
+      "sha256": "d1348872fa4c8edf034bc7d50058f54afd55a01dfeec5ff415de10c23609d0fe"
     },
     {
       "path": "scripts/prepare-demo-video.ps1",

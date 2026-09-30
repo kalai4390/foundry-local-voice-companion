@@ -1,0 +1,74 @@
+{
+  "product": "Ami",
+  "version": "0.3.4-preview",
+  "checkedOn": "2026-09-30",
+  "scope": "Controlled acoustic microphone tests and sanitized native Health Connect inspection; not unrestricted human conversation or a whole-device privacy audit",
+  "apkSha256": "67b9093a7ffbbac0cb177226f92b567b79a173445fd24e6c0111e9d2762f35fa",
+  "applicationSourceChanged": false,
+  "fullSdkRegressionReplayed": false,
+  "unmirroredAcousticTurn": {
+    "completedAtUtc": "2026-09-30T06:09:20.0770527Z",
+    "audioMode": "MODE_NORMAL",
+    "knownQuestionPlayedFromLaptopSpeaker": true,
+    "physicalPhoneMicrophoneUsed": true,
+    "expectedNewNonClickableUserBubbleObserved": true,
+    "editHeardQuestionObserved": true,
+    "androidTtsSpeakingObserved": true,
+    "androidTtsCompletionObserved": true,
+    "microphoneOffAfterCompletion": true,
+    "temporaryMicrophoneFilesRemaining": 0,
+    "audioCaptureOrRedirectionActive": false,
+    "subjectiveListeningQualityAssessed": false
+  },
+  "capturedAcousticTurn": {
+    "startedAtUtc": "2026-09-30T06:13:12Z",
+    "completedAtUtc": "2026-09-30T06:13:51.4153317Z",
+    "expectedQuestionAndEditAffordanceObserved": true,
+    "androidTtsCompletionObserved": true,
+    "temporaryMicrophoneFilesRemaining": 0,
+    "video": "ami-microphone.mp4",
+    "provenance": "ami-microphone-provenance.json",
+    "outputRedirectedDuringCapture": true,
+    "voiceoverAdded": false,
+    "sourceEvidenceSha256": "a36f7028264dac21f480937040d0075e4ece42096941c1677132dc6adb7b7d8f"
+  },
+  "interruption": {
+    "checkedAtUtc": "2026-09-30T06:16:52.4257292Z",
+    "listenAgainEnteredSpeaking": true,
+    "interruptAndTalkRecognizedNewSleepQuestion": true,
+    "stopVoiceReturnedToMicrophoneOff": true,
+    "temporaryMicrophoneFilesRemaining": 0,
+    "sourceEvidenceSha256": "2c51bde241f304590b249e73cd1c48b3f618e895cb7279fe44f4dd041acbef6a"
+  },
+  "health": {
+    "observedAtUtc": "2026-09-30T06:26:16.6088133Z",
+    "freshExplicitSamsungOriginReadPerformed": true,
+    "weeklyHeartRateReplyReportedNoUsableReadings": true,
+    "heartRateReadPermissionEnabled": true,
+    "nativeScreenPath": "Samsung Health settings > Health Connect > Samsung Health > See app data",
+    "nativeSamsungSourceScreenReportedNoData": true,
+    "requiredSamsungWritePermissionsWereGranted": true,
+    "sharingCauseEstablished": false,
+    "personalHeartRateIntegrationComplete": false,
+    "accountCloudSyncSettingsChanged": false,
+    "recordsCreatedOrEdited": false,
+    "dataOriginFilterBroadened": false,
+    "numericalHealthValuesExported": false,
+    "nativeHealthScreenshotsExported": false,
+    "queryEvidenceSha256": "1bce52b711e20644e0fb9f1ecbfe82d69081e5718d0d8c19b9e4992639b7ddaa",
+    "nativeSourceEvidenceSha256": "b7bb348348cf998080106d52215dbd3ca4ade3bc3116f4cda883014e15df8153"
+  },
+  "excludedClaims": [
+    "An earlier permission-prompt attempt ended with insufficient sound before the intended stimulus could play; not counted as a pass.",
+    "Controlled synthetic acoustic input is not a human accent, noise or subjective listening study.",
+    "Radio-off cold starts, unrestricted LLM conversation and Samsung sharing repair were not demonstrated."
+  ],
+  "cleanup": {
+    "phoneReturnedToSyntheticWelcome": true,
+    "microphoneOff": true,
+    "captureHelperStopped": true,
+    "radioSettingsChangedByTest": false,
+    "screenTimeoutChangedByTest": false
+  },
+  "privacy": "Field-allowlisted observations only; no personal values, private screenshots, raw microphone audio, device IDs, account names or owner paths."
+}

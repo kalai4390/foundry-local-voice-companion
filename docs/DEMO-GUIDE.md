@@ -22,9 +22,17 @@ Use the [repository README](../README.md) for clean-checkout setup. The complete
 
 Both screen recordings are silent; this test does not play its synthesized files through the speaker. Keep the separately labelled voice sample alongside them. Never dub the preview over another answer as though it were a live conversation. Both clips decode end to end; seven speech and five recap contact sheets at four frames per second, every full-size image and both final video frames were inspected. No private notifications or lock screens were seen in the sampled frames. This is not a substitute for human AV and listening review.
 
-### Historical baseline, not the current article media
+### Additional current-build microphone and output recording
 
-**Source versus recording:** the source is now `0.3.4-preview`, adding call-aware audio guards and a host-runner launch fix. The article's Ami recordings remain `0.3.3-preview`; they are not represented as new-build or live-microphone captures. The [device follow-up](./DEVICE-FINDINGS.md) records which new checks were actually completed. Do not change these media hashes or version labels to make them appear current.
+The [46-second microphone demo](./demo/ami-microphone.mp4) and [poster](./demo/ami-microphone.png) are new captures of **Ami 0.3.4-preview**. A known synthetic heartbeat question played from a laptop loudspeaker into the phone microphone; it was not injected directly into Whisper. The new user bubble and **Edit heard question** appear before the calculated answer.
+
+The soundtrack contains actual Android TTS device output. It does not contain the external laptop stimulus or an added voiceover. scrcpy's output capture redirects handset playback, so this video is not a physical-speaker audibility test. A separate unmirrored turn reached TTS completion; replay, a new microphone turn through **Interrupt & talk**, and **Stop voice** also passed. The [reconnection checks](./evidence/ami-reconnect-validation.json) preserve the boundaries, including the unsuccessful pre-stimulus permission attempt and the still-empty Samsung source.
+
+The [new provenance](./demo/ami-microphone-provenance.json) records the APK, media hashes, crop, 20-fps conversion, idle-tail trim and 24 dB gain. No inference was sped up and no answer was inserted. The final clip decodes without errors; its two-fps contact sheet and full-size poster were inspected. Human speech/noise and listening quality remain open. Reproduce this separate, deliberate capture using the [author runbook](./AUTHOR-RUNBOOK.md#capture-the-physical-microphone-demonstration).
+
+### Historical recording versions
+
+**Source versus recording:** the source is `0.3.4-preview`, as is the new microphone/output recording. The two earlier Ami recordings remain `0.3.3-preview`; they are not represented as new-build or microphone captures. The [device follow-up](./DEVICE-FINDINGS.md) records the checks separately. Do not change older media hashes or version labels to make them appear current.
 
 The earlier **Daylight 0.3.2-preview** [speech video](./demo/audio.mp4), [recap video](./demo/debrief.mp4), [Warm sample](./demo/warm.wav) and [baseline provenance](./demo/provenance.json) remain unchanged for comparison. The earlier [Today](./demo/today.png), [answer](./demo/audio.png), [recap](./demo/debrief.png), [Evidence](./demo/evidence.png) and [Privacy](./demo/privacy.png) screens are also historical. Do not relabel them as new Ami captures.
 

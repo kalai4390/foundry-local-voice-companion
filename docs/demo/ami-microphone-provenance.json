@@ -1,0 +1,53 @@
+{
+  "product": "Ami",
+  "appVersion": "0.3.4-preview",
+  "capturedAtUtc": "2026-09-30T06:13:12Z",
+  "deviceClass": "Motorola moto g35 5G, Android 16",
+  "apkSha256": "67b9093a7ffbbac0cb177226f92b567b79a173445fd24e6c0111e9d2762f35fa",
+  "syntheticOnly": true,
+  "input": "Known desktop-synthesized heartbeat-question.wav played through laptop loudspeaker into physical phone microphone; no direct ASR file injection",
+  "expectedQuestion": "When was my heartbeat high this week?",
+  "microphoneUsed": true,
+  "inputSoundIncludedInVideo": false,
+  "output": "Actual Android TTS device output captured by scrcpy 4.1 --audio-source=output; this redirects phone playback during capture",
+  "physicalSpeakerAudibilityTest": false,
+  "voiceoverAdded": false,
+  "rawRecordingSha256": "4fd0803ccd1e6b724de4caea7b9b450d034d9cffd34ea3c4e7dbd56cfb3d58f4",
+  "rawRecordingDurationSeconds": 69.78,
+  "publishedVideoDurationSeconds": 46.02,
+  "transform": {
+    "systemBarCrop": "1080:2190:0:108",
+    "maximumCaptureDimension": 1600,
+    "publishedDimensions": "788x1600",
+    "frameRate": 20,
+    "constantFrameRateResampling": true,
+    "trailingIdleTrimmed": true,
+    "finalStillHeldToSelectedDuration": true,
+    "timeStretch": false,
+    "audioGainDb": 24,
+    "audioFormat": "AAC 48 kHz stereo",
+    "metadataRemoved": true
+  },
+  "review": {
+    "fullDecodeErrors": 0,
+    "fullSizePosterViewed": true,
+    "twoFpsContactSheetViewed": true,
+    "syntheticBadgeAndExpectedTranscriptVisible": true,
+    "foreignScreensOrNotificationsSeen": false,
+    "audioMeanDb": -26.3,
+    "audioPeakDb": -9.6,
+    "subjectiveListeningQualityAssessed": false
+  },
+  "assets": [
+    {
+      "file": "ami-microphone.mp4",
+      "bytes": 1063344,
+      "sha256": "a7b3248fa562696dec7cf3cde4437cdb51e5ed4b4128ab1d84c5daf120d7a16e"
+    },
+    {
+      "file": "ami-microphone.png",
+      "bytes": 364811,
+      "sha256": "e903734d932f28854b8c33efa16e716301cf863a72816fb6addae90b9710a40c"
+    }
+  ]
+}

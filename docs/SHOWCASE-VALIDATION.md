@@ -4,7 +4,9 @@
 
 **Ami 0.3.4-preview is installed and hash-verified on the Motorola g35.** It passes 171 JVM tests in 13 suites, both Android builds and lint with 0 errors / 33 warnings per variant. The release APK is unsigned. The [current build manifest](./validation-results.json), [device follow-up](./evidence/ami-device-followup.json) and [findings](./DEVICE-FINDINGS.md) identify this update.
 
-The new phone replay passes 8/8 smoke and 3/3 monthly-conversation cases. During reserved communication audio, Talk shows the new microphone guard without requesting microphone permission or leaving a recording; a typed greeting still works. A complete live turn and audible playback are not established. The full SDK suites and media below remain explicitly tied to **0.3.3-preview**; they have not been relabelled as new-build results.
+The new phone replay passes 8/8 smoke and 3/3 monthly-conversation cases. During reserved communication audio, Talk shows the microphone guard without requesting microphone permission or leaving a recording; a typed greeting still works. The later [reconnection checks](./evidence/ami-reconnect-validation.json) establish controlled acoustic microphone turns, expected editable transcripts, Android TTS completion, replay, interruption and Stop. These are known synthetic questions played through a laptop speaker, not a human accent or voice-quality study. The full SDK baseline below remains explicitly tied to **0.3.3-preview**, not relabelled as a new replay.
+
+The additional [46-second current-build demo](./demo/ami-microphone.mp4) contains actual captured Android TTS output. Device output is redirected during capture; no voiceover or external input soundtrack is added. A separate unmirrored turn completed. The [provenance](./demo/ami-microphone-provenance.json) records transformations, hashes and review limits. A native Health Connect inspection now confirms **Samsung Health → See app data → No data**, despite the required grants. This is an upstream data-availability blocker, not evidence of a successful personal-data integration.
 
 ## Recorded SDK baseline: 0.3.3-preview
 
@@ -44,4 +46,4 @@ Inspect quality fields as well as runtime completion. Use the author's default m
 
 ## Still not demonstrated
 
-Useful personal Samsung heart-rate records; owner-supervised live microphone and listening quality; disconnected cold starts; battery/thermal behavior; unrestricted grounded LLM dialogue; fine-tuning or an embedded runtime build. The [GitHub repository](https://github.com/kalai4390/ami-foundry-local) is approved for private review only; public release and licensing remain separate decisions. The [validation ledger](./VALIDATION.md) and [demo guide](./DEMO-GUIDE.md) keep these boundaries separate from the working synthetic SDK path.
+Useful personal Samsung heart-rate records; human speech/noise and subjective listening quality; disconnected cold starts; battery/thermal behavior; unrestricted grounded LLM dialogue; fine-tuning or an embedded runtime build. The [GitHub repository](https://github.com/kalai4390/ami-foundry-local) is approved for private review only; public release and licensing remain separate decisions. The [validation ledger](./VALIDATION.md) and [demo guide](./DEMO-GUIDE.md) keep these boundaries separate from the working synthetic SDK and controlled acoustic paths.

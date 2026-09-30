@@ -51,6 +51,10 @@ foreach ($name in @('audio.png', 'audio.mp4', 'debrief.png', 'debrief.mp4', 'tod
 $files['docs/evidence/ami-phone-validation.json'] = 'docs/evidence/ami-phone-validation.json'
 $files['docs/evidence/ami-capture-validation.json'] = 'docs/evidence/ami-capture-validation.json'
 $files['docs/evidence/ami-device-followup.json'] = 'docs/evidence/ami-device-followup.json'
+$files['docs/evidence/ami-reconnect-validation.json'] = 'docs/evidence/ami-reconnect-validation.json'
+foreach ($name in @('ami-microphone.mp4', 'ami-microphone.png', 'ami-microphone-provenance.json')) {
+    $files["docs/demo/$name"] = "docs/demo/$name"
+}
 if (Test-Path -LiteralPath (Join-Path $root 'docs/evidence/reproducibility.json')) {
     $files['docs/evidence/reproducibility.json'] = 'docs/evidence/reproducibility.json'
 }
@@ -90,7 +94,7 @@ foreach ($file in (Get-ChildItem -LiteralPath $destinationPath -File -Recurse)) 
         $localLinksChecked++
     }
 }
-foreach ($provenanceFile in @('provenance.json', 'ami-provenance.json')) {
+foreach ($provenanceFile in @('provenance.json', 'ami-provenance.json', 'ami-microphone-provenance.json')) {
     $provenance = Get-Content -LiteralPath (Join-Path $destinationPath "docs/demo/$provenanceFile") -Raw | ConvertFrom-Json
     foreach ($asset in $provenance.assets) {
         if ($asset.file -notmatch '^[a-z0-9-]+\.(png|mp4|wav)$') { throw 'Unexpected media manifest path.' }
