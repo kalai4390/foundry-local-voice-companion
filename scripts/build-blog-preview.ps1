@@ -8,6 +8,9 @@ $ErrorActionPreference = 'Stop'
 $root = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $source = Join-Path $root 'docs\BLOG.md'
 $destination = Join-Path $root 'docs\index.html'
+$heading = Get-Content -LiteralPath $source -TotalCount 1
+if ($heading -notmatch '^# (.+)$') { throw 'Start the article with a level-one title.' }
+$articleTitle = [Net.WebUtility]::HtmlEncode($Matches[1].Trim())
 $content = (ConvertFrom-Markdown -LiteralPath $source).Html
 if ($InlineMedia) {
     $content = [regex]::Replace($content, 'src="(\./demo/[A-Za-z0-9-]+\.(mp4|wav))"', {
@@ -32,7 +35,7 @@ $html = @"
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Meet Ami: a private voice companion with Foundry Local</title>
+<title>$articleTitle</title>
 <style>
 :root{color-scheme:light;--ink:#182235;--muted:#516077;--accent:#5545ad}
 *{box-sizing:border-box}body{margin:0;background:#f4f5fa;color:var(--ink);font:18px/1.75 system-ui,-apple-system,Segoe UI,sans-serif}
@@ -46,9 +49,9 @@ footer{font-size:14px;color:var(--muted)}@media(max-width:700px){header,main,foo
 </style>
 </head>
 <body>
-<header><span>AMI / HANDS-ON ENGINEERING DRAFT</span>$repository</header>
+<header><span>FOUNDRY LOCAL FOR ANDROID · AMI</span>$repository</header>
 <main>$content</main>
-<footer>Local preview. Synthetic demonstration assets. No external scripts, trackers, fonts or automatic audio playback.</footer>
+<footer>Local article preview · Fictional demo records · Media plays only when you choose.</footer>
 </body>
 </html>
 "@

@@ -1,141 +1,93 @@
-# Meet Ami: Building a Private Voice Companion with Foundry Local
+# Building an On-Device Voice Companion with Foundry Local
 
-## Build a personal voice experience with Foundry Local for Android
+*A hands-on Android walkthrough combining local speech recognition, personal context and spoken replies—without cloud inference.*
 
-**Ami — Your day. Your pace. Your space.**
+“When was my heartbeat high this week?”
 
-What if the app that records your day could also talk with you about it—without sending your question, voice recording or health context to a cloud model?
+That was the question I wanted to ask my phone. My watch already collects the readings. But finding the answer still means opening an app, choosing a date range and interpreting a chart. I wanted to say the question out loud and hear an answer based on the records, without sending that conversation to a cloud model.
 
-Not another dashboard to interpret. Not a generic chatbot giving the same advice to everyone. Something you could ask:
+I built **Ami** to explore that experience with **Foundry Local for Android**. You tap to speak, Ami transcribes the question on the phone, looks up the relevant local context and reads the answer back. You can check the underlying numbers or ask a supported follow-up. The aim is a small, personal voice companion that feels comfortable to use, with an answer you can inspect.
 
-> “How did my sleep change this week?”
->
-> “When was my heart rate highest last month?”
->
-> “Why?”
+This walkthrough uses fictional wearable records. You do not need a watch, a health account or access to anyone's personal data to reproduce it. The screenshots and recordings come from the Android app running on a Motorola g35; they are not interface mockups.
 
-That is the idea behind **Ami**, a native Android voice-companion prototype. It brings together Foundry Local speech recognition, permissioned wearable context, local calculations and an installed offline voice. The phone is the inference device, not a remote control for an assistant running on a laptop.
+<img src="./demo/ami-welcome.png" width="320" alt="Ami's welcome screen on the phone, with the Talk to Ami button and microphone-off status">
 
-<img src="./demo/ami-welcome.png" width="320" alt="Ami's quiet-corner welcome screen, extracted from the actual synthetic Android screen recording">
+## Watch Ami answer
 
-*A frame from the actual Ami recording, not a UI mockup. Microphone input begins only with a deliberate tap.*
+The recording below follows a complete voice turn: microphone input, Foundry Local transcription, an answer calculated from the sample records, and a spoken reply.
 
-The interesting part is not the wellness category. It is the application pattern: **make an experience personal by bringing local context to the interaction, rather than uploading that context to a cloud model.** This can inform other sensitive-data experiences, including private journals and accessibility assistants.
+**Sound starts at 0:11**, when Ami begins its reply. The opening listening and transcription steps are silent in this recording.
 
-This article walks through that pattern with real SDK calls and a working implementation. The accompanying [author runbook](./AUTHOR-RUNBOOK.md) contains setup, reproducible checks and the capture plan.
+<video controls preload="metadata" playsinline poster="./demo/ami-microphone.png" width="400">
+  <source src="./demo/ami-microphone-preview.mp4" type="video/mp4">
+  <source src="./demo/ami-microphone.mp4" type="video/mp4">
+  Your browser cannot play this video. Use the MP4 link below.
+</video>
 
-**Full source and implementation:** [kalai4390/ami-foundry-local](https://github.com/kalai4390/ami-foundry-local). This is currently a **private review repository**, not a public blog-reader link. Public access and licensing must be settled before external publication.
+[Watch or download the voice demo](./demo/ami-microphone-preview.mp4).
 
-**Scope of the demonstration:** all published records are fictional. On **September 30, 2026**, Ami `0.3.4-preview` completed a controlled acoustic test: a known question played from a laptop speaker into the physical phone microphone, followed by local transcription, a calculated answer and Android TTS completion. A new video captures the phone's actual spoken output. The separate `0.3.3-preview` baseline retains its two silent recordings, five compositor screenshots, welcome frame and offline voice preview. Real Samsung heart-rate availability, human voice quality and radio-off cold starts remain unverified. This is a reference prototype, not a deployed customer product or medical assistant. The Android SDK is pinned to **0.1.6**, not described as the latest release.
+*For this repeatable test, the question was played from a laptop speaker into the phone's microphone. The soundtrack captures the phone's actual Android speech output, not the question or an added voiceover. Playback volume was increased during editing; the [recording notes](./demo/ami-microphone-provenance.json) describe the capture.*
 
-## 1. What Foundry Local contributes—and what the app still owns
+The laptop is a build and recording tool here. It does not run the models or calculate the answer. Those operations happen on the phone.
 
-The accompanying source is **0.3.4-preview**, adding call-aware voice handling after handset testing. Its new microphone demonstration has its own [provenance](./demo/ami-microphone-provenance.json). Earlier recordings retain their original **0.3.3-preview** labels and hashes; they are not relabelled as new results. The [device findings](./DEVICE-FINDINGS.md) explain the distinction.
+Let's build that flow, then add a short recap using Foundry Local's chat API.
 
-Foundry Local supplies the on-device model runtime and Kotlin APIs for discovering, downloading, loading and invoking models. In Ami, those capabilities support two different jobs:
+## Foundry Local on an Android phone
 
-| Part of the experience | Implementation | What becomes personal |
+[Foundry Local](https://github.com/microsoft/FoundryLocalAndroid) lets an application run supported models on the device through an SDK. For Ami, the useful part is having model discovery, downloads, loading, speech transcription and chat completion available through Kotlin APIs. I can spend my application code on the interaction and the data, rather than implementing those model operations separately.
+
+There are two Android deployment options. **IPC mode**, used in this project, talks to the separately installed Foundry Local service app. **Embedded mode** packages the runtime inside your application. Both use the same Kotlin API; their installation and process boundaries differ. The [deployment guide](https://github.com/microsoft/FoundryLocalAndroid/blob/v0.1.6/docs/IPC_AND_EMBEDDED_MODES.md) explains the trade-offs. Everything shown here uses IPC.
+
+I pinned the Android SDK to **0.1.6** and used two packages from the device's catalog:
+
+| Model | Job in Ami | Catalog identifier |
 | --- | --- | --- |
-| Understand a spoken question | Foundry Local runs Whisper Tiny on a short audio file | The user's question, transcribed locally |
-| Answer supported questions about records | Application code reads permitted data, resolves dates and calculates facts | The answer reflects the available records and their coverage |
-| Organize a weekly recap, optionally | Foundry Local runs Qwen on precomputed fact cards; code validates the selected IDs | The available context changes which cards can be selected |
-| Speak the answer | An installed offline Android text-to-speech voice | A conversational rendering of the calculated answer |
+| Whisper Tiny | Transcribe a spoken question | `openai-whisper-tiny-generic-cpu:4` |
+| Qwen 2.5 0.5B Instruct | Select calculated facts for an optional recap | `qwen2.5-0.5b-instruct-generic-cpu:4` |
 
-**The normal answer text is not generated by an LLM.** That is a deliberate limit of this prototype, not a capability missing from the SDK: its chat API is used in the separate recap experiment. Foundry Local also does not supply Ami's Health Connect integration, arithmetic, memory controls or text-to-speech engine.
+Both ran through the CPU execution provider on the test phone. Their combined advertised download size was 953 MB. These are the packages tested for this walkthrough, not a requirement to use the same models in every application.
 
-This distinction matters for an implementation article. “The app uses AI” should not conceal which parts use a model, which use code, and which still need work.
+![The working Ami voice flow: Foundry Local transcribes, Ami calculates from local sample records, and Android speaks. A separate Foundry Local chat call selects facts for a recap.](./voice-flow.svg)
 
-For example, “When was my heart rate highest?” requires timestamped samples and a calculation. A model cannot recover measurements that were never shared. Ami must distinguish no permission, no usable samples and an incomplete read—and never replace those states with invented personal numbers.
+Whisper is used on the voice path. Qwen is used only when the user requests the optional model-organized recap. The spoken reply comes from an installed **offline Android text-to-speech voice**. Keeping those calls separate makes it possible to change the voice without changing transcription, or try another chat model without changing how the app calculates a heart-rate maximum.
 
-## 2. Keep the personal context on the local path
+## Get the project running
 
-![Ami's local data and voice architecture](./architecture.svg)
+The [Ami repository](https://github.com/kalai4390/ami-foundry-local) contains the Android app, Kotlin calculation code, sample records, tests and build scripts. It is currently a private review repository.
 
-The intended wearable-data path is:
+For this build, use JDK 17, Gradle 8.13, PowerShell 7.4 or newer, and Android SDK 36. The app requires Android 13 or newer; the recorded demo runs on Android 16. This is a native Android project, so there is no npm install or Docker container to set up.
 
-```text
-Galaxy Watch4 → Samsung Health → Health Connect
-                                   ↓ explicit read permission
-                          Ami: facts + evidence
-```
+Download the **IPC 0.1.6 AAR** from the [official release](https://github.com/microsoft/FoundryLocalAndroid/releases/tag/v0.1.6), and install the compatible Foundry Local companion app using the [IPC setup instructions](https://github.com/microsoft/FoundryLocalAndroid/blob/v0.1.6/docs/INTEGRATION_GUIDE.md#ipc-setup). The project checks the AAR's checksum before building.
 
-The voice path is:
-
-```text
-Tap to talk → temporary audio → Foundry Local / Whisper
-                                      ↓ transcript
-                          Ami: supported question + facts
-                                      ↓ spoken reply
-                            Offline Android TTS
-```
-
-The optional model-assisted recap is a separate branch:
-
-```text
-User confirmation → derived fact cards → Foundry Local / Qwen
-                                               ↓ candidate card IDs
-                           strict validation → original calculated text
-```
-
-[Samsung documents](https://developer.samsung.com/health/health-connect-faq.html) the watch-to-Samsung-Health and Samsung-Health-to-Health-Connect sharing boundaries. A connected watch or a granted permission does not establish that the requested data has reached Health Connect. Ami filters for Samsung-origin records rather than silently combining every provider.
-
-### Personalization is not the same as fine-tuning
-
-The data changes the context and the calculated answer; it does not change model weights. A different set of observed sleep sessions produces a different comparison. A missing day remains missing, rather than becoming a zero-minute night.
-
-The normal voice path gives Whisper the audio, then handles the records in application code. The optional recap shares only derived weekly averages and observation counts with the Foundry Local companion, after a disclosure—not raw records or private check-in text. Both components run on the phone, but IPC still crosses an application/process boundary worth explaining to the user.
-
-The precise privacy claim is **no cloud inference or cloud speech fallback in this implementation**. It is not “nothing on this phone ever uses a network.” Initial model acquisition requires connectivity; Samsung's independent account syncing is outside Ami's control. SDK telemetry is explicitly disabled. A whole-device zero-egress claim would require separate measurement; development-time USB inspection is also distinct from the application's local inference path.
-
-## 3. Choose how the runtime reaches the phone
-
-The pinned Android SDK offers [two deployment modes](https://github.com/microsoft/FoundryLocalAndroid/blob/v0.1.6/docs/IPC_AND_EMBEDDED_MODES.md):
-
-| Choice | IPC: used here | Embedded: future packaging experiment |
-| --- | --- | --- |
-| Where inference runs | Separate Foundry Local service process | Inside your app process |
-| Companion installation | Required | Not required |
-| Runtime packaging | App includes the IPC AAR | App includes the embedded runtime AAR |
-| Model storage | Service-managed, isolated per client app | App-managed |
-| Main operational concern | Compatibility, disconnection and handle recovery | Package size, memory and native-process failures |
-
-They expose the same Kotlin API, but switching modes still requires mode-specific testing. Include **one** deployment-mode AAR, not both. In IPC mode, models are not a shared cache available to every client app; downloading a model for another client does not prove it is ready for Ami.
-
-IPC makes the runtime boundary visible in this prototype. Embedded mode is an interesting next step for a consumer product that should feel like one installation, but this article does not claim an embedded build was validated.
-
-Windows hosts the build tools. Docker is not part of the phone's answer path. The Android integration below is not a desktop SDK example pointed at a remote endpoint.
-
-## 4. Build the Android app against the pinned SDK
-
-Ami uses JDK 17, Gradle 8.13, Android Gradle Plugin 8.13.0, Kotlin 2.1.20, compile/target SDK 36 and minimum API 33. Its Health Connect client is 1.1.0. These are this project's pins, not a promise that every alternative combination works.
-
-Acquire the **IPC 0.1.6 AAR** from the [official release](https://github.com/microsoft/FoundryLocalAndroid/releases/tag/v0.1.6), verify its published checksum, and install a compatible Foundry Local service using the [IPC integration instructions](https://github.com/microsoft/FoundryLocalAndroid/blob/v0.1.6/docs/INTEGRATION_GUIDE.md#ipc-setup).
-
-The [app build](../app/build.gradle.kts) resolves the AAR supplied to the build and checks its SHA-256. Its SDK dependencies include:
-
-```kotlin
-implementation(files(sdkArchive))
-implementation("androidx.core:core-ktx:1.12.0")
-implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-```
-
-The [manifest](../app/src/main/AndroidManifest.xml) includes internet access for setup and package visibility for `com.microsoft.foundrylocal.app`. Microphone and health permissions are separate, purpose-specific user decisions. The application does not grant them during model preparation.
-
-From the cloned repository root, after setting `JAVA_HOME` and `ANDROID_HOME`:
+From PowerShell, substitute your installed JDK, Gradle and AAR paths:
 
 ```powershell
+git clone https://github.com/kalai4390/ami-foundry-local.git
+cd ami-foundry-local
+
+$env:JAVA_HOME = 'C:\tools\jdk-17'
+$env:ANDROID_HOME = "$env:LOCALAPPDATA\Android"
+
 .\scripts\build.ps1 `
   -GradlePath 'C:\tools\gradle-8.13\bin\gradle.bat' `
   -FoundryAar 'C:\tools\foundry-local-ipc-sdk-0.1.6.aar'
 ```
 
-Replace those two example tool paths with your actual locations. The script runs the core tests, debug build and debug lint by default. Install the resulting debug APK on an authorized device with the compatible companion. The [runbook](./AUTHOR-RUNBOOK.md#windows-setup-and-build) covers the full procedure. This is a Kotlin/Gradle implementation; npm is not required.
+The script runs the core tests, builds the debug app and runs Android lint. With USB debugging authorized on the phone, install and open it:
 
-## 5. Follow the SDK lifecycle, not just a completion call
+```powershell
+$adb = Join-Path $env:ANDROID_HOME 'platform-tools\adb.exe'
+& $adb install -r .\app\build\outputs\apk\debug\app-debug.apk
+& $adb shell am start -n dev.daylight.local/.MainActivity
+```
 
-The following are focused excerpts from [FoundryRuntime](../app/src/main/java/dev/daylight/local/inference/FoundryRuntime.kt), not a replacement for its coroutine, consent and lifecycle handling. API types come from `com.microsoft.foundrylocal.api`.
+Leave Ami in **Synthetic demo** mode. Open **Privacy → Prepare models**, and let setup finish on unmetered Wi-Fi. Then open **Talk**, choose an installed offline voice under **Voice & pace**, and tap **Talk to Ami**. Android asks for microphone permission when you use that feature. Health permissions are not needed for the sample conversation.
 
-### Connect and check compatibility
+Try “When was my heart rate highest last month?” or “How did my sleep change this week?” You can also use **Play a sample conversation** to run a bundled audio fixture through transcription without using the microphone.
+
+## Connect to the runtime and prepare the models
+
+The SDK integration is in [FoundryRuntime.kt](../app/src/main/java/dev/daylight/local/inference/FoundryRuntime.kt). It begins with a manager and a compatibility check:
 
 ```kotlin
 val manager = FoundryLocalManager.create(
@@ -152,20 +104,7 @@ val catalog = manager.getCatalog()
 val availableModels = catalog.listModels()
 ```
 
-Treat catalog lookup as discovery, not proof of readiness. The app must separately establish that the exact model is cached and loaded. After a lost connection, the adapter closes the old manager and reacquires catalog/model handles rather than reusing stale ones.
-
-The selected packages in this implementation are:
-
-| Role | Exact catalog identifier | Observed advertised size |
-| --- | --- | --- |
-| Speech recognition | `openai-whisper-tiny-generic-cpu:4` | 131 MB |
-| Experimental recap organization | `qwen2.5-0.5b-instruct-generic-cpu:4` | 822 MB |
-
-The combined advertised download is 953 MB. That is **not** a RAM estimate or an inference benchmark. The app caps the selected advertised total at 1,000 MB. Catalog availability, actual storage, load behavior and device performance still need checking. These identifiers do not establish NPU acceleration or a particular quantization format.
-
-### Provision explicitly, then reuse the cache
-
-The underlying lifecycle starts with a model handle:
+The SDK types come from `com.microsoft.foundrylocal.api`. `listModels()` shows what the catalog offers; `getModel()` gives the application a handle for a selected model. Here is the download step for Whisper:
 
 ```kotlin
 val audioModel = catalog.getModel("openai-whisper-tiny-generic-cpu:4")
@@ -175,16 +114,19 @@ if (!audioModel.isCached()) {
 check(audioModel.isCached())
 ```
 
-Ami wraps this operation in **Prepare local models**, not the question handler. Its wrapper requires a focused, unlocked app and validated, unmetered Wi-Fi; it cancels when that network condition is lost. It never silently starts a large download because someone asks a question. The complete wrapper also reports progress and checks the combined model budget.
+This belongs in setup, not in the question handler. Someone asking about their week should not unexpectedly start a large download. Ami's **Prepare models** action prepares both packages, shows progress, checks the download budget and requires the app to be in the foreground on unmetered Wi-Fi.
 
-Preparing models is a setup phase. Asking questions is an inference phase. Keeping those distinct avoids surprising network use and makes failures understandable.
+The model cache in IPC mode is isolated per client app. Downloading a model in another app does not establish that it is ready for Ami. Check the handle's cache state before enabling inference.
 
-### Transcribe a local file
+The snippets show the SDK calls without the surrounding UI code. The full adapter runs them off the main thread, serializes model operations and applies timeouts. If the service disconnects, it obtains a new manager and model handles. When the app finishes with a loaded model, it calls `unload()`; manager cleanup calls `close()`.
 
-Once the audio model is cached:
+## Turn speech into a question
+
+Ami records a short WAV after the user taps to speak. Once Whisper is cached, the transcription call is small:
 
 ```kotlin
 if (!audioModel.isLoaded()) audioModel.load()
+
 val transcription = audioModel.createAudioClient().transcribe(
     AudioTranscriptionRequest(
         filePath = audioFile.absolutePath,
@@ -195,16 +137,55 @@ val transcription = audioModel.createAudioClient().transcribe(
 val question = transcription.text.trim()
 ```
 
-This is the actual Foundry Local audio API. The source can be an intentionally recorded short clip or a labelled synthetic WAV. Ami's wrapper limits file size, applies a timeout and records model-load time separately from transcription time. It deletes temporary microphone audio after the turn or cancellation.
+`audioFile` is the local recording. Foundry Local loads Whisper on the phone and returns the transcript. There is no hosted speech endpoint in this flow.
 
-The transcript is visible and editable. That matters: an assistant should not turn an unclear recording into an unreviewable claim about someone's history.
+[ShortRecorder.kt](../app/src/main/java/dev/daylight/local/inference/ShortRecorder.kt) handles recording, with a 20-second limit and explicit Done and Cancel controls. A short trailing pause can finish the turn too. Ami deletes the temporary microphone file after the turn or cancellation.
 
-### Use a chat model where generation adds value
+I kept the transcript visible, with **Edit heard question** beside it. A wrong word in a general chat can be annoying; a wrong date in a question about personal records can change the answer. Letting the person correct what Ami heard is a useful part of the voice interface.
 
-The optional recap demonstrates the separate chat API:
+## Answer from the records
+
+Once the question is text, the app needs to resolve the date range and calculate the requested result. For “When was my heart rate highest last month?”, it selects the previous calendar month, finds the highest available sample and keeps its timestamp and time zone.
+
+<img src="./demo/ami-answer.png" width="360" alt="Ami answering a last-month heart-rate question from fictional records, with an editable transcript and a Calculation and coverage button">
+
+*The sample answer includes the reading, when it was recorded and how much of the month has data.*
+
+The answer in this screenshot is 153 beats per minute, recorded on August 10, 2026. It also says that readings are available on only one of the month's 31 days. That qualification belongs with the answer: a maximum over one observed day is not a complete account of the month.
+
+This is where I chose to use ordinary Kotlin rather than ask the language model to do the arithmetic. [HeartRateQueries.kt](../core/src/main/kotlin/dev/daylight/core/HeartRateQueries.kt) resolves the supported questions and follow-ups; [HeartRateAnalysis.kt](../core/src/main/kotlin/dev/daylight/core/HeartRateAnalysis.kt) calculates the result. The normal answer text is assembled from those results. Sleep and activity questions use the same approach of working from the records actually present.
+
+Ami can keep the heart-rate question in context for a follow-up such as “What about last month?” It can also show the calculation behind the answer. It treats “high” as a request for the highest recorded sample, not a medical judgment, and it does not invent a cause when asked “Why?”
+
+This division keeps Foundry Local focused on the work that needs a model: recognizing speech and, in the recap we'll add next, using a chat model to select facts. Dates and arithmetic remain straightforward to test.
+
+## Give Ami a voice
+
+A voice companion needs to be pleasant to listen to, not just able to produce text. Ami uses Android's text-to-speech engine with an installed voice that does not require a network connection. That selection happens in [LocalSpeaker.kt](../app/src/main/java/dev/daylight/local/inference/LocalSpeaker.kt), using the voice's [`isNetworkConnectionRequired()`](https://developer.android.com/reference/android/speech/tts/Voice#isNetworkConnectionRequired()) property along with installation and language checks.
+
+**Voice & pace** offers Warm, Clear and Unhurried playback styles. These adjust how the Android voice speaks; they are not separate Foundry models. Here is the Warm preview generated on the phone:
+
+<audio controls preload="metadata">
+  <source src="./demo/ami-warm.wav" type="audio/wav">
+  Your browser cannot play this audio. Use the WAV link below.
+</audio>
+
+[Listen to Ami's Warm voice](./demo/ami-warm.wav).
+
+After a spoken question, Ami can speak the answer automatically. A typed question stays quiet. **Listen again**, **Stop voice** and **Interrupt & talk** let the user control the exchange without finding a settings screen. Those details make a bigger difference to the experience than adding another paragraph to the answer.
+
+## Use the chat API for a weekly recap
+
+The voice flow already works without a chat model. I also wanted to try a small local language model on the same device, so Ami includes a separate **Recap my week** action.
+
+Before calling the model, the app calculates fact cards for the available activity, sleep and workout records. Each card has an ID, its calculated text and coverage information. With the user's confirmation, Ami passes the derived summaries to Qwen through Foundry Local's chat API:
 
 ```kotlin
-val response = handle.createChatClient().completeChat(
+val chatModel = catalog.getModel("qwen2.5-0.5b-instruct-generic-cpu:4")
+check(chatModel.isCached())
+if (!chatModel.isLoaded()) chatModel.load()
+
+val response = chatModel.createChatClient().completeChat(
     ChatCompletionRequest(
         messages = listOf(
             ChatMessage.system(DebriefOrganizer.SYSTEM_PROMPT),
@@ -218,131 +199,38 @@ val response = handle.createChatClient().completeChat(
 val recap = DebriefOrganizer.resolve(cards, response.message?.content)
 ```
 
-Here, `handle` is the loaded Qwen model and `cards` is the application's calculated fact catalog. The prompt offers allowed two-card permutations—for example, `[1,2]`. A strict parser rejects unknown IDs, duplicates, extra prose and malformed responses. It does not repair an invalid answer and call that model success. The renderer reuses the original facts and evidence.
+Here, `cards` is the fact catalog created by the app. The prompt asks for two card IDs, such as `[1,2]`, rather than new health advice. [DebriefOrganizer.kt](../core/src/main/kotlin/dev/daylight/core/DebriefOrganizer.kt) accepts only a valid selection and renders the original calculated text. Extra prose, duplicate IDs and unknown cards are rejected; the app can display a clearly labelled computed recap instead.
 
-This is ordinary chat completion plus an application-level contract, not an assumed structured-output feature. If the model is unavailable or its output is rejected, the UI labels the computed fallback. With too little data, no model call is needed.
-
-Earlier model-routing experiments failed even simple subject classification, so they were removed from normal answers. The separately bounded recap protocol passes four synthetic contract checks on the hash-verified **Ami 0.3.3-preview** APK. That is a repeat of a small known fixture set, not a fresh holdout evaluation or proof of useful health reasoning. The [showcase ledger](./SHOWCASE-VALIDATION.md) and [sanitized phone evidence](./evidence/ami-phone-validation.json) separate those results from the failed routing design.
-
-<img src="./demo/ami-recap.png" width="360" alt="Actual Ami Android compositor screenshot after the optional Foundry Qwen fact-card selection run">
-
-*Actual Android compositor screenshot from the completed capture. The model selects cards; every displayed fact and sentence remains application-calculated.*
-
-The **22.10-second recap recording** shows the separate experimental path on the same phone. Its matching run accepted all four model-output contracts and handled the empty/one-category cases without a model call. This is a scripted synthetic test, not an evaluation of which health facts matter most.
+This is a deliberately small experiment with chat completion. The model chooses cards; it does not generate the measurements or write the recap's sentences. Keeping the output short also gives the small model a manageable task.
 
 <video controls preload="metadata" playsinline poster="./demo/ami-recap.png" width="400">
   <source src="./demo/ami-recap.mp4" type="video/mp4">
-  Your browser cannot play this video. Use the direct MP4 link.
+  Your browser cannot play this video. Use the MP4 link below.
 </video>
 
-[Watch or download the actual Ami recap demo](./demo/ami-recap.mp4).
+[Watch or download the recap demo](./demo/ami-recap.mp4). *This separate screen recording is silent.*
 
-### Release resources and make failure visible
+Both model calls use the same Foundry Local integration: select a model, make sure it is cached, load it and create the appropriate client. Speech and chat solve different parts of the experience without needing a cloud inference service between them.
 
-The adapter serializes model operations with a coroutine `Mutex`, uses timeouts, checks cache state before inference and calls `unload()` and `manager.close()` during cleanup. Leaving the foreground cancels active work and clears the private conversation session. Model memory does not become free just because a reply has appeared.
+## Personal context without training on it
 
-The user-visible outcomes are specific: prepare the model, install a compatible service, retry an interrupted turn, edit the transcript, or inspect missing data. None routes secretly to a cloud model.
+Ami's answers change when its local records change. That personalization does not require fine-tuning: the records supply the current context, while the model weights stay the same. A new sleep session should be available to a question about the week without retraining a model.
 
-## 6. Make it a conversation, not a spoken dashboard
+In the normal voice flow, Whisper receives the recording and application code handles the records. In the optional recap, Qwen receives derived fact cards after confirmation. Both model calls execute through the Foundry Local service on the phone; neither sends that content to a cloud model. SDK telemetry is disabled in the manager configuration, and the app has no cloud speech or inference fallback.
 
-The experience lives in more than the model call. [ShortRecorder](../app/src/main/java/dev/daylight/local/inference/ShortRecorder.kt) supports deliberate microphone turns of at most 20 seconds. A simple trailing-quiet heuristic can finish the turn; **Done** and **Cancel turn** remain explicit controls. It is not an always-listening assistant or a validated voice-activity detector.
+You still need connectivity to acquire the models. “Local” here describes how Ami processes a question, not a claim that every application on the phone has stopped using the network. The offline voice must also be installed before you use it.
 
-[LocalSpeaker](../app/src/main/java/dev/daylight/local/inference/LocalSpeaker.kt) selects installed Android voices that do not require a network connection. **Voice & pace** exposes Warm, Clear and Unhurried styles. After deliberate voice input, the reply can speak automatically; typed questions stay quiet. **Stop voice**, **Listen again** and **Interrupt & talk** keep control with the person.
+The repository includes a [Health Connect reader](../app/src/main/java/dev/daylight/local/data/HealthReader.kt) for a wearable-backed version. This article stays with the working sample-data flow rather than presenting a live Samsung feed as part of the demo. Device setup and integration findings are kept in the [author guide](./AUTHOR-RUNBOOK.md#6-keep-personal-watch-integration-separate).
 
-Those styles are playback choices—not a custom Foundry voice model. Voice quality must be judged by listening on the target phone. If no suitable offline voice is available, the text remains usable; the app does not substitute cloud TTS.
+## Try it with your own application
 
-There is another practical boundary: a local model does not own the microphone or speaker. During handset testing, Android reported call/communication audio modes; a sample-file transcription succeeded, but audio focus for the reply was refused. Earlier microphone attempts captured insufficient usable energy, so they were not accepted as successful live speech tests. In `0.3.4-preview`, [AudioReadiness](../app/src/main/java/dev/daylight/local/inference/AudioReadiness.kt) checks the Android audio mode before requesting microphone permission or starting playback. The recorder checks again during capture. Ami explains the busy session instead of implying that every quiet recording is an ASR failure. It neither ends the call nor requests call-log access, and typed questions still work.
+The part I want to take further is the conversation around context that already belongs on a device. A journal could use the same speech entry point to retrieve a saved reflection. A learning app could let someone ask about their recent practice. Each needs its own data access and answer logic, but the Foundry Local model lifecycle and voice integration shown here are reusable.
 
-Conversational grounding is just as important. “Last month” must remain the same date window through a clarification and a follow-up. The [heart-rate query code](../core/src/main/kotlin/dev/daylight/core/HeartRateQueries.kt) preserves that context. The [analysis](../core/src/main/kotlin/dev/daylight/core/HeartRateAnalysis.kt) supplies the highest recorded sample and its time, with coverage—not a diagnosis of whether it was medically too high.
+For Ami, the next useful experiment would be a more flexible local conversation over the calculated facts. The existing voice loop gives that experiment somewhere concrete to start: a working microphone path, local transcription, an answer with inspectable context and speech the user can interrupt.
 
-<img src="./demo/ami-answer.png" width="370" alt="Actual Ami Android screenshot: fictional monthly heart-rate question, calculated reply, dated sample and coverage">
+If you want to build along, start with the sample conversation and trace it through [FoundryRuntime.kt](../app/src/main/java/dev/daylight/local/inference/FoundryRuntime.kt). Then change one part: the records, a supported question or the recap prompt. That is a more useful starting point than an empty chat screen connected to a model.
 
-*Actual Android compositor screenshot of Ami `0.3.3-preview`, cropped only to remove system bars. The heart-rate value is fictional. The answer is calculated from timestamped samples, not generated by an LLM.*
-
-### Watch the microphone-to-reply demonstration
-
-This **46-second recording of Ami 0.3.4-preview** uses the real phone microphone. A laptop speaker plays the known question “When was my heartbeat high this week?”; the WAV is not injected into the transcription API. The newly added user bubble and **Edit heard question** distinguish this turn from a suggestion chip or the separate sample-conversation button. Whisper transcribes; application code calculates from fictional records; the installed offline Android voice speaks the reply.
-
-<video controls preload="metadata" playsinline poster="./demo/ami-microphone.png" width="400">
-  <source src="./demo/ami-microphone.mp4" type="video/mp4">
-  Your browser does not support embedded video. Use the link below.
-</video>
-
-[Watch or download the microphone-to-reply demo with device-output audio](./demo/ami-microphone.mp4).
-
-**How it was captured:** the soundtrack is the phone's actual Android TTS output, not an added voiceover. The external question is not included in that output track, so the opening listening phase is quiet. The capture tool redirects phone output while recording; this clip is not a physical-speaker audibility test. A separate unmirrored turn reached Android TTS completion, and **Listen again → Interrupt & talk → a new sleep question → Stop voice** also passed. Temporary microphone files were absent after each checked turn. System bars were cropped, trailing idle time trimmed and the captured audio amplified by 24 dB; no answer was inserted and no inference was sped up. See the [reconnection checks](./evidence/ami-reconnect-validation.json) and [media provenance](./demo/ami-microphone-provenance.json). Human listening, accent and room-noise evaluation remain separate.
-
-### Watch the five-file SDK replay
-
-This **32.47-second actual Ami screen recording** follows five distinct synthetic-English audio files through Foundry Whisper and the calculated-answer path. It is silent—not a recording of someone speaking into the microphone or of the phone's speaker. The matching event log reports 5/5 transcriptions and 5/5 answer contracts, with zero HealthReader calls.
-
-<video controls preload="metadata" playsinline poster="./demo/ami-answer.png" width="400">
-  <source src="./demo/ami-audio.mp4" type="video/mp4">
-  Your browser cannot play this video. Use the direct MP4 link.
-</video>
-
-[Watch or download the Ami speech-to-answer demo](./demo/ami-audio.mp4).
-
-Both recordings and all five screenshots completed in the same capture session. The [current media provenance](./demo/ami-provenance.json) identifies the exact APK, source hashes and transformations; [sanitized capture results](./evidence/ami-capture-validation.json) preserve the matching checks. The clips retain their original timelines, including host/ADB setup and a held final frame to preserve source duration; they are not latency benchmarks. No answer was inserted or name painted over an old screenshot. An earlier interrupted capture remains recorded as failed, separate from these new assets.
-
-### Inspect the context and controls
-
-<img src="./demo/ami-today.png" width="280" alt="Actual Ami Today screen with synthetic context and an optional Samsung Health connection">
-<img src="./demo/ami-evidence.png" width="280" alt="Actual Ami Evidence screen explaining observed data, coverage and why missing values are not zero">
-<img src="./demo/ami-privacy.png" width="280" alt="Actual Ami Privacy screen showing separate read-only consent and local model boundaries">
-
-*Today, Evidence and Privacy: actual compositor screenshots from the same synthetic session. Context, calculation and consent are inspectable parts of the experience—not claims hidden behind the chat bubble.*
-
-### Hear Ami's separate offline voice preview
-
-<audio controls preload="metadata">
-  <source src="./demo/ami-warm.wav" type="audio/wav">
-  Your browser cannot play this audio. Use the direct WAV link.
-</audio>
-
-[Listen to the actual Ami Warm voice preview](./demo/ami-warm.wav).
-
-This is a separate WAV synthesized by the installed offline Android voice on the current Ami build. It introduces Ami; it is not Foundry TTS, live microphone audio or the soundtrack to the video. Voice quality still needs a person's listening judgment. The [demo guide](./DEMO-GUIDE.md) includes the owner-supervised voice procedure and clearly labelled historical recordings.
-
-## 7. What is demonstrated today
-
-**Current source: Ami `0.3.4-preview` passes 171 core JVM tests in 13 suites**, both Android builds and lint with zero errors and 33 warnings per variant. It is installed with a verified APK hash. Its phone smoke replay passes 8/8 cases and 3/3 monthly-conversation checks; the reserved-audio microphone guard and a typed greeting were also exercised. The later [reconnection checks](./evidence/ami-reconnect-validation.json) add controlled physical-microphone turns, Android TTS completion, replay, interruption and Stop. They do not establish unrestricted human conversation or subjective voice quality.
-
-**Recorded SDK baseline: Ami `0.3.3-preview`** passes **5/5 synthetic speech transcriptions**, **5/5 calculated-answer contracts**, three monthly conversation checks and four optional recap contracts. An installed offline Android voice synthesized the actual monthly reply to a file; that check did not play it aloud. That replay occurred on September 29, 2026 UTC (September 30 in India), and remains bound to its own APK hash.
-
-The recorded baseline establishes a working, bounded path on the Motorola g35—not general language quality, every accent, battery efficiency or personal-data availability. All four baseline synthetic suites report zero HealthReader calls. The completed **September 30, 2026 UTC** capture repeats the 5/5 speech, 5/5 answer and 4/4 recap checks on that same `0.3.3-preview` APK. The [showcase ledger](./SHOWCASE-VALIDATION.md), [current build](./validation-results.json), [new device follow-up](./evidence/ami-device-followup.json), [baseline replay](./evidence/ami-phone-validation.json) and [capture evidence](./evidence/ami-capture-validation.json) keep these separate.
-
-The [current source was rebuilt from a clean extraction](./evidence/reproducibility.json): all 171 tests, both builds and lint passed, and both APK hashes matched. Gradle task-output caching was disabled and all 104 tasks executed. That check reused the same host tools, dependency downloads and signing environment; it is not a claim that every machine will produce identical binaries.
-
-On the real wearable path, the existing watch pairing reconnected after Bluetooth was enabled. Samsung Health's basic heart-rate screen showed entries, but Ami's fresh Samsung-origin weekly query still reported no usable readings. We then checked **Health Connect → Samsung Health → See app data**: Android itself displayed **No data**, despite the required Samsung write permissions and Ami heart-rate read permission being granted. The inspected step entries were phone-origin, not Samsung records. This locates the missing data upstream of Ami without establishing why Samsung has not shared it. No account/cloud-sync setting was enabled to hide the gap, and the source filter was not broadened. The model cannot supply records that the application has not received.
-
-## 8. The next possibilities—not claims about this build
-
-The longer-term opportunity is a personal interface, not a larger dashboard. The current SDK and app boundaries make several focused experiments possible:
-
-| Direction | What it could change | What must be built or proven next |
-| --- | --- | --- |
-| Grounded, freer conversation | Ask follow-ups without memorizing supported phrases | Evaluate a local chat model against supplied facts, unsupported questions, latency and failure cases; not in normal replies today |
-| One-app consumer installation | Remove the separate companion setup | Build and validate the embedded variant, including package size, memory and recovery |
-| A more responsive dialogue | Stream visible text while the response is generated | The pinned chat API documents streaming; Ami still needs safe partial-output, cancellation and speech coordination |
-| Deliberate personal memory | Remember preferences the user explicitly chooses to retain | Opt-in local storage exists; model-driven recall, deletion behavior and privacy boundaries need separate evaluation |
-| A richer offline voice | Make the companion more pleasant to listen to | Compare installed voices or separately evaluate an offline speech stack; Foundry TTS and a premium voice are not demonstrated here |
-| Different small models | Improve a specific task while respecting device limits | Check the actual Android catalog and benchmark candidates, including Microsoft models if available; no untested Phi, NPU or quantization claim |
-
-Fine-tuning is a separate experiment, not a prerequisite for this kind of personalization. This project neither trains on personal health records nor demonstrates custom-weight import or adapter deployment. Before proposing it, establish a measurable task gap and verify the training, conversion and Android deployment path. More sensitive training data is not the answer to missing records or incorrect arithmetic.
-
-## The takeaway
-
-Foundry Local gives this app a concrete on-device model lifecycle and real speech and chat entry points. Android supplies permissioned context and the offline voice. Application code makes the boundaries explicit.
-
-The reusable idea is simple: **bring intelligence to personal context, rather than making a cloud upload the price of a conversational interface.** Ami shows one bounded implementation—and makes it possible to inspect exactly where the model helps, where code remains responsible and what the next experiment needs to prove.
-
-## Primary sources and implementation
-
-- [Foundry Local Android 0.1.6 release](https://github.com/microsoft/FoundryLocalAndroid/releases/tag/v0.1.6)
-- [Pinned Android API reference](https://github.com/microsoft/FoundryLocalAndroid/blob/v0.1.6/docs/API_REFERENCE.md)
-- [Pinned integration guide](https://github.com/microsoft/FoundryLocalAndroid/blob/v0.1.6/docs/INTEGRATION_GUIDE.md)
-- [IPC and embedded modes](https://github.com/microsoft/FoundryLocalAndroid/blob/v0.1.6/docs/IPC_AND_EMBEDDED_MODES.md)
-- [Samsung Health Connect FAQ](https://developer.samsung.com/health/health-connect-faq.html)
-- [Android voice network requirement](https://developer.android.com/reference/android/speech/tts/Voice#isNetworkConnectionRequired())
-- [Implementation README](../README.md), [author runbook](./AUTHOR-RUNBOOK.md) and [validation ledger](./VALIDATION.md)
+- [Full Android project](https://github.com/kalai4390/ami-foundry-local) — source, sample data, tests and scripts; private during review.
+- [Hands-on and capture guide](./AUTHOR-RUNBOOK.md) — setup, repeatable demos and publication steps.
+- [Foundry Local Android API reference, pinned to 0.1.6](https://github.com/microsoft/FoundryLocalAndroid/blob/v0.1.6/docs/API_REFERENCE.md).
+- [Recorded test and device results](./DEVICE-FINDINGS.md) — build versions, measurements and media provenance.

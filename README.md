@@ -1,4 +1,4 @@
-# Ami: a private voice companion with Foundry Local
+# Ami: an on-device voice companion with Foundry Local
 
 **Your day. Your pace. Your space.**
 
@@ -10,9 +10,10 @@ Current source: **Ami 0.3.4-preview**, with call-aware voice checks and the Heal
 
 **New physical-microphone demo:** the [46-second current-build recording](./docs/demo/ami-microphone.mp4) captures actual Android TTS output after a known question is played from a laptop speaker into the phone microphone. No direct ASR file injection or added voiceover is used. A separate unmirrored turn, replay, interruption and Stop also completed; [reconnection evidence](./docs/evidence/ami-reconnect-validation.json) and [media provenance](./docs/demo/ami-microphone-provenance.json) distinguish these checks from human voice-quality evaluation. The personal-data blocker is now directly observed: Health Connect's Samsung-specific source screen shows **No data**, despite the required permissions.
 
-- [Read the hands-on blog](./docs/BLOG.md).
+- [Building an On-Device Voice Companion with Foundry Local](./docs/BLOG.md) — the hands-on article.
 - [Watch the actual device demos and inspect the screenshots](./docs/DEMO-GUIDE.md).
 - [Check the evidence and limitations](./docs/SHOWCASE-VALIDATION.md).
+- [Read the publication and privacy review](./docs/PUBLICATION-REVIEW.md).
 - [Inspect the clean-source reproduction](./docs/evidence/reproducibility.json): 171 tests, both builds/lint and matching APK hashes on the same host/toolchain/signing environment.
 
 <img src="./docs/demo/ami-answer.png" width="300" alt="Actual Ami Android screenshot: synthetic heart-rate question, calculated answer and provenance">

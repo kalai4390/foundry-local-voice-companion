@@ -42,7 +42,7 @@ foreach ($directory in @('app/src', 'core/src', 'scripts')) {
         $files[$relative] = $relative
     }
 }
-foreach ($name in @('BLOG.md', 'AUTHOR-RUNBOOK.md', 'DEMO-GUIDE.md', 'DEVICE-FINDINGS.md', 'VALIDATION.md', 'SHOWCASE-VALIDATION.md', 'validation-results.json', 'architecture.svg', 'architecture.png', 'index.html')) {
+foreach ($name in @('BLOG.md', 'AUTHOR-RUNBOOK.md', 'DEMO-GUIDE.md', 'DEVICE-FINDINGS.md', 'VALIDATION.md', 'SHOWCASE-VALIDATION.md', 'PUBLICATION-REVIEW.md', 'validation-results.json', 'architecture.svg', 'architecture.png', 'voice-flow.svg', 'index.html')) {
     $files["docs/$name"] = "docs/$name"
 }
 foreach ($name in @('audio.png', 'audio.mp4', 'debrief.png', 'debrief.mp4', 'today.png', 'evidence.png', 'privacy.png', 'warm.wav', 'provenance.json', 'ami-answer.png', 'ami-welcome.png', 'ami-recap.png', 'ami-today.png', 'ami-evidence.png', 'ami-privacy.png', 'ami-audio.mp4', 'ami-recap.mp4', 'ami-warm.wav', 'ami-provenance.json')) {
@@ -52,7 +52,7 @@ $files['docs/evidence/ami-phone-validation.json'] = 'docs/evidence/ami-phone-val
 $files['docs/evidence/ami-capture-validation.json'] = 'docs/evidence/ami-capture-validation.json'
 $files['docs/evidence/ami-device-followup.json'] = 'docs/evidence/ami-device-followup.json'
 $files['docs/evidence/ami-reconnect-validation.json'] = 'docs/evidence/ami-reconnect-validation.json'
-foreach ($name in @('ami-microphone.mp4', 'ami-microphone.png', 'ami-microphone-provenance.json')) {
+foreach ($name in @('ami-microphone.mp4', 'ami-microphone-preview.mp4', 'ami-microphone.png', 'ami-microphone-provenance.json')) {
     $files["docs/demo/$name"] = "docs/demo/$name"
 }
 if (Test-Path -LiteralPath (Join-Path $root 'docs/evidence/reproducibility.json')) {

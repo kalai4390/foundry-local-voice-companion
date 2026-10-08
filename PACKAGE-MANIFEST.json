@@ -1,9 +1,9 @@
 {
   "product": "Ami",
-  "generatedAtUtc": "2026-09-30T06:42:20.2086119Z",
+  "generatedAtUtc": "2026-10-08T17:35:20.2772903Z",
   "policy": "Explicit source/document/media allowlist; no Git history, runtime logs, SDK/model binaries, APKs, tools, caches or signing keys",
   "validation": {
-    "localLinksChecked": 219,
+    "localLinksChecked": 190,
     "mediaChecksumsMatch": true,
     "reproducedBuildInputsMatch": true,
     "configuredOwnerIdentifierScanPassed": true,
@@ -12,7 +12,7 @@
     "scanIsNotAComprehensiveSecretAudit": true
   },
   "publication": "This packaging step writes a local archive only. Remote publication requires a separate authorized operation; no license grant is implied.",
-  "fileCountExcludingThisManifest": 108,
+  "fileCountExcludingThisManifest": 111,
   "files": [
     {
       "path": ".gitattributes",
@@ -321,18 +321,18 @@
     },
     {
       "path": "docs/AUTHOR-RUNBOOK.md",
-      "bytes": 21116,
-      "sha256": "6276f81dd68d986476cf337945fa71603da4e6d48ee6297ec55691892360e4a9"
+      "bytes": 25676,
+      "sha256": "a589b8ad45b9466088a3fe7889893136c969151a42d8f3a65a0890b4243057b7"
     },
     {
       "path": "docs/BLOG.md",
-      "bytes": 30371,
-      "sha256": "47caaa7db3760269b6e1a006b53556ff949be31323b59dcd1a97d6986f7a55b5"
+      "bytes": 18175,
+      "sha256": "d17190e6aefb60abc44d2f78a779eca6fc6813e750faf1205ab1651c55e725b2"
     },
     {
       "path": "docs/DEMO-GUIDE.md",
-      "bytes": 10828,
-      "sha256": "be1f0796d7b8a700727867b1be8dd97eb450faa87c72fda8879b652f3006d81c"
+      "bytes": 11513,
+      "sha256": "b91f10ae9563fc8129bf1dfb12ae02db1ec34ef175d0a0dd78715d915aa28f4b"
     },
     {
       "path": "docs/demo/ami-answer.png",
@@ -350,9 +350,14 @@
       "sha256": "f81a34891bd91198a8bd0c31e1545f56896e5fcf06b0bf2f5363bd397cc446f1"
     },
     {
+      "path": "docs/demo/ami-microphone-preview.mp4",
+      "bytes": 1765406,
+      "sha256": "1c8793a9c7f7287a7777fb1e55c95c57155076eed0420ef81d5e9b5500f16269"
+    },
+    {
       "path": "docs/demo/ami-microphone-provenance.json",
-      "bytes": 1973,
-      "sha256": "67cb88862ccff8e1df75034be6f2be2753bad59bd2cd50c8f7e7f52015bc0061"
+      "bytes": 3484,
+      "sha256": "2d8b6c27215cf1be197c6d971e53892222b1c0d80f501a34a6d78f463dbb14b9"
     },
     {
       "path": "docs/demo/ami-microphone.mp4",
@@ -476,8 +481,13 @@
     },
     {
       "path": "docs/index.html",
-      "bytes": 3710061,
-      "sha256": "f31421786e68362bd6f0eeb0a11259224a56e194fd0189a724d52dd4df1f7740"
+      "bytes": 5111441,
+      "sha256": "0fc43c930cdd4786a7c22bedfaa969926399361dc7eb003fa7e90ea180adbc02"
+    },
+    {
+      "path": "docs/PUBLICATION-REVIEW.md",
+      "bytes": 5525,
+      "sha256": "63b45aae069c85c5c74b9ae61c336b219818edd5f632a18247c7d7e4eaa3814c"
     },
     {
       "path": "docs/SHOWCASE-VALIDATION.md",
@@ -495,19 +505,24 @@
       "sha256": "7e6f859d65b85ccdf1eda97d4d246a399b472a01915f7bca1e2de9c746ff13bf"
     },
     {
+      "path": "docs/voice-flow.svg",
+      "bytes": 4809,
+      "sha256": "48cd0ced09683313e2e200aed488fdf2ebb0d5339093d9a9bcf239c94d3a7793"
+    },
+    {
       "path": "gradle.properties",
       "bytes": 128,
       "sha256": "b7af64a3756b879ff74823e69c3d00e7e10c45977fbaa9648ecb14f1f360e2d4"
     },
     {
       "path": "README.md",
-      "bytes": 9489,
-      "sha256": "2227be96de031a75720b1abeba83e5b376a9348521e5d6f0c98dae42ccc41eed"
+      "bytes": 9626,
+      "sha256": "7305b3213686d06c2ab09b6c840637b691395d532a332a07740ac66dd7f7d013"
     },
     {
       "path": "scripts/build-blog-preview.ps1",
-      "bytes": 3639,
-      "sha256": "b3dca5bb4c4c0c824ac9d5fc560f97e769c63ccf76e4490427db512be1c27181"
+      "bytes": 3782,
+      "sha256": "8687748eee1ac0abe95f7da1e361cab00ba41e71d996d341602364e03ecfbda5"
     },
     {
       "path": "scripts/build.ps1",
@@ -526,8 +541,8 @@
     },
     {
       "path": "scripts/package-repository.ps1",
-      "bytes": 9955,
-      "sha256": "d1348872fa4c8edf034bc7d50058f54afd55a01dfeec5ff415de10c23609d0fe"
+      "bytes": 10028,
+      "sha256": "e2d921f39b0e5f1e67f66b185b342c4dcab69a17222bf3a4b2fa056c6424c9bc"
     },
     {
       "path": "scripts/prepare-demo-video.ps1",

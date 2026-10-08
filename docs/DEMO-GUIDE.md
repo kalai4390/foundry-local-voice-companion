@@ -2,13 +2,13 @@
 
 ## The deliverable
 
-The [blog](./BLOG.md) introduces Foundry Local and the supporting pieces, then builds a concrete example: a private, voice-first companion that answers supported questions about local context. The demo is evidence for that implementation—not a product launch, a clinical claim or a suggestion that synthetic records came from the author's watch.
+[Building an On-Device Voice Companion with Foundry Local](./BLOG.md) introduces Foundry Local and the supporting pieces, then builds a concrete example: a private, voice-first companion that answers supported questions about local context. Ami is the application used in the walkthrough. The demo is evidence for that implementation—not a product launch, a clinical claim or a suggestion that synthetic records came from the author's watch.
 
 Use the [repository README](../README.md) for clean-checkout setup. The complete Android source, Kotlin core, synthetic fixtures and test/capture scripts belong in the repository. Download the separately licensed SDK from Microsoft; do not bundle it or model weights.
 
 ## Media and its meaning
 
-**Current article assets are Ami 0.3.3-preview.** A complete, hash-verified physical-phone capture on September 30, 2026 produced both clips and all five compositor screenshots. A welcome frame was extracted from the speech clip; the separate voice preview comes from an earlier matching-APK run. See [current provenance](./demo/ami-provenance.json), [capture evidence](./evidence/ami-capture-validation.json) and the [showcase ledger](./SHOWCASE-VALIDATION.md). Full human AV review and a live microphone-to-speaker demo remain separate gates. The earlier interrupted capture is retained as failed, not reclassified.
+**The opening microphone demo is Ami 0.3.4-preview; the baseline assets below remain Ami 0.3.3-preview.** A complete, hash-verified physical-phone capture on September 30, 2026 produced the two baseline clips and all five compositor screenshots. A welcome frame was extracted from the speech clip; the separate voice preview comes from an earlier matching-APK run. See [baseline provenance](./demo/ami-provenance.json), [capture evidence](./evidence/ami-capture-validation.json) and the [showcase ledger](./SHOWCASE-VALIDATION.md). The microphone recording has its own provenance in the next section. Human speech and listening-quality review remain separate gates. The earlier interrupted capture is retained as failed, not reclassified.
 
 | Asset | What it shows | What it does not show |
 | --- | --- | --- |
@@ -29,6 +29,8 @@ The [46-second microphone demo](./demo/ami-microphone.mp4) and [poster](./demo/a
 The soundtrack contains actual Android TTS device output. It does not contain the external laptop stimulus or an added voiceover. scrcpy's output capture redirects handset playback, so this video is not a physical-speaker audibility test. A separate unmirrored turn reached TTS completion; replay, a new microphone turn through **Interrupt & talk**, and **Stop voice** also passed. The [reconnection checks](./evidence/ami-reconnect-validation.json) preserve the boundaries, including the unsuccessful pre-stimulus permission attempt and the still-empty Samsung source.
 
 The [new provenance](./demo/ami-microphone-provenance.json) records the APK, media hashes, crop, 20-fps conversion, idle-tail trim and 24 dB gain. No inference was sped up and no answer was inserted. The final clip decodes without errors; its two-fps contact sheet and full-size poster were inspected. Human speech/noise and listening quality remain open. Reproduce this separate, deliberate capture using the [author runbook](./AUTHOR-RUNBOOK.md#capture-the-physical-microphone-demonstration).
+
+The article plays an [H.264/MP3 compatibility copy](./demo/ami-microphone-preview.mp4) so the original AAC audio does not become silent in the VS Code preview. Its video stream is identical to the original. **Sound starts around 0:11**; the listening and transcription steps have no output audio. Both versions are listed in the provenance. See [preview audio compatibility](./AUTHOR-RUNBOOK.md#preview-audio-compatibility) for the conversion and verification steps.
 
 ### Historical recording versions
 

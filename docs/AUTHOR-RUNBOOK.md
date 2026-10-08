@@ -2,11 +2,28 @@
 
 ## The story
 
+**Article title:** [Building an On-Device Voice Companion with Foundry Local](./BLOG.md).
+
+**Subtitle:** A hands-on Android walkthrough combining local speech recognition, personal context and spoken replies—without cloud inference.
+
 **Ami — Your day. Your pace. Your space.**
 
 Lead with a person asking about their day, not a test-count slide. The reusable idea is to bring a model to private context instead of uploading that context to obtain a conversational interface. The [blog](./BLOG.md) introduces Foundry Local, explains the SDK lifecycle and follows the real implementation.
 
 Keep three boundaries visible: **Foundry Whisper transcribes; application code computes normal answers; offline Android TTS speaks.** The separately confirmed Foundry Qwen experiment selects calculated fact-card IDs. Do not describe this build as unrestricted LLM conversation, Foundry-generated speech, a fine-tuned health model or a medical product.
+
+## Article scope and editorial notes
+
+The article follows the working sample-data experience: ask a question, transcribe it with Foundry Local, calculate an answer, speak it with Android TTS, then try the separate Foundry chat recap. The opening video is the complete physical-microphone demonstration. Setup history and device troubleshooting belong in this guide and the findings, not between each step of the article.
+
+- Keep the fictional-records disclosure near the beginning. Do not present the demonstration as a live Galaxy Watch or Samsung Health feed. The Health Connect adapter is included in the source; the Samsung-source availability finding remains in section 6 and the device findings.
+- Keep the roles accurate in ordinary prose: Foundry Whisper transcribes, Kotlin produces the normal answers, Foundry Qwen selects recap cards, and offline Android TTS speaks. Do not describe the card selection as free-form health reasoning or Foundry-generated speech.
+- The primary microphone video is from `0.3.4-preview`; the answer screenshot, recap recording, welcome frame and voice sample retain their separate `0.3.3-preview` provenance. None has been relabelled or recaptured for the editorial revision.
+- The voice video uses a known question played through a laptop speaker into the phone microphone. Its soundtrack contains redirected Android output, not the input question. Its disclosed amplification remains in the linked provenance. It is not a human-accent or physical-speaker listening evaluation.
+- The [voice-flow diagram](./voice-flow.svg) illustrates the working demonstration. The broader [reference architecture](./architecture.svg) includes the wearable integration and is not evidence that live records were available.
+- The earlier silent [audio-fixture recording](./demo/ami-audio.mp4) remains available as supplementary material. The article embeds the microphone and recap videos instead of repeating all three recordings.
+- Keep exact build hashes, test counts, version comparisons and unresolved device findings in the supporting documents. Do not remove that evidence or turn an unverified capability into a success claim when simplifying the article.
+- The repository link remains private. Resolve public access and licensing before publishing the article for external readers; do not change either as part of an editorial rewrite.
 
 ## Current handoff
 
@@ -166,6 +183,24 @@ try { $player.PlaySync() } finally { $player.Dispose() }
 
 The selected author clip is 46.02 seconds. It was cropped during capture, resampled to 20 fps without speed adjustment, trimmed only after the turn, and amplified by 24 dB after measuring the quiet device-output track. Do not blindly apply that gain to another recording. Its [provenance](./demo/ami-microphone-provenance.json) binds the file and poster hashes; a full decode, two-fps contact-sheet review and full-size poster inspection passed. Human listening remains a separate review.
 
+### Preview audio compatibility
+
+The article uses [ami-microphone-preview.mp4](./demo/ami-microphone-preview.mp4), a compatibility copy of the [original capture](./demo/ami-microphone.mp4). The video stream is unchanged; only the existing AAC track is transcoded to MP3 at 192 kb/s. There is no added voiceover, gain, cut or speed change in this conversion. The original capture's 24 dB gain still applies. Both files and the shared video-stream hash are recorded in the [provenance](./demo/ami-microphone-provenance.json).
+
+VS Code's [webview media guidance](https://code.visualstudio.com/api/extension-guides/webview#supported-media-formats) explains why an H.264/AAC MP4 may show video without sound in the integrated preview. The compatibility copy uses H.264/MP3 instead. The original remains available for normal browsers and upload workflows. Sound begins around **0:11**, when Android TTS starts; the input question is not in this recording's output track.
+
+To reproduce the conversion with a reviewed FFmpeg installation, choose a new output path; `-n` prevents overwriting an existing asset:
+
+```powershell
+& 'C:\tools\ffmpeg\ffmpeg.exe' -n -hide_banner -nostats `
+  -i .\docs\demo\ami-microphone.mp4 `
+  -map 0:v:0 -map 0:a:0 -map_metadata -1 `
+  -c:v copy -c:a libmp3lame -b:a 192k -movflags +faststart `
+  .\runtime\ami-microphone-preview.mp4
+```
+
+Decode both files end to end and compare their extracted H.264 hashes before selecting the derivative. In the preview, verify that the selected audio source can actually be decoded; a ready video element alone does not prove sound works. Browser decoding is not a human listening-quality assessment.
+
 ### Media review checklist
 
 For the local article preview, run `scripts/build-blog-preview.ps1 -InlineMedia`. This embeds the reviewed videos and voice sample so the file-based preview does not depend on media range requests; it does not autoplay them. The individual media files and download links remain available. Keep generated HTML and package checksums together when exporting this variant.
@@ -178,7 +213,7 @@ For the local article preview, run `scripts/build-blog-preview.ps1 -InlineMedia`
 
 ## 8. Assemble the article and source package
 
-The [blog](./BLOG.md), [architecture](./architecture.svg), [demo guide](./DEMO-GUIDE.md) and [showcase ledger](./SHOWCASE-VALIDATION.md) must agree on the recorded build and remaining limits. Update media provenance only after successful capture and review. Keep older results labelled historical.
+The [blog](./BLOG.md), [voice-flow diagram](./voice-flow.svg), [demo guide](./DEMO-GUIDE.md) and [showcase ledger](./SHOWCASE-VALIDATION.md) must agree on the demonstrated path. The broader [reference architecture](./architecture.svg) is supplementary. Update media provenance only after successful capture and review. Keep older results labelled historical.
 
 ```powershell
 .\scripts\build-blog-preview.ps1 -InlineMedia
@@ -198,10 +233,12 @@ The current [clean-source reproduction](./evidence/reproducibility.json) passes 
 
 ## 9. Publication decision
 
+The [October 8 publication review](./PUBLICATION-REVIEW.md) records source/history scans, media checks and the remaining public-release decisions.
+
 The author has approved a **private** source review repository at [kalai4390/ami-foundry-local](https://github.com/kalai4390/ami-foundry-local), with `main` as the initial branch and no license added. This is a restricted-access review link, not an externally reproducible public blog link. Public visibility and licensing still require a separate decision. Do not change visibility or grant a license automatically.
 
 The clean export includes `.gitattributes` with text normalization disabled so Git preserves the exact bytes recorded in the source/evidence manifests. Build scripts still generate fresh local validation reports; do not edit a recorded hash merely to make a check pass.
 
 `-ApprovedRepositoryUrl` permits only that exact approved GitHub URL and its owner/repository link label in the owner-identifier scan. It does not exempt other usernames, machine paths, device identifiers or diagnostic logs. The original file content is still used for link and checksum validation.
 
-Suggested editorial sequence: question and answer → actual demo → local architecture → SDK setup/lifecycle → facts and voice boundaries → reproduction link → measured limitations → grounded-conversation/embedded-runtime experiments. Keep claims about future work out of the demonstrated-feature list.
+Editorial sequence: a question someone wants answered → the working voice demo → Foundry Local on Android → build and model setup → transcription → a calculated answer → speech playback → the optional chat recap. Close with local personalization and a concrete place to extend the code. Keep the troubleshooting ledger here, and keep future ideas separate from demonstrated features.

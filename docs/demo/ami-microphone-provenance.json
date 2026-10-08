@@ -38,11 +38,47 @@
     "audioPeakDb": -9.6,
     "subjectiveListeningQualityAssessed": false
   },
+  "compatibilityDerivative": {
+    "file": "ami-microphone-preview.mp4",
+    "source": "ami-microphone.mp4",
+    "purpose": "Playback with sound in the VS Code integrated preview, where the original AAC track was not decodable",
+    "convertedOn": "2026-10-08",
+    "video": "Original H.264 stream copied without re-encoding",
+    "audio": "Original captured output transcoded from AAC to MP3, 192 kb/s, 48 kHz stereo",
+    "metadataRemoved": true,
+    "addedVoiceover": false,
+    "additionalAudioGainDb": 0,
+    "additionalTrimming": false,
+    "timeStretch": false,
+    "originalCaptureTransformStillApplies": true,
+    "verification": {
+      "checkedOn": "2026-10-08",
+      "bothFilesFullyDecoded": true,
+      "fullDecodeErrors": 0,
+      "extractedH264StreamsIdentical": true,
+      "extractedH264Sha256": "161a8f5e15dea816b98274ba0816899198d43547f5abf5209fb7c55354bc9666",
+      "integratedPreviewSelectedDerivative": true,
+      "integratedPreviewAudioDecodePassed": true,
+      "decodedAudioDurationSeconds": 46.032979,
+      "decodedAudioChannels": 2,
+      "decodedAudioSampleRateHz": 48000,
+      "firstChannelSignalThreshold": 0.001,
+      "firstChannelSignalStartSeconds": 11.164875,
+      "firstChannelSignalEndSeconds": 33.6555,
+      "firstChannelPeakDb": -9.818464,
+      "subjectiveListeningQualityAssessed": false
+    }
+  },
   "assets": [
     {
       "file": "ami-microphone.mp4",
       "bytes": 1063344,
       "sha256": "a7b3248fa562696dec7cf3cde4437cdb51e5ed4b4128ab1d84c5daf120d7a16e"
+    },
+    {
+      "file": "ami-microphone-preview.mp4",
+      "bytes": 1765406,
+      "sha256": "1c8793a9c7f7287a7777fb1e55c95c57155076eed0420ef81d5e9b5500f16269"
     },
     {
       "file": "ami-microphone.png",
