@@ -47,7 +47,13 @@ I pinned the Android SDK to **0.1.6** and used two packages from the device's ca
 
 Both ran through the CPU execution provider on the test phone. Their combined advertised download size was 953 MB. These are the packages tested for this walkthrough, not a requirement to use the same models in every application.
 
-![The working Ami voice flow: Foundry Local transcribes, Ami calculates from local sample records, and Android speaks. A separate Foundry Local chat call selects facts for a recap.](./voice-flow.svg)
+<figure class="flow-diagram">
+  <picture>
+    <source media="(max-width: 960px)" srcset="./voice-flow-mobile.svg">
+    <img src="./voice-flow.svg" width="1000" height="500" alt="Four steps on the Android phone: record a question, transcribe it with Whisper Tiny through the Foundry Local Kotlin SDK, calculate an answer from local fictional records in Ami, and speak it with offline Android TTS.">
+  </picture>
+  <figcaption>One voice turn, from the microphone to the spoken answer. All four steps run on the phone.</figcaption>
+</figure>
 
 Whisper is used on the voice path. Qwen is used only when the user requests the optional model-organized recap. The spoken reply comes from an installed **offline Android text-to-speech voice**. Keeping those calls separate makes it possible to change the voice without changing transcription, or try another chat model without changing how the app calculates a heart-rate maximum.
 
@@ -177,6 +183,14 @@ After a spoken question, Ami can speak the answer automatically. A typed questio
 ## Use the chat API for a weekly recap
 
 The voice flow already works without a chat model. I also wanted to try a small local language model on the same device, so Ami includes a separate **Recap my week** action.
+
+<figure class="flow-diagram">
+  <picture>
+    <source media="(max-width: 960px)" srcset="./recap-flow-mobile.svg">
+    <img src="./recap-flow.svg" width="1000" height="360" alt="A separate on-phone recap: Ami calculates fact cards, Qwen 2.5 0.5B selects two card IDs through Foundry Local after confirmation, and Ami validates the IDs before showing the original calculated text. Invalid selections use a labelled computed recap.">
+  </picture>
+  <figcaption>The optional chat call selects facts for a recap; it does not calculate measurements or write new advice.</figcaption>
+</figure>
 
 Before calling the model, the app calculates fact cards for the available activity, sleep and workout records. Each card has an ID, its calculated text and coverage information. With the user's confirmation, Ami passes the derived summaries to Qwen through Foundry Local's chat API:
 

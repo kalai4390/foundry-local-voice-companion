@@ -6,7 +6,7 @@ The article, preview and supporting documentation now use the approved title. **
 
 ## Source and history
 
-- [Gitleaks 8.30.1](https://github.com/gitleaks/gitleaks/releases/tag/v8.30.1), downloaded from its official release and checksum-verified, found **zero secrets** in the source export and existing Git history. The history review covered both commits through `eda7ad1`; the publication changes are also scanned before upload. Default rules were used, with inline allow-comments disabled and findings redacted.
+- [Gitleaks 8.30.1](https://github.com/gitleaks/gitleaks/releases/tag/v8.30.1), downloaded from its official release and checksum-verified, found **zero secrets** in the source export and existing Git history. The initial history review covered both commits through `eda7ad1`; the source and history scans were repeated for the subsequent publication updates. Default rules were used, with inline allow-comments disabled and findings redacted.
 - A separate identifying-data check covered the export's text and all **92 distinct text blobs** in the existing history. It checked the local owner name, computer name, profile paths, email addresses, private-network IPv4 addresses, MAC addresses and hard-coded device-identifier fields. **No matches were found.** This supplements the package script's configured-owner scan; it is not a guarantee that pattern matching detects every kind of personal information.
 - Git author and committer addresses use GitHub's noreply domain. The approved GitHub owner/repository link and commit attribution remain intentionally visible; the repository is not anonymous.
 - The export allowlist excludes private runtime diagnostics, local tools, build caches, SDK AARs, model weights, APKs and signing keys. No corresponding forbidden paths were found in the existing history. The generated `PACKAGE-MANIFEST.json` lists the selected files and their SHA-256 hashes.
@@ -25,11 +25,21 @@ The integrated browser selected the compatibility file and successfully decoded 
 
 ## Documentation and application checks
 
-- All 13 publication PNGs were checked for embedded text and EXIF chunks; none were present.
+- All 17 publication PNGs, including the four new diagram exports, were checked for embedded text and EXIF chunks; none were present.
 - The preview's browser title and visible heading agree with the Markdown title. The builder derives its title from the article rather than keeping a second hard-coded copy.
-- All **nine PowerShell scripts** and **17 PowerShell documentation examples** parsed without errors. The package's relative-link and media-checksum checks passed.
+- All **nine PowerShell scripts** and **19 fenced PowerShell examples** in the supporting documents and repository README parsed without errors. The package's relative-link and media-checksum checks passed.
 - All **59 recorded Android/core build inputs** still match the [clean-source reproduction](./evidence/reproducibility.json). Application code and versions did not change in this publication update. The recorded 171-test/build/lint results are preserved, not presented as a new device run.
 - The article keeps the demonstrated roles clear: Foundry Local transcribes speech and supports the separate recap; application code calculates normal answers; offline Android TTS speaks. It does not claim that the real Samsung feed, fine-tuning or disconnected cold-start behavior was demonstrated.
+
+## Publication diagrams
+
+The [voice flow](./voice-flow.svg) now shows just the four steps of a voice turn. The [optional recap](./recap-flow.svg) sits beside the chat API example. Both identify the Foundry Local call with a purple card and keep processing inside an Android-phone boundary. The diagrams label the demo records as fictional; neither implies a working Samsung Health feed.
+
+- All four SVG variants were rendered and inspected. Text-bound checks found no overlapping labels or text outside a card or canvas. Every connector is a separate path with its own arrowhead. Each SVG has a title and description, and each article image has descriptive alt text.
+- The preview was checked at **320, 390, 768, 960, 961, 1024 and 1280 CSS pixels**. Both images loaded at every width, with no page-level horizontal overflow. The stacked variants are selected at 960 pixels and below. At a 390-pixel viewport, their smallest label renders at approximately **16.5 CSS pixels**.
+- Four **2× PNG exports** were visually inspected and checked for dimensions and embedded metadata. The [author runbook](./AUTHOR-RUNBOOK.md#prepare-the-diagrams) lists the SVG sources, PNG sizes and instructions for editors that do not support responsive images. These illustrations are not app screenshots.
+- Packaging checks the `srcset` candidates as well as ordinary image links. A negative test confirmed that a missing second candidate is rejected even when the first candidate exists.
+- The main voice video's audio decoded successfully after the layout changes: two channels, approximately 46.03 seconds and non-silent samples. Autoplay and muting remained off. This is a playback-compatibility check, not a new microphone recording or a subjective voice-quality assessment.
 
 ## Before public release
 

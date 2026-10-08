@@ -42,7 +42,7 @@ foreach ($directory in @('app/src', 'core/src', 'scripts')) {
         $files[$relative] = $relative
     }
 }
-foreach ($name in @('BLOG.md', 'AUTHOR-RUNBOOK.md', 'DEMO-GUIDE.md', 'DEVICE-FINDINGS.md', 'VALIDATION.md', 'SHOWCASE-VALIDATION.md', 'PUBLICATION-REVIEW.md', 'validation-results.json', 'architecture.svg', 'architecture.png', 'voice-flow.svg', 'index.html')) {
+foreach ($name in @('BLOG.md', 'AUTHOR-RUNBOOK.md', 'DEMO-GUIDE.md', 'DEVICE-FINDINGS.md', 'VALIDATION.md', 'SHOWCASE-VALIDATION.md', 'PUBLICATION-REVIEW.md', 'validation-results.json', 'architecture.svg', 'architecture.png', 'voice-flow.svg', 'voice-flow-mobile.svg', 'recap-flow.svg', 'recap-flow-mobile.svg', 'voice-flow.png', 'voice-flow-mobile.png', 'recap-flow.png', 'recap-flow-mobile.png', 'index.html')) {
     $files["docs/$name"] = "docs/$name"
 }
 foreach ($name in @('audio.png', 'audio.mp4', 'debrief.png', 'debrief.mp4', 'today.png', 'evidence.png', 'privacy.png', 'warm.wav', 'provenance.json', 'ami-answer.png', 'ami-welcome.png', 'ami-recap.png', 'ami-today.png', 'ami-evidence.png', 'ami-privacy.png', 'ami-audio.mp4', 'ami-recap.mp4', 'ami-warm.wav', 'ami-provenance.json')) {
@@ -82,6 +82,11 @@ foreach ($file in (Get-ChildItem -LiteralPath $destinationPath -File -Recurse)) 
     if ($file.Extension -notin @('.md', '.html')) { continue }
     $targets = @([regex]::Matches($content, '\]\(([^\s)]+)\)') | ForEach-Object { $_.Groups[1].Value })
     $targets += @([regex]::Matches($content, '(?:href|src|poster)\s*=\s*"([^"]+)"') | ForEach-Object { $_.Groups[1].Value })
+    $targets += @([regex]::Matches($content, '\bsrcset\s*=\s*"([^"]+)"') | ForEach-Object {
+        foreach ($candidate in ($_.Groups[1].Value -split ',')) {
+            ($candidate.Trim() -split '\s+')[0]
+        }
+    })
     foreach ($target in $targets) {
         if ($target -match '^(https?://|mailto:|data:|#)') { continue }
         if ($target -match '^(file:|[A-Za-z]:|/|\\)') { throw 'Absolute local links are not portable publication links.' }
