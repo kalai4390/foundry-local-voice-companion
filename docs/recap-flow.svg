@@ -1,45 +1,60 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="360" viewBox="0 0 1000 360" role="img" aria-labelledby="title description">
-  <title id="title">An optional recap with Foundry Local</title>
-  <desc id="description">This is separate from the ordinary voice turn and runs on the Android phone. Ami calculates fact cards from the available records. After the user's confirmation, Foundry Local runs Qwen 2.5 0.5B through its chat API to select two existing card IDs. Ami validates the IDs and displays the original calculated text. If the selection is invalid, Ami shows a labelled computed recap instead. The demonstration uses fictional records.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="500" viewBox="0 0 1440 500" role="img" aria-labelledby="title description">
+  <title id="title">A small model selects facts, not new claims</title>
+  <desc id="description">A landscape, left-to-right diagram of an optional recap, separate from the ordinary voice turn. On the Android phone, Ami calculates fact cards from local records and asks for confirmation. Foundry Local runs Qwen 2.5 0.5B through the Kotlin chat API and local IPC service to select two existing card IDs. Ami validates those IDs and renders the original calculated text. An invalid selection produces a labelled computed recap instead. This demonstration uses fictional records.</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto">
-      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#625477"/>
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#52647a"/>
     </marker>
   </defs>
-  <rect width="1000" height="360" rx="24" fill="#f6f4fb"/>
-  <g font-family="Segoe UI, Arial, sans-serif" fill="#24213a">
-    <text x="28" y="46" font-size="32" font-weight="700">An optional recap with Foundry Local</text>
-    <text x="28" y="78" font-size="20" fill="#55516b">A separate chat call selects existing facts. It does not write new advice.</text>
-    <rect x="20" y="108" width="960" height="202" rx="22" fill="#ffffff" stroke="#c7bedb" stroke-width="2"/>
-    <rect x="40" y="122" width="13" height="21" rx="3" fill="none" stroke="#625477" stroke-width="1.8"/>
-    <path d="M 44 139 H 49" stroke="#625477" stroke-width="1.8"/>
-    <text x="64" y="139" font-size="16" font-weight="700" letter-spacing="0.7" fill="#55516b">ON YOUR ANDROID PHONE</text>
-    <text x="958" y="139" text-anchor="end" font-size="17" fill="#24614d">Fictional demo records</text>
+  <rect width="1440" height="500" fill="#ffffff"/>
+  <g font-family="Segoe UI, Arial, sans-serif" fill="#172b43">
+    <text x="36" y="32" font-size="17" font-weight="700" letter-spacing="1.8" fill="#175caa">OPTIONAL RECAP</text>
+    <text x="1404" y="32" text-anchor="end" font-size="17" font-weight="600" letter-spacing="0.8" fill="#52647a">ANDROID · IPC MODE</text>
+    <text x="36" y="78" font-size="36" font-weight="650">A small model selects facts, not new claims</text>
+    <path d="M 36 98 H 1404" stroke="#d6dee8" stroke-width="1.5"/>
+    <rect x="24" y="128" width="1392" height="306" fill="none" stroke="#9cabbc" stroke-width="1.5" stroke-dasharray="7 5"/>
+    <rect x="40" y="112" width="348" height="30" fill="#ffffff"/>
+    <text x="48" y="135" font-size="21" font-weight="600">Processing on the Android phone</text>
+    <rect x="1190" y="112" width="210" height="30" fill="#ffffff"/>
+    <text x="1392" y="135" text-anchor="end" font-size="21" font-weight="600" fill="#237158">No cloud inference</text>
+    <g font-size="17" font-weight="700" letter-spacing="1" fill="#52647a">
+      <text x="48" y="176">01  PREPARE</text>
+      <text x="552" y="176" fill="#175caa">02  SELECT</text>
+      <text x="1056" y="176">03  VALIDATE &amp; RENDER</text>
+    </g>
     <g id="prepare">
-      <rect x="40" y="160" width="264" height="130" rx="16" fill="#edf7f2" stroke="#b7d7c8"/>
-      <text x="58" y="185" font-size="16" font-weight="700" fill="#24614d">1 · PREPARE</text>
-      <text x="58" y="219" font-size="24" font-weight="700" fill="#24614d">Calculated facts</text>
-      <text x="58" y="248" font-size="20" fill="#345e4e">Ami builds fact cards</text>
-      <text x="58" y="274" font-size="19" fill="#345e4e">You confirm before use</text>
+      <rect x="48" y="192" width="342" height="160" fill="#ffffff" stroke="#9cabbc" stroke-width="1.5"/>
+      <text x="68" y="232" font-size="27" font-weight="650">Ami · calculated facts</text>
+      <text x="68" y="271" font-size="21">Build cards from local records</text>
+      <text x="68" y="302" font-size="22">Ask for confirmation</text>
+      <text x="68" y="331" font-size="19" fill="#52647a">Fictional records in this demo</text>
     </g>
     <g id="select">
-      <rect x="368" y="160" width="264" height="130" rx="16" fill="#56349b"/>
-      <text x="386" y="185" font-size="16" font-weight="700" fill="#eee8fc">2 · SELECT</text>
-      <text x="386" y="219" font-size="26" font-weight="700" fill="#ffffff">Foundry Local</text>
-      <text x="386" y="248" font-size="20" fill="#ffffff">Qwen 2.5 · 0.5B</text>
-      <text x="386" y="274" font-size="19" fill="#eee8fc">Select two card IDs</text>
+      <rect x="552" y="192" width="340" height="160" fill="#edf4fe" stroke="#175caa" stroke-width="1.5"/>
+      <path d="M 552 192 H 892" stroke="#175caa" stroke-width="5"/>
+      <text x="572" y="232" font-size="29" font-weight="700" fill="#124f94">Foundry Local</text>
+      <text x="572" y="271" font-size="25">Qwen 2.5 · 0.5B</text>
+      <text x="572" y="302" font-size="22">Select two existing card IDs</text>
+      <text x="572" y="331" font-size="19" fill="#344e6d">Chat API · Kotlin SDK · IPC</text>
     </g>
     <g id="validate">
-      <rect x="696" y="160" width="264" height="130" rx="16" fill="#edf7f2" stroke="#b7d7c8"/>
-      <text x="714" y="185" font-size="16" font-weight="700" fill="#24614d">3 · VALIDATE</text>
-      <text x="714" y="219" font-size="24" font-weight="700" fill="#24614d">Ami checks the IDs</text>
-      <text x="714" y="248" font-size="20" fill="#345e4e">Show calculated text</text>
-      <text x="714" y="274" font-size="19" fill="#345e4e">No new model claims</text>
+      <rect x="1056" y="192" width="336" height="160" fill="#ffffff" stroke="#9cabbc" stroke-width="1.5"/>
+      <text x="1076" y="232" font-size="27" font-weight="650">Ami · validate &amp; render</text>
+      <text x="1076" y="271" font-size="22">Accept known IDs only</text>
+      <text x="1076" y="302" font-size="22">Display calculated text</text>
+      <text x="1076" y="331" font-size="19" fill="#52647a">Keep the original numbers</text>
     </g>
-    <g fill="none" stroke="#625477" stroke-width="2.5" marker-end="url(#arrow)">
-      <path id="cards-to-qwen" d="M 314 225 H 358"/>
-      <path id="ids-to-ami" d="M 642 225 H 686"/>
+    <g fill="none" stroke="#52647a" stroke-width="2" marker-end="url(#arrow)">
+      <path id="cards-to-qwen" d="M 391 277 H 544"/>
+      <path id="ids-to-ami" d="M 893 277 H 1048"/>
+      <path id="invalid-to-computed" d="M 1224 353 V 382"/>
     </g>
-    <text x="28" y="343" font-size="18" fill="#55516b">Invalid selection? Ami shows a labelled, computed recap instead.</text>
+    <g font-size="20" text-anchor="middle" fill="#52647a">
+      <text x="471" y="264">Fact cards</text>
+      <text x="975" y="264">Two IDs</text>
+      <text x="1224" y="411">Invalid IDs → computed recap</text>
+    </g>
+    <text x="48" y="411" font-size="21" fill="#52647a">The user confirms before a model sees the fact cards.</text>
+    <text x="36" y="475" font-size="20" fill="#52647a">A separate chat call. The model selects existing facts; Ami keeps control of the wording and numbers.</text>
   </g>
 </svg>

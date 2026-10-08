@@ -25,7 +25,7 @@ The integrated browser selected the compatibility file and successfully decoded 
 
 ## Documentation and application checks
 
-- All 17 publication PNGs, including the four new diagram exports, were checked for embedded text and EXIF chunks; none were present.
+- The publication PNGs, including both landscape diagram exports, were checked for embedded text and EXIF chunks; none were present.
 - The preview's browser title and visible heading agree with the Markdown title. The builder derives its title from the article rather than keeping a second hard-coded copy.
 - All **nine PowerShell scripts** and **19 fenced PowerShell examples** in the supporting documents and repository README parsed without errors. The package's relative-link and media-checksum checks passed.
 - All **59 recorded Android/core build inputs** still match the [clean-source reproduction](./evidence/reproducibility.json). Application code and versions did not change in this publication update. The recorded 171-test/build/lint results are preserved, not presented as a new device run.
@@ -33,12 +33,12 @@ The integrated browser selected the compatibility file and successfully decoded 
 
 ## Publication diagrams
 
-The [voice flow](./voice-flow.svg) now shows just the four steps of a voice turn. The [optional recap](./recap-flow.svg) sits beside the chat API example. Both identify the Foundry Local call with a purple card and keep processing inside an Android-phone boundary. The diagrams label the demo records as fictional; neither implies a working Samsung Health feed.
+The [voice flow](./voice-flow.svg) and [optional recap](./recap-flow.svg) are now landscape publication figures, not stacked phone-style layouts. Both use a white canvas, left-to-right connectors, a dashed on-device boundary and blue emphasis on the Foundry Local component. The recap remains beside the chat API example. Fictional records are labelled, and neither figure implies a working Samsung Health feed.
 
-- All four SVG variants were rendered and inspected. Text-bound checks found no overlapping labels or text outside a card or canvas. Every connector is a separate path with its own arrowhead. Each SVG has a title and description, and each article image has descriptive alt text.
-- The preview was checked at **320, 390, 768, 960, 961, 1024 and 1280 CSS pixels**. Both images loaded at every width, with no page-level horizontal overflow. The stacked variants are selected at 960 pixels and below. At a 390-pixel viewport, their smallest label renders at approximately **16.5 CSS pixels**.
-- Four **2× PNG exports** were visually inspected and checked for dimensions and embedded metadata. The [author runbook](./AUTHOR-RUNBOOK.md#prepare-the-diagrams) lists the SVG sources, PNG sizes and instructions for editors that do not support responsive images. These illustrations are not app screenshots.
-- Packaging checks the `srcset` candidates as well as ordinary image links. A negative test confirmed that a missing second candidate is rejected even when the first candidate exists.
+- Both SVGs and their raster exports were rendered and visually inspected. Text-bound checks covered **32 voice labels and 25 recap labels**, with no overlapping labels or text outside its component or canvas. Each connector has its own arrowhead. Each SVG has a title and description; the article adds numbered captions and descriptive alt text.
+- The preview was checked at **320, 390, 768, 945, 960, 961, 1024, 1280 and 1600 CSS pixels**. Both diagrams retained their landscape source and filled the article column at every width, with no page-level horizontal overflow. The 960-pixel portrait switch and 440-pixel cap are removed, along with the unused portrait assets.
+- At a **945-pixel viewport**, the voice figure renders at approximately **842 × 327 pixels**, rather than a tall portrait. The recap renders at approximately **842 × 292 pixels**. On a small phone screen, labels necessarily shrink; the linked SVG opens separately for full-size viewing and zoom. No minimum mobile text-size claim is made.
+- The **2880 × 1120 voice PNG** and **2880 × 1000 recap PNG** are 2× exports of the editable SVGs. They contain no embedded text or EXIF metadata. The [author runbook](./AUTHOR-RUNBOOK.md#prepare-the-diagrams) explains full-column placement and full-resolution links for publishing editors. These are authored diagrams, not app screenshots.
 - The main voice video's audio decoded successfully after the layout changes: two channels, approximately 46.03 seconds and non-silent samples. Autoplay and muting remained off. This is a playback-compatibility check, not a new microphone recording or a subjective voice-quality assessment.
 
 ## Before public release

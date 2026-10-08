@@ -20,7 +20,7 @@ The article follows the working sample-data experience: ask a question, transcri
 - Keep the roles accurate in ordinary prose: Foundry Whisper transcribes, Kotlin produces the normal answers, Foundry Qwen selects recap cards, and offline Android TTS speaks. Do not describe the card selection as free-form health reasoning or Foundry-generated speech.
 - The primary microphone video is from `0.3.4-preview`; the answer screenshot, recap recording, welcome frame and voice sample retain their separate `0.3.3-preview` provenance. None has been relabelled or recaptured for the editorial revision.
 - The voice video uses a known question played through a laptop speaker into the phone microphone. Its soundtrack contains redirected Android output, not the input question. Its disclosed amplification remains in the linked provenance. It is not a human-accent or physical-speaker listening evaluation.
-- The [voice-flow diagram](./voice-flow.svg) illustrates the working voice turn. The [recap diagram](./recap-flow.svg) belongs beside the separate chat example, not in the microphone path. Both have stacked layouts for narrow screens. The broader [reference architecture](./architecture.svg) includes the wearable integration and is not evidence that live records were available.
+- The [voice-flow diagram](./voice-flow.svg) illustrates the working voice turn. The [recap diagram](./recap-flow.svg) belongs beside the separate chat example, not in the microphone path. Both are landscape publication figures at every screen size, with links to open them at full size. The broader [reference architecture](./architecture.svg) includes the wearable integration and is not evidence that live records were available.
 - The earlier silent [audio-fixture recording](./demo/ami-audio.mp4) remains available as supplementary material. The article embeds the microphone and recap videos instead of repeating all three recordings.
 - Keep exact build hashes, test counts, version comparisons and unresolved device findings in the supporting documents. Do not remove that evidence or turn an unverified capability into a success claim when simplifying the article.
 - The repository link remains private. Resolve public access and licensing before publishing the article for external readers; do not change either as part of an editorial rewrite.
@@ -217,16 +217,16 @@ The [blog](./BLOG.md), [voice-flow diagram](./voice-flow.svg), [recap diagram](.
 
 ### Prepare the diagrams
 
-The preview uses `<picture>` to select a stacked SVG at viewport widths of 960 pixels or less. Keep each diagram next to the section it explains: voice beside the Android introduction, recap beside the chat API example. Each connector has its own arrowhead; the purple card identifies the Foundry Local model call.
+Use the diagrams as full-width landscape figures, not portrait images beside the phone recordings. Each reads left to right on a white canvas, with labelled connectors, a dashed on-device boundary and a blue Foundry Local component. Keep voice beside the Android introduction and the optional recap beside the chat API example.
 
 | Diagram | Editable SVG | Upload-ready PNG at 2× |
 | --- | --- | --- |
-| Voice, wide | [SVG](./voice-flow.svg) | [2000 × 1000](./voice-flow.png) |
-| Voice, stacked | [SVG](./voice-flow-mobile.svg) | [720 × 2000](./voice-flow-mobile.png) |
-| Recap, wide | [SVG](./recap-flow.svg) | [2000 × 720](./recap-flow.png) |
-| Recap, stacked | [SVG](./recap-flow-mobile.svg) | [720 × 1580](./recap-flow-mobile.png) |
+| Voice · 1440 × 560 | [SVG](./voice-flow.svg) | [2880 × 1120](./voice-flow.png) |
+| Recap · 1440 × 500 | [SVG](./recap-flow.svg) | [2880 × 1000](./recap-flow.png) |
 
-Use the PNGs if the publishing editor does not retain SVG or `<picture>` markup. For an editor that supports only one image per figure, use the stacked version rather than squeezing the wide diagram onto a phone screen. Add the descriptive alt text from the article and check the published page on a phone. The PNGs are raster exports of the SVGs, not device screenshots; regenerate them when a diagram changes.
+The preview scales the same landscape image to the article width at every breakpoint; it never switches to a stacked layout. Clicking a figure or its caption link opens the SVG separately. Narrow-screen readers should use that link and zoom to read the smaller labels. Do not style these figures with the phone screenshots' 320/400-pixel widths, rounded corners or height limits.
+
+Upload the PNGs if the publishing editor does not retain SVG. Choose the full article-column width, preserve the aspect ratio and keep a link to the full-resolution image. Copy the numbered captions and descriptive alt text from the article, then check the published page on both desktop and phone. The PNGs are raster exports of the SVGs, not device screenshots; regenerate them when a diagram changes. The former portrait variants have been retired.
 
 ### Build the preview and package
 

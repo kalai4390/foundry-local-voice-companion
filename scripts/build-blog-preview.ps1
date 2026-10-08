@@ -45,8 +45,7 @@ a{color:var(--accent)}blockquote{border-left:4px solid #b0a0ed;background:#f6f3f
 table{display:block;overflow:auto;border-collapse:collapse;width:100%;font-size:15px;line-height:1.6}th,td{border:1px solid #dfe3ec;padding:12px 14px;min-width:140px;text-align:left;vertical-align:top}th{background:#f3f4fa}
 pre{padding:20px;background:#11182b;color:#e7e6f6;border-radius:14px;overflow:auto;font-size:14px;line-height:1.65}code{font-family:Consolas,monospace}p code,li code{background:#f0eef8;padding:2px 5px;border-radius:4px;font-size:.88em}
 img{max-width:100%;height:auto;border-radius:16px}video{display:block;max-width:100%;max-height:740px;margin:24px auto;background:#0c1223;border-radius:18px}audio{display:block;width:min(100%,650px);margin:18px 0}
-figure.flow-diagram{margin:28px 0}.flow-diagram picture{display:block}.flow-diagram img{display:block;width:100%;margin:0 auto}.flow-diagram figcaption{margin-top:10px;color:var(--muted);font-size:15px;line-height:1.55}
-@media(max-width:960px){.flow-diagram img{max-width:440px}}
+figure.flow-diagram{margin:36px 0}.flow-diagram>a{display:block}.flow-diagram img{display:block;width:100%;max-width:none;height:auto;border-radius:0;margin:0}.flow-diagram figcaption{margin-top:12px;padding-top:12px;border-top:1px solid #dfe3ec;color:var(--muted);font-size:15px;line-height:1.55}.flow-diagram>a:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
 footer{font-size:14px;color:var(--muted)}@media(max-width:700px){header,main,footer{padding:22px}body{font-size:16px}main{border-radius:0}}
 </style>
 </head>

@@ -13,8 +13,7 @@ a{color:var(--accent)}blockquote{border-left:4px solid #b0a0ed;background:#f6f3f
 table{display:block;overflow:auto;border-collapse:collapse;width:100%;font-size:15px;line-height:1.6}th,td{border:1px solid #dfe3ec;padding:12px 14px;min-width:140px;text-align:left;vertical-align:top}th{background:#f3f4fa}
 pre{padding:20px;background:#11182b;color:#e7e6f6;border-radius:14px;overflow:auto;font-size:14px;line-height:1.65}code{font-family:Consolas,monospace}p code,li code{background:#f0eef8;padding:2px 5px;border-radius:4px;font-size:.88em}
 img{max-width:100%;height:auto;border-radius:16px}video{display:block;max-width:100%;max-height:740px;margin:24px auto;background:#0c1223;border-radius:18px}audio{display:block;width:min(100%,650px);margin:18px 0}
-figure.flow-diagram{margin:28px 0}.flow-diagram picture{display:block}.flow-diagram img{display:block;width:100%;margin:0 auto}.flow-diagram figcaption{margin-top:10px;color:var(--muted);font-size:15px;line-height:1.55}
-@media(max-width:960px){.flow-diagram img{max-width:440px}}
+figure.flow-diagram{margin:36px 0}.flow-diagram>a{display:block}.flow-diagram img{display:block;width:100%;max-width:none;height:auto;border-radius:0;margin:0}.flow-diagram figcaption{margin-top:12px;padding-top:12px;border-top:1px solid #dfe3ec;color:var(--muted);font-size:15px;line-height:1.55}.flow-diagram>a:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
 footer{font-size:14px;color:var(--muted)}@media(max-width:700px){header,main,footer{padding:22px}body{font-size:16px}main{border-radius:0}}
 </style>
 </head>
@@ -66,11 +65,10 @@ footer{font-size:14px;color:var(--muted)}@media(max-width:700px){header,main,foo
 </table>
 <p>Both ran through the CPU execution provider on the test phone. Their combined advertised download size was 953 MB. These are the packages tested for this walkthrough, not a requirement to use the same models in every application.</p>
 <figure class="flow-diagram">
-  <picture>
-    <source media="(max-width: 960px)" srcset="./voice-flow-mobile.svg">
-    <img src="./voice-flow.svg" width="1000" height="500" alt="Four steps on the Android phone: record a question, transcribe it with Whisper Tiny through the Foundry Local Kotlin SDK, calculate an answer from local fictional records in Ami, and speak it with offline Android TTS.">
-  </picture>
-  <figcaption>One voice turn, from the microphone to the spoken answer. All four steps run on the phone.</figcaption>
+  <a href="./voice-flow.svg" target="_blank" rel="noopener">
+    <img src="./voice-flow.svg" width="1440" height="560" alt="Left to right on the Android phone: record a question, transcribe it with Whisper Tiny through the Foundry Local Kotlin SDK and IPC service, calculate an answer from local fictional records in Ami, and speak it with offline Android TTS.">
+  </a>
+  <figcaption>Figure 1. One voice turn, from the microphone to the spoken answer. All four steps run on the phone. <a href="./voice-flow.svg" target="_blank" rel="noopener">View full-size figure.</a></figcaption>
 </figure>
 <p>Whisper is used on the voice path. Qwen is used only when the user requests the optional model-organized recap. The spoken reply comes from an installed <strong>offline Android text-to-speech voice</strong>. Keeping those calls separate makes it possible to change the voice without changing transcription, or try another chat model without changing how the app calculates a heart-rate maximum.</p>
 <h2 id="get-the-project-running">Get the project running</h2>
@@ -156,11 +154,10 @@ val question = transcription.text.trim()
 <h2 id="use-the-chat-api-for-a-weekly-recap">Use the chat API for a weekly recap</h2>
 <p>The voice flow already works without a chat model. I also wanted to try a small local language model on the same device, so Ami includes a separate <strong>Recap my week</strong> action.</p>
 <figure class="flow-diagram">
-  <picture>
-    <source media="(max-width: 960px)" srcset="./recap-flow-mobile.svg">
-    <img src="./recap-flow.svg" width="1000" height="360" alt="A separate on-phone recap: Ami calculates fact cards, Qwen 2.5 0.5B selects two card IDs through Foundry Local after confirmation, and Ami validates the IDs before showing the original calculated text. Invalid selections use a labelled computed recap.">
-  </picture>
-  <figcaption>The optional chat call selects facts for a recap; it does not calculate measurements or write new advice.</figcaption>
+  <a href="./recap-flow.svg" target="_blank" rel="noopener">
+    <img src="./recap-flow.svg" width="1440" height="500" alt="A separate left-to-right recap on the phone: Ami calculates fact cards, Qwen 2.5 0.5B selects two card IDs through Foundry Local after confirmation, and Ami validates the IDs before showing the original calculated text. Invalid selections use a labelled computed recap.">
+  </a>
+  <figcaption>Figure 2. The optional chat call selects facts for a recap; it does not calculate measurements or write new advice. <a href="./recap-flow.svg" target="_blank" rel="noopener">View full-size figure.</a></figcaption>
 </figure>
 <p>Before calling the model, the app calculates fact cards for the available activity, sleep and workout records. Each card has an ID, its calculated text and coverage information. With the user's confirmation, Ami passes the derived summaries to Qwen through Foundry Local's chat API:</p>
 <pre><code class="language-kotlin">val chatModel = catalog.getModel(&quot;qwen2.5-0.5b-instruct-generic-cpu:4&quot;)

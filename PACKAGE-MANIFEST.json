@@ -1,6 +1,6 @@
 {
   "product": "Ami",
-  "generatedAtUtc": "2026-10-08T18:07:49.6892950Z",
+  "generatedAtUtc": "2026-10-08T18:27:44.2871908Z",
   "policy": "Explicit source/document/media allowlist; no Git history, runtime logs, SDK/model binaries, APKs, tools, caches or signing keys",
   "validation": {
     "localLinksChecked": 209,
@@ -12,7 +12,7 @@
     "scanIsNotAComprehensiveSecretAudit": true
   },
   "publication": "This packaging step writes a local archive only. Remote publication requires a separate authorized operation; no license grant is implied.",
-  "fileCountExcludingThisManifest": 118,
+  "fileCountExcludingThisManifest": 114,
   "files": [
     {
       "path": ".gitattributes",
@@ -321,13 +321,13 @@
     },
     {
       "path": "docs/AUTHOR-RUNBOOK.md",
-      "bytes": 27065,
-      "sha256": "7b422eb0e46ea183c0b9ceecfbc8d0ac04258eb632eab3996546dfa5935da12d"
+      "bytes": 27385,
+      "sha256": "c893dfaf96632423a86ee552e12fe4270fb1e609095bfba857d0cb037c577e4f"
     },
     {
       "path": "docs/BLOG.md",
-      "bytes": 19103,
-      "sha256": "7e6e4b333116eb5cb2e467a3126e32ddd62d99427756a82e9a7fd1845293d90a"
+      "bytes": 19270,
+      "sha256": "fdebeb991329cec0f8c06cf4a1a05fdc8770f62128d359933037939a2d983758"
     },
     {
       "path": "docs/DEMO-GUIDE.md",
@@ -481,33 +481,23 @@
     },
     {
       "path": "docs/index.html",
-      "bytes": 5112625,
-      "sha256": "77a278165bfa9abd384c7c6f0a31be775bd44052ed504ade7e5085b8cae0210f"
+      "bytes": 5112891,
+      "sha256": "b388849869b952176cb24e41fa861bc19e344cccf55eadf078d64cb1cd961ac6"
     },
     {
       "path": "docs/PUBLICATION-REVIEW.md",
-      "bytes": 7407,
-      "sha256": "46a004a5d71258aa15304330accb2c8c6a322d7af880bd868be83d19c1b32727"
-    },
-    {
-      "path": "docs/recap-flow-mobile.png",
-      "bytes": 182521,
-      "sha256": "a3b3d184a229d1fb80a850e56c6a9bf5f4094e6241b80d66b736a93b5f335765"
-    },
-    {
-      "path": "docs/recap-flow-mobile.svg",
-      "bytes": 3561,
-      "sha256": "cb8854cf73c5698e6948314ef2f3162203585766da7899017b638c590d21286a"
+      "bytes": 7733,
+      "sha256": "10915056f8b42c8d69755b674b164d0c62f1284054ce1f2409d58c3ee567a634"
     },
     {
       "path": "docs/recap-flow.png",
-      "bytes": 187884,
-      "sha256": "45d954f2c1f6485aef7e28a3605215c5b04d5793efcea3c208601648967a86cc"
+      "bytes": 311572,
+      "sha256": "16869fc041d58df424130db838c48b1870506df838e80827b327d8e3b713eab3"
     },
     {
       "path": "docs/recap-flow.svg",
-      "bytes": 3545,
-      "sha256": "5fab6c69c631faca7a5aa971322979c4166256e7a21dbe37d7503593b28fb74c"
+      "bytes": 4478,
+      "sha256": "d30783f9f8d040b2cbc8932653cd39e1584030f5b14bc7abd8ab97505565f8d3"
     },
     {
       "path": "docs/SHOWCASE-VALIDATION.md",
@@ -525,24 +515,14 @@
       "sha256": "7e6f859d65b85ccdf1eda97d4d246a399b472a01915f7bca1e2de9c746ff13bf"
     },
     {
-      "path": "docs/voice-flow-mobile.png",
-      "bytes": 221273,
-      "sha256": "373506a8875c933666333c85a3de3c4dade3ba47f19814626a129988a352014c"
-    },
-    {
-      "path": "docs/voice-flow-mobile.svg",
-      "bytes": 4233,
-      "sha256": "7dd796b30740cff279cb4960d7110478c4051bf3363366e5817098b9c0e0dc17"
-    },
-    {
       "path": "docs/voice-flow.png",
-      "bytes": 248708,
-      "sha256": "2d95e2bc8f4c887d02fd959307545b12e1d624bbf5b56c9113d123d1d494c4ea"
+      "bytes": 323645,
+      "sha256": "229bbe7ccc640ecf81ca4ebcabbf2b032dee802ae319416180412110d4697051"
     },
     {
       "path": "docs/voice-flow.svg",
-      "bytes": 4608,
-      "sha256": "c0b8b515afe5b71d046434f609a9f2eeed34117fa7c02f5e9e9e5442c7b1e434"
+      "bytes": 5367,
+      "sha256": "090c155a19ed4c91e0d94a0cb2937bfa7a4e47a72d7ec3231275924f159ebb68"
     },
     {
       "path": "gradle.properties",
@@ -556,8 +536,8 @@
     },
     {
       "path": "scripts/build-blog-preview.ps1",
-      "bytes": 4062,
-      "sha256": "b6c02f5ecad369cf40c0c0168fa12ade24d95f45dd9a6057b9a3b30f299dd76b"
+      "bytes": 4161,
+      "sha256": "baafc371793c7f8fceec38b2a8643ace1b423fc37e7d5d256135a784dd13d526"
     },
     {
       "path": "scripts/build.ps1",
@@ -576,8 +556,8 @@
     },
     {
       "path": "scripts/package-repository.ps1",
-      "bytes": 10405,
-      "sha256": "8a26a0095c5bf738ba392bc052f5c47fed19a2f97621cb5dc7bc2fe5f009c214"
+      "bytes": 10305,
+      "sha256": "aae77e603142ecbb607d8efdc57e512c0c4a0c22f385a298cb43a730d21e7de6"
     },
     {
       "path": "scripts/prepare-demo-video.ps1",
