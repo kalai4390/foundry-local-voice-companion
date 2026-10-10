@@ -1,38 +1,66 @@
-# Ami: an on-device voice companion with Foundry Local
+# Ami
 
-**Your day. Your pace. Your space.**
+**An on-device voice companion built with Foundry Local.**
 
-**Private review repository:** [kalai4390/ami-foundry-local](https://github.com/kalai4390/ami-foundry-local). Access is restricted; this is not a public reader link yet. No license has been added. Public release and licensing require a separate decision.
+“When was my heartbeat high this week?”
 
-Current source: **Ami 0.3.4-preview**, with call-aware voice checks and the Health Connect return-to-app runner fix. It passes 171 JVM tests, both builds/lint, and a hash-verified phone smoke/conversation replay. [Device findings](./docs/DEVICE-FINDINGS.md) distinguish this update from the full **0.3.3-preview** SDK/media baseline: two real phone videos, five compositor screenshots, a welcome frame and a separate offline voice preview. The [media provenance](./docs/demo/ami-provenance.json) retains the exact original APK; older results are not relabelled as a new replay. See [what was actually validated](./docs/SHOWCASE-VALIDATION.md). The stable `dev.daylight.local` application ID permits an in-place upgrade.
+Ami lets you ask that question out loud and hear an answer drawn from local records. It is a native Android sample: Foundry Local transcribes your question on the phone, Kotlin looks up the relevant dates and numbers, and an installed Android voice reads the answer back. No cloud model sits in the middle of that conversation.
 
-**Your data. Your voice. Your phone.** A native Android reference implementation that combines local speech recognition, permissioned wearable context, calculated answers and an installed offline voice.
+The included records are fictional, so you can build and try it without a watch or a health account. Ami supports a small set of questions about heart rate, sleep, walking and activity; it is not an open-ended health chatbot.
 
-**New physical-microphone demo:** the [46-second current-build recording](./docs/demo/ami-microphone.mp4) captures actual Android TTS output after a known question is played from a laptop speaker into the phone microphone. No direct ASR file injection or added voiceover is used. A separate unmirrored turn, replay, interruption and Stop also completed; [reconnection evidence](./docs/evidence/ami-reconnect-validation.json) and [media provenance](./docs/demo/ami-microphone-provenance.json) distinguish these checks from human voice-quality evaluation. The personal-data blocker is now directly observed: Health Connect's Samsung-specific source screen shows **No data**, despite the required permissions.
+[Read the walkthrough](./docs/BLOG.md) · [Watch the voice demo](./docs/demo/ami-microphone-preview.mp4) · [Build and capture guide](./docs/AUTHOR-RUNBOOK.md)
 
-- [Building an On-Device Voice Companion with Foundry Local](./docs/BLOG.md) — the hands-on article.
-- [Watch the actual device demos and inspect the screenshots](./docs/DEMO-GUIDE.md).
-- [Check the evidence and limitations](./docs/SHOWCASE-VALIDATION.md).
-- [Read the publication and privacy review](./docs/PUBLICATION-REVIEW.md).
-- [Inspect the clean-source reproduction](./docs/evidence/reproducibility.json): 171 tests, both builds/lint and matching APK hashes on the same host/toolchain/signing environment.
+<img src="./docs/demo/ami-answer.png" width="320" alt="Ami answering a heart-rate question from fictional records on an Android phone">
 
-<img src="./docs/demo/ami-answer.png" width="300" alt="Actual Ami Android screenshot: synthetic heart-rate question, calculated answer and provenance">
+*The [46-second demo](./docs/demo/ami-microphone-preview.mp4) runs on a Motorola g35. Sound starts at 0:11. For a repeatable recording, the question was played from a laptop speaker into the phone microphone; the reply you hear is the phone's Android TTS output. More recordings and screenshots are in the [demo guide](./docs/DEMO-GUIDE.md).*
 
-The demonstration uses **fictional records and prerecorded synthetic speech**, never the owner's health records. Foundry Local Whisper does speech recognition. Application code routes normal questions and calculates answers. The separately confirmed Qwen experiment selects precomputed fact cards. Android TTS—not Foundry—provides the offline speaking voice. This is not an unrestricted LLM health advisor, a medical product or a claim of whole-device zero network traffic.
+## Try a conversation
 
-## Build from a clean checkout
+Once the app and models are ready, tap **Talk to Ami** and ask:
 
-1. Install **JDK 17**, **Gradle 8.13**, and Android SDK platform **36**, build tools and platform-tools. Set `JAVA_HOME` and `ANDROID_HOME`; review and accept Android SDK licenses yourself. PowerShell **7.4+** is required for the scripts.
-2. Review the [Foundry Local Android 0.1.6 release](https://github.com/microsoft/FoundryLocalAndroid/releases/tag/v0.1.6) and its SDK terms. Download the official **IPC AAR**, not the embedded AAR, into `.tools/foundry-local-ipc-sdk-0.1.6.aar`. The build verifies the release hash. SDK/runtime binaries and model weights are deliberately not redistributed here.
-3. Put Gradle 8.13 in `.tools/gradle-8.13`, or supply its executable path explicitly:
+- “When was my heartbeat high this week?”
+- “How was my sleep?”
+- “How much walking did I record?”
+
+You can inspect **Calculation & coverage**, correct a transcript with **Edit heard question**, or use **Listen again** to repeat the answer. **Interrupt & talk** starts another turn. Typed questions stay quiet.
+
+There is also a **Recap my week** action. After confirmation, a small Qwen model running through Foundry Local chooses two of the app's calculated fact cards. Ami checks the returned IDs and displays the original card text. It does not ask the model to invent measurements or give medical advice.
+
+## How it works
+
+![Ami's on-device voice flow: microphone, Foundry Local Whisper, Kotlin calculations and offline Android speech](./docs/voice-flow.svg)
+
+The main voice path uses **Whisper Tiny through the Foundry Local Kotlin SDK**. This project uses IPC mode: the SDK connects to the separately installed Foundry Local service on the same phone. The integration handles model discovery, downloads, loading, transcription and the optional chat call.
+
+Whisper turns speech into text. **Android text-to-speech (TTS)** does the reverse: it reads the answer aloud using an installed offline voice. Kotlin handles dates, calculations and normal answer wording in between. The [walkthrough](./docs/BLOG.md) follows those calls in code.
+
+## Build it
+
+The setup below uses Windows and PowerShell. The app's minimum Android version is 13; the recorded tests used a Motorola g35 on Android 16. A compatible Foundry Local service and models are also required.
+
+| Tool | Version used here |
+| --- | --- |
+| JDK | 17 |
+| Gradle | 8.13 |
+| Android SDK | Platform 36, build tools and platform-tools |
+| PowerShell | 7.4 or newer |
+| Foundry Local Android SDK | 0.1.6, IPC AAR |
+
+Download the **IPC AAR** from the [Foundry Local Android 0.1.6 release](https://github.com/microsoft/FoundryLocalAndroid/releases/tag/v0.1.6), and follow the [companion-app setup](https://github.com/microsoft/FoundryLocalAndroid/blob/v0.1.6/docs/INTEGRATION_GUIDE.md#ipc-setup). Use the IPC package rather than the embedded package; the build checks its SHA-256. The SDK, runtime and model weights are not included in this repository.
+
+From the repository root, set the tool paths to match your installation:
 
 ```powershell
+$env:JAVA_HOME = 'C:\tools\jdk-17'
+$env:ANDROID_HOME = Join-Path $env:LOCALAPPDATA 'Android'
 .\scripts\build.ps1 `
   -GradlePath 'C:\tools\gradle-8.13\bin\gradle.bat' `
   -FoundryAar 'C:\tools\foundry-local-ipc-sdk-0.1.6.aar'
 ```
 
-The paths above are examples. Use your installed locations. The script runs `:core:test`, `:app:assembleDebug` and `:app:lintDebug`. For both build variants and a hash-bound local capture manifest:
+If your Android SDK is under `Android\Sdk` or another directory, use that location instead. Install platform 36 and accept the Android SDK licenses before building. The script runs the core tests, builds the debug APK and runs Android lint.
+
+To build both variants and write a local test report, run:
 
 ```powershell
 .\scripts\validate-build.ps1 `
@@ -40,31 +68,36 @@ The paths above are examples. Use your installed locations. The script runs `:co
   -FoundryAar 'C:\tools\foundry-local-ipc-sdk-0.1.6.aar'
 ```
 
-The [validator](./scripts/validate-build.ps1) writes `runtime/build-validation.json` for your build without overwriting the author's published results. Pass that path to the reconnect/capture scripts when using a newly built APK; never edit a recorded hash to bypass verification. The release APK is **unsigned**, not ready for distribution. This project uses Kotlin/Gradle and does not require npm. If you separately acquire media tooling from npm in a policy-managed environment, use the approved Microsoft mirror rather than changing the global registry.
+The [validator](./scripts/validate-build.ps1) writes `runtime/build-validation.json` for your APKs. Use that report with the installation and capture scripts in the [build guide](./docs/AUTHOR-RUNBOOK.md). The release APK is unsigned. This project uses Kotlin and Gradle; no npm packages are needed.
 
-## Run on Android
+## Prepare the phone
 
-Use a supported Android 13+ device and a compatible Foundry Local companion for the pinned IPC SDK. Follow the [official IPC setup](https://github.com/microsoft/FoundryLocalAndroid/blob/v0.1.6/docs/INTEGRATION_GUIDE.md#ipc-setup). This repository was exercised on a Motorola g35 / Android 16, not every Android device.
+With USB debugging authorized on your phone, install the app:
 
 ```powershell
 $adb = Join-Path $env:ANDROID_HOME 'platform-tools/adb.exe'
 & $adb install -r .\app\build\outputs\apk\debug\app-debug.apk
 ```
 
-Open Ami yourself. It starts with the **DEMO / SYNTHETIC** badge. In Privacy, choose **Prepare local models** while the app is unlocked, foreground and on validated, unmetered Wi-Fi. The selected catalog packages are:
+1. Open Ami and keep **DEMO / SYNTHETIC** mode selected.
+2. In **Privacy**, use the model-preparation controls while the app is foreground on unmetered Wi-Fi. This is a separate step from asking a question.
+3. In **Voice & pace**, choose an installed offline English voice and preview it. If none is available, install a voice through Android's speech settings first.
+4. Tap **Talk to Ami** and approve microphone access when Android asks. You can also start with a typed question.
 
-| Purpose | Catalog identifier | Observed advertised size |
+The demo uses these catalog packages:
+
+| Purpose | Catalog identifier | Advertised size in the recorded test |
 | --- | --- | --- |
 | Speech transcription | `openai-whisper-tiny-generic-cpu:4` | 131 MB |
 | Optional recap selection | `qwen2.5-0.5b-instruct-generic-cpu:4` | 822 MB |
 
-Catalog availability can change; the `:4` suffix is not a four-bit-quantization claim. IPC model caches are isolated per client app. The app checks exact cache handles, caps the advertised combined download at 1,000 MB, and never substitutes cloud inference.
+Both ran on the CPU. The `:4` suffix is part of the catalog identifier, not a four-bit quantization label. Check the cache from inside Ami even if you have already downloaded a model in another app; IPC caches are per client. Ami caps the advertised combined download at 1,000 MB.
 
-Keep synthetic mode for demonstrations. Health Connect integration is optional and requests read-only, Samsung-origin records through explicit consent. A permission grant does not prove the provider has shared usable records. Microphone access is a separate user decision. **Play a sample conversation** is an explicit audible action; unattended test scripts use neither the microphone nor playback.
+Model downloads and voice installation need connectivity. Once prepared, Ami makes its speech and chat calls on the phone and has no cloud inference fallback. This describes Ami's processing, not the network activity of other apps. To try the included recording instead of using your microphone, tap **Play a sample conversation**; this plays audio aloud.
 
-## Reproduce the synthetic checks
+## Run the checks
 
-With the prepared app unlocked and foreground:
+With one authorized phone connected, Ami unlocked and the models prepared:
 
 ```powershell
 .\scripts\run-device.ps1 -Mode smoke
@@ -73,11 +106,11 @@ With the prepared app unlocked and foreground:
 .\scripts\run-device.ps1 -Mode voice
 ```
 
-Read both operational completion and quality results. Successful runs must report `healthReadAttempts: 0`. The audio suite evaluates five distinct synthetic WAVs. The recap checks a narrow output contract, not medical usefulness or general model reliability. The voice suite exports actual Android-synthesized WAVs without audible playback.
+These debug suites use fictional records. The audio suite sends five prerecorded WAVs through Whisper; it does not open the microphone. The voice suite writes Android TTS samples without playing them aloud. A completed suite reports `healthReadAttempts: 0`.
 
-The historical `routing` experiment remains available to explain a rejected design. It is **not** the normal answer path. Do not treat a completed runtime call as a passed quality test.
+The recorded `0.3.4-preview` build passed **171 JVM tests**, debug/release builds and lint with **0 errors and 33 warnings per variant**. Device and media results are tied to their individual app versions in the [test notes](./docs/VALIDATION.md). They are recorded results, not a promise that every Android phone will behave the same way.
 
-## Where the implementation lives
+## Find your way around the code
 
 | Component | Source |
 | --- | --- |
@@ -89,13 +122,12 @@ The historical `routing` experiment remains available to explain a rejected desi
 | Reproducible device evaluation | [DebugRunner](./app/src/main/java/dev/daylight/local/DebugRunner.kt), [scripts](./scripts/) |
 | Synthetic regression tests | [Core tests](./core/src/test/kotlin/dev/daylight/core/) |
 
-## Privacy and scope
+The Android package remains `dev.daylight.local`, the project's earlier name. Keeping it avoids changing the installed app's identity.
 
-- No configured cloud inference or cloud speech fallback. Initial catalog/model setup uses connectivity; the tracker provider's independent cloud sync is outside this app's control.
-- No background health access, Health Connect writes, always-listening service or automatic medical action.
-- Health calculations are deterministic; missing or incomplete data is not converted into an invented personal result.
-- Check-in storage is deliberate and local; no personal data is used for model training. Normal conversations do not persist automatically.
-- Publication assets are synthetic. Device serials, owner diagnostics, local build logs, signing keys, credentials, SDK AARs, APKs and model weights are excluded from the repository package.
-- Live microphone quality, useful personal-watch heart-rate data, radio-off cold starts and battery behavior remain separate validation tasks.
+## About watch data and privacy
 
-This source snapshot does not grant rights to the separate Microsoft SDK, model weights or third-party dependencies. Review their terms before redistribution or deployment. No open-source license grant is invented for the author's code; choose the intended repository license before a public release.
+The optional Health Connect reader requests Samsung-origin records with explicit, read-only permission. It is separate from the sample-data experience. In the recorded device investigation, Samsung Health had not exposed usable records through Health Connect, so the demos do not claim a live watch feed. The [device notes](./docs/DEVICE-FINDINGS.md) explain what was checked.
+
+Ami records only after you tap to speak. It does not listen in the background, write health records or train a model on your data. Check-ins are saved only when requested, in encrypted local storage. Missing records produce a missing-data answer rather than a guessed number.
+
+This is an experimental app, not a clinical tool. Human speech in varied conditions, battery use and radio-off cold starts still need testing. There is no source license in the repository yet; the Microsoft SDK and model packages have separate terms. [Publication notes](./docs/PUBLICATION-REVIEW.md) track the release review.

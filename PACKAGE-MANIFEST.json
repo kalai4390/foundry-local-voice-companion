@@ -1,9 +1,9 @@
 {
   "product": "Ami",
-  "generatedAtUtc": "2026-10-08T18:27:44.2871908Z",
+  "generatedAtUtc": "2026-10-10T18:49:49.4900944Z",
   "policy": "Explicit source/document/media allowlist; no Git history, runtime logs, SDK/model binaries, APKs, tools, caches or signing keys",
   "validation": {
-    "localLinksChecked": 209,
+    "localLinksChecked": 178,
     "mediaChecksumsMatch": true,
     "reproducedBuildInputsMatch": true,
     "configuredOwnerIdentifierScanPassed": true,
@@ -321,18 +321,18 @@
     },
     {
       "path": "docs/AUTHOR-RUNBOOK.md",
-      "bytes": 27385,
-      "sha256": "c893dfaf96632423a86ee552e12fe4270fb1e609095bfba857d0cb037c577e4f"
+      "bytes": 17534,
+      "sha256": "407dcb8520268280a3b94fd87eeed2e304c289204ed9f6b233db4e658cf371a7"
     },
     {
       "path": "docs/BLOG.md",
-      "bytes": 19270,
-      "sha256": "fdebeb991329cec0f8c06cf4a1a05fdc8770f62128d359933037939a2d983758"
+      "bytes": 18702,
+      "sha256": "f64e9c431d49248775f797f68819afa74ca60aa20f3eb6883d142d24e047b516"
     },
     {
       "path": "docs/DEMO-GUIDE.md",
-      "bytes": 11513,
-      "sha256": "b91f10ae9563fc8129bf1dfb12ae02db1ec34ef175d0a0dd78715d915aa28f4b"
+      "bytes": 5912,
+      "sha256": "4c5278f93cf0e87a503249a883e8fe904edcd8f559d1005d9d4e52ad2344daff"
     },
     {
       "path": "docs/demo/ami-answer.png",
@@ -451,8 +451,8 @@
     },
     {
       "path": "docs/DEVICE-FINDINGS.md",
-      "bytes": 8347,
-      "sha256": "823c14db8178b109e70ef13904caecf8ad80b1ffb8dfd235c75d03452e7fcf6e"
+      "bytes": 6769,
+      "sha256": "0d1b6a9327d626d4b42c9fc82756e7941b5c546f17c32ce60cc62975333e72e1"
     },
     {
       "path": "docs/evidence/ami-capture-validation.json",
@@ -481,13 +481,13 @@
     },
     {
       "path": "docs/index.html",
-      "bytes": 5112891,
-      "sha256": "b388849869b952176cb24e41fa861bc19e344cccf55eadf078d64cb1cd961ac6"
+      "bytes": 5112302,
+      "sha256": "5c4a12b3cfaec4dd0127e6fd4c284f68c0f9dc62fc9bd4ccf763132674d56784"
     },
     {
       "path": "docs/PUBLICATION-REVIEW.md",
-      "bytes": 7733,
-      "sha256": "10915056f8b42c8d69755b674b164d0c62f1284054ce1f2409d58c3ee567a634"
+      "bytes": 5625,
+      "sha256": "4df847170966aff980837820bb3218a18032dec7a53ac20c4856203c2589d70e"
     },
     {
       "path": "docs/recap-flow.png",
@@ -501,8 +501,8 @@
     },
     {
       "path": "docs/SHOWCASE-VALIDATION.md",
-      "bytes": 5822,
-      "sha256": "d308f1dc3657e5ae28fb6dc4c303eea12034eaffb54682fe59f864e6d353b28e"
+      "bytes": 3964,
+      "sha256": "8fa660ab67c86bbdd93be4826e65b467cb1a59b4e0b2d00cc14c3b7ab27da098"
     },
     {
       "path": "docs/validation-results.json",
@@ -511,8 +511,8 @@
     },
     {
       "path": "docs/VALIDATION.md",
-      "bytes": 9897,
-      "sha256": "7e6f859d65b85ccdf1eda97d4d246a399b472a01915f7bca1e2de9c746ff13bf"
+      "bytes": 6998,
+      "sha256": "90ec79b73c1e97fdd36b91cc572941ffdd1f7a5f1f73dac742bae8056c70fa7c"
     },
     {
       "path": "docs/voice-flow.png",
@@ -531,13 +531,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 9626,
-      "sha256": "7305b3213686d06c2ab09b6c840637b691395d532a332a07740ac66dd7f7d013"
+      "bytes": 9473,
+      "sha256": "127abc0962a2210011f3dc1bce2be2f6c06023e22c56db175551553ad741c0a5"
     },
     {
       "path": "scripts/build-blog-preview.ps1",
-      "bytes": 4161,
-      "sha256": "baafc371793c7f8fceec38b2a8643ace1b423fc37e7d5d256135a784dd13d526"
+      "bytes": 3942,
+      "sha256": "5780126bd21a74c038f6549be1a93be0d748e40b7236c9468504e4c2e038fc41"
     },
     {
       "path": "scripts/build.ps1",

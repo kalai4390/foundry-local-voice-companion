@@ -1,51 +1,44 @@
 # Publication review
 
-Reviewed **October 8, 2026** for [Building an On-Device Voice Companion with Foundry Local](./BLOG.md).
+This is the release checklist for the [article](./BLOG.md), code and demo assets. The reader-facing documentation has been rewritten around building and trying Ami. The application code, recorded test results, diagrams and original media are unchanged by that editorial work.
 
-The article, preview and supporting documentation now use the approved title. **Ami** remains the application name. The [GitHub repository](https://github.com/kalai4390/ami-foundry-local) remains **private**, with no license added. This review does not authorize a public release.
+**Release status:** the GitHub repository remains private, with no source license. Preparing the copy does not publish the repository or grant a license. Both decisions are still needed before an external reader can follow the source link and reuse the project on stated terms.
 
-## Source and history
+## Source and identifying information
 
-- [Gitleaks 8.30.1](https://github.com/gitleaks/gitleaks/releases/tag/v8.30.1), downloaded from its official release and checksum-verified, found **zero secrets** in the source export and existing Git history. The initial history review covered both commits through `eda7ad1`; the source and history scans were repeated for the subsequent publication updates. Default rules were used, with inline allow-comments disabled and findings redacted.
-- A separate identifying-data check covered the export's text and all **92 distinct text blobs** in the existing history. It checked the local owner name, computer name, profile paths, email addresses, private-network IPv4 addresses, MAC addresses and hard-coded device-identifier fields. **No matches were found.** This supplements the package script's configured-owner scan; it is not a guarantee that pattern matching detects every kind of personal information.
-- Git author and committer addresses use GitHub's noreply domain. The approved GitHub owner/repository link and commit attribution remain intentionally visible; the repository is not anonymous.
-- The export allowlist excludes private runtime diagnostics, local tools, build caches, SDK AARs, model weights, APKs and signing keys. No corresponding forbidden paths were found in the existing history. The generated `PACKAGE-MANIFEST.json` lists the selected files and their SHA-256 hashes.
+The publication package contains an explicit list of source files, documents and selected media. It excludes runtime diagnostics, tools, build caches, APKs, SDK AARs, model weights and signing keys. `PACKAGE-MANIFEST.json` records the file list and SHA-256 hashes.
 
-The review covers this source export and its repository history, not unrelated files on the laptop, phone, other repositories or account settings. Scanner reports and contact sheets stay in ignored local runtime storage, outside the publication package.
+[Gitleaks 8.30.1](https://github.com/gitleaks/gitleaks/releases/tag/v8.30.1) was downloaded from its official release and checksum-verified for the original review. Source-export and full-history scans use its default rules, disable inline allow-comments and redact findings. The recorded scans found no secrets; scans are repeated before each publication update is pushed.
+
+The identifying-data review checks owner and computer names, profile paths, email addresses, private-network addresses, MAC addresses and hard-coded device identifiers. The original history review covered 92 distinct text blobs; later edits require another pass. A pattern scan cannot identify every possible piece of personal information, so it is used alongside media and text review.
+
+The approved GitHub owner/repository link and GitHub-noreply commit attribution are intentionally visible. The project is not anonymous. Scanner reports and private contact sheets stay outside the package.
 
 ## Screenshots and recordings
 
-The recordings continue to use **fictional records**, not the author's Samsung Health data. Original media hashes and capture-version labels are unchanged. The microphone clip is `0.3.4-preview`; the earlier Ami screenshots and recap remain `0.3.3-preview`, and the Daylight assets remain historical.
+The demos use fictional records, not the phone owner's Samsung Health data. The microphone clip is **0.3.4-preview**; the earlier Ami screenshots, silent recordings and voice introduction are **0.3.3-preview**. Historical Daylight assets keep their original labels. The [demo guide](./DEMO-GUIDE.md#recording-details) links their capture notes.
 
-All five original video files decoded end to end. Nine contact sheets sampling those videos at two frames per second, plus the full-size microphone poster, were inspected. No personal notifications, foreign application screens or identifying information were seen in those sampled frames. The unchanged screenshots retain their earlier review and checksum provenance. Sampling cannot rule out every short-lived frame; a final human watch-through is still required before public publication.
+The five original videos decoded end to end. The review included nine contact sheets sampled at two frames per second and the full-size microphone poster; the earlier two-video capture also had its own four-fps review. No personal notification, unrelated app screen or identifying information was seen in those sampled frames. Sampling cannot exclude every short-lived frame, so a human watch-through is still required before publication. Unchanged images retain their recorded checksums and review history.
 
-The new [preview-compatible microphone video](./demo/ami-microphone-preview.mp4) also decoded end to end. Its extracted H.264 stream has the same SHA-256 as the original. Only the existing captured AAC audio was converted to MP3; no voiceover, further gain, trimming or speed change was added. The [provenance](./demo/ami-microphone-provenance.json) records both files and the checks.
+The [preview-compatible voice video](./demo/ami-microphone-preview.mp4) keeps the original H.264 stream and converts its captured AAC audio to MP3. That conversion adds no narration, gain, trim or speed change. The original capture's 24 dB amplification remains disclosed in its [notes](./demo/ami-microphone-provenance.json).
 
-The integrated browser selected the compatibility file and successfully decoded its stereo audio. Sound begins around **0:11**. Playback has no autoplay, and the preview's images loaded successfully. Audio decoding is verified; subjective voice quality and physical-speaker audibility are not inferred from that check. The [author runbook](./AUTHOR-RUNBOOK.md#preview-audio-compatibility) includes the reproduction steps.
+The preview browser decoded the stereo audio, with sound beginning around **0:11**. Autoplay and muting were off. That confirms playback compatibility, not the quality of the voice or the handset speaker. The [audio instructions](./AUTHOR-RUNBOOK.md#preview-audio-compatibility) explain how to repeat the check.
 
-## Documentation and application checks
+## Documentation and figures
 
-- The publication PNGs, including both landscape diagram exports, were checked for embedded text and EXIF chunks; none were present.
-- The preview's browser title and visible heading agree with the Markdown title. The builder derives its title from the article rather than keeping a second hard-coded copy.
-- All **nine PowerShell scripts** and **19 fenced PowerShell examples** in the supporting documents and repository README parsed without errors. The package's relative-link and media-checksum checks passed.
-- All **59 recorded Android/core build inputs** still match the [clean-source reproduction](./evidence/reproducibility.json). Application code and versions did not change in this publication update. The recorded 171-test/build/lint results are preserved, not presented as a new device run.
-- The article keeps the demonstrated roles clear: Foundry Local transcribes speech and supports the separate recap; application code calculates normal answers; offline Android TTS speaks. It does not claim that the real Samsung feed, fine-tuning or disconnected cold-start behavior was demonstrated.
+The README starts with the conversation and links to the build, demos and walkthrough. Test history stays in the [test notes](./VALIDATION.md), and watch-sharing findings stay in the [device notes](./DEVICE-FINDINGS.md). The article keeps the roles clear: Foundry Local transcribes speech and runs the optional recap model; Kotlin calculates normal answers; Android TTS speaks them.
 
-## Publication diagrams
+The [voice](./voice-flow.svg) and [recap](./recap-flow.svg) figures use a landscape layout at every preview width. They include numbered captions, alt text and full-size links. The earlier diagram review checked 32 voice labels and 25 recap labels without overlap or text escaping its component. Both 2× PNG exports were visually inspected and contained no text or EXIF metadata.
 
-The [voice flow](./voice-flow.svg) and [optional recap](./recap-flow.svg) are now landscape publication figures, not stacked phone-style layouts. Both use a white canvas, left-to-right connectors, a dashed on-device boundary and blue emphasis on the Foundry Local component. The recap remains beside the chat API example. Fictional records are labelled, and neither figure implies a working Samsung Health feed.
+That review covered viewport widths from 320 to 1600 CSS pixels, including 945 pixels where the former portrait switch was most noticeable. At 945 pixels the voice figure was about 842 × 327 and the recap 842 × 292. The figures remain unchanged in this editorial update. On narrow screens, the full-size link provides a readable zoomable copy; the inline labels necessarily shrink.
 
-- Both SVGs and their raster exports were rendered and visually inspected. Text-bound checks covered **32 voice labels and 25 recap labels**, with no overlapping labels or text outside its component or canvas. Each connector has its own arrowhead. Each SVG has a title and description; the article adds numbered captions and descriptive alt text.
-- The preview was checked at **320, 390, 768, 945, 960, 961, 1024, 1280 and 1600 CSS pixels**. Both diagrams retained their landscape source and filled the article column at every width, with no page-level horizontal overflow. The 960-pixel portrait switch and 440-pixel cap are removed, along with the unused portrait assets.
-- At a **945-pixel viewport**, the voice figure renders at approximately **842 × 327 pixels**, rather than a tall portrait. The recap renders at approximately **842 × 292 pixels**. On a small phone screen, labels necessarily shrink; the linked SVG opens separately for full-size viewing and zoom. No minimum mobile text-size claim is made.
-- The **2880 × 1120 voice PNG** and **2880 × 1000 recap PNG** are 2× exports of the editable SVGs. They contain no embedded text or EXIF metadata. The [author runbook](./AUTHOR-RUNBOOK.md#prepare-the-diagrams) explains full-column placement and full-resolution links for publishing editors. These are authored diagrams, not app screenshots.
-- The main voice video's audio decoded successfully after the layout changes: two channels, approximately 46.03 seconds and non-silent samples. Autoplay and muting remained off. This is a playback-compatibility check, not a new microphone recording or a subjective voice-quality assessment.
+The preview title is derived from the Markdown heading. Packaging checks relative links, original media checksums and all 59 recorded Android/core build inputs. PowerShell scripts and fenced examples are parsed as part of the editorial checks. The documented 171-test/build/lint result remains the recorded application result, not a new phone run.
 
 ## Before public release
 
-1. The author chooses and approves a source license, including any required organizational review. SDK and model terms remain separate; their binaries are not included.
-2. The author explicitly approves changing repository visibility. A private repository URL is not a usable source link for public readers.
-3. Watch and listen to the selected recordings in the intended publishing platform, check its captions and media controls, and keep the fictional-data disclosure with the demo.
-4. Re-run the source/history checks if files, media or commits change. Upload only the reviewed assets; do not publish the development workspace wholesale.
+1. Choose a source license and complete any required organizational review. The SDK and model terms are separate; their binaries are not bundled.
+2. Approve public repository access so readers can reach the code linked from the article.
+3. Watch and listen to the chosen videos on the publishing platform, including the opening silent seconds, captions and playback controls. Keep the fictional-data disclosure.
+4. Repeat the source/history and identifying-data checks after any file, media or commit change. Upload only the reviewed package, not the development workspace.
 
-No public visibility change, license grant or blog-platform publication was performed as part of this update.
+No repository visibility change, license grant or blog-platform publication is part of this documentation update.

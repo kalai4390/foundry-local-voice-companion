@@ -1,6 +1,5 @@
 param(
     [string]$RepositoryUrl = 'https://github.com/kalai4390/ami-foundry-local',
-    [ValidateSet('private', 'public')][string]$RepositoryVisibility = 'private',
     [switch]$InlineMedia
 )
 
@@ -26,8 +25,7 @@ if ($InlineMedia) {
 $repository = if ($RepositoryUrl) {
     $uri = [Uri]$RepositoryUrl
     if ($uri.Scheme -ne 'https' -or $uri.Host -ne 'github.com') { throw 'Use the actual HTTPS GitHub repository URL.' }
-    $label = if ($RepositoryVisibility -eq 'private') { 'Private GitHub repository' } else { 'GitHub repository' }
-    '<a href="' + [Net.WebUtility]::HtmlEncode($RepositoryUrl) + '">' + $label + '</a>'
+    '<a href="' + [Net.WebUtility]::HtmlEncode($RepositoryUrl) + '">GitHub repository</a>'
 } else { '<span>Repository publication pending</span>' }
 $html = @"
 <!doctype html>
@@ -52,7 +50,7 @@ footer{font-size:14px;color:var(--muted)}@media(max-width:700px){header,main,foo
 <body>
 <header><span>FOUNDRY LOCAL FOR ANDROID · AMI</span>$repository</header>
 <main>$content</main>
-<footer>Local article preview · Fictional demo records · Media plays only when you choose.</footer>
+<footer>Ami · Foundry Local for Android · Fictional demo records</footer>
 </body>
 </html>
 "@

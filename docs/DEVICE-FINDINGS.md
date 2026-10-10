@@ -1,53 +1,56 @@
-# Real-device follow-up: data sharing and voice availability
+# Device notes: voice and Samsung Health
 
-Checked September 30, 2026. This is a sanitized engineering account, not a health assessment or an export of personal records. The [initial follow-up evidence](./evidence/ami-device-followup.json) remains unchanged; the later [reconnection evidence](./evidence/ami-reconnect-validation.json) records the completed acoustic voice checks and direct Samsung-source inspection.
+These notes describe the September 30, 2026 tests on a Motorola g35 running Ami 0.3.4-preview. They explain two issues encountered while building the demo: audio being reserved by another session, and watch records not reaching Health Connect. Personal readings, account details and screenshots are not included.
 
-## Reconnected phone: what is now established
+## The microphone conversation
 
-The same `0.3.4-preview` app was awake, unlocked and in `MODE_NORMAL`. A known synthetic heartbeat question played from the laptop loudspeaker into the **physical phone microphone**. A new, non-clickable question bubble with **Edit heard question** appeared; Android TTS entered speaking and completed. This first turn used no screen/audio mirroring. No temporary microphone file remained. It is an objective completion check, not a person's assessment of the speaker or voice quality.
+With Android audio in `MODE_NORMAL`, a laptop speaker played a known heartbeat question into the phone's physical microphone. Ami displayed a new question bubble with **Edit heard question**, calculated the answer and completed Android TTS playback. That first turn ran without screen or audio mirroring, and no temporary microphone file remained afterward.
 
-A second acoustic turn produced the new [46-second video](./demo/ami-microphone.mp4) and [poster](./demo/ami-microphone.png). Its audio is actual Android TTS output, not a voiceover. The capture tool redirected device output during this recording, so it is not a physical-speaker audibility test. The external laptop question is not on that output track. Cropping, constant-frame-rate resampling, trailing-idle trimming and a 24 dB gain are disclosed in the [provenance](./demo/ami-microphone-provenance.json). The final file decodes without errors; a two-fps contact sheet and the full-size poster were inspected. Human listening review remains open.
+A second turn produced the [46-second video](./demo/ami-microphone.mp4) and [poster](./demo/ami-microphone.png). The soundtrack is captured Android TTS output, not a voiceover. The capture tool redirected phone audio, so the recording does not tell us how loud the handset speaker was. The external question is not part of that output track.
 
-With capture stopped, **Listen again → Interrupt & talk** accepted a different spoken sleep question, and **Stop voice** returned to microphone-off. Temporary microphone files were again absent. An earlier permission-prompt attempt ended without enough sound before the intended stimulus played; it is not counted as a successful turn. These controlled English fixtures do not establish accent, noise or unrestricted conversational quality.
+The [recording notes](./demo/ami-microphone-provenance.json) document cropping, resampling to 20 fps, trimming the idle tail and amplifying the quiet track by 24 dB. The final clip decoded without errors; its sampled frames and full-size poster were inspected.
 
-A fresh personal Samsung-origin weekly question still returned the explicit missing-readings answer, with heart-rate permission enabled. More decisively, **Samsung Health settings → Health Connect → Samsung Health → See app data** displayed **No data**. Samsung's required write permissions and Ami's heart-rate read permission were granted. This establishes that the inspected native Samsung source was empty; it does not explain or repair Samsung's sharing behavior. No account/cloud-sync setting, health measurement or source filter was changed. No personal screenshot or numerical health value was exported.
+After stopping capture, **Listen again → Interrupt & talk** accepted a different sleep question, and **Stop voice** returned the app to microphone-off. Temporary recordings were again absent. An earlier attempt ended at the permission prompt before the intended sound played; that attempt is not counted as a successful turn.
 
-The phone was returned to Ami's synthetic welcome screen with the microphone off and the capture helper stopped. No application source, APK, radio setting or screen timeout changed in this follow-up.
+These are controlled English questions played through a speaker. They establish the microphone-to-reply path, but not recognition across accents, background noise or quiet speech. Subjective listening quality still needs a human check.
 
-## What changed
+## Why an earlier voice attempt failed
 
-**Ami 0.3.4-preview** is installed in place with a verified APK hash. It adds two focused fixes:
+During the initial investigation, Android reported call and voice-communication audio modes. A prerecorded file could still reach Whisper, but speaker playback was refused audio focus. That pointed to audio availability, not proof that speech recognition or the installed voice was broken.
 
-- [AudioReadiness](../app/src/main/java/dev/daylight/local/inference/AudioReadiness.kt) checks Android audio mode before microphone or speaker work. [ShortRecorder](../app/src/main/java/dev/daylight/local/inference/ShortRecorder.kt) checks during capture as well and deletes a failed/cancelled temporary file. Calls and reserved voice sessions produce a specific message; the app does not end them or silently switch to cloud speech.
-- [run-device.ps1](../scripts/run-device.ps1) launches with `--activity-clear-top`. Previously, returning the task from an external Health Connect screen could leave that screen on top and never start the debug suite. A genuine return-to-Ami regression run passed. The runner now reports the host record separately and never advertises a nonexistent application JSONL file.
+Ami 0.3.4-preview adds an audio check in [AudioReadiness.kt](../app/src/main/java/dev/daylight/local/inference/AudioReadiness.kt) before microphone or speaker work. [ShortRecorder.kt](../app/src/main/java/dev/daylight/local/inference/ShortRecorder.kt) also checks during capture and removes a failed or cancelled recording. The app explains that audio is in use rather than ending the other session or switching to cloud speech.
 
-There are 171 passing JVM tests in 13 suites, both APK variants assemble, and both lint variants have zero errors / 33 warnings. The [clean-source reproduction](./evidence/reproducibility.json) separately pins the inputs and both APK hashes. Phone smoke checks pass 8/8, with 3/3 monthly-conversation cases.
+On the updated app, tapping Talk during reserved communication audio showed the microphone warning without opening a permission dialog or leaving a recording. A typed greeting still worked. The corresponding speaker guard was not fully verified in that occupied-audio state. The successful normal-audio turns were a later, separate test.
 
-## Samsung data: connected does not mean shared
+The guard reads Android's audio mode; it does not read call logs or conversation content. No phone-state or call-log permission was added. Calls should be allowed to finish normally before testing, rather than forcing audio focus or disabling radios.
 
-Bluetooth was off at the beginning of the investigation. Enabling it restored the existing Galaxy Watch4 Classic connection, which Galaxy Wearable and Samsung Health both reported as connected. No new pairing or account/cloud-sync setting was configured.
+## Why watch readings were missing
 
-Samsung Health's basic **Heart rate** screen showed entries under its selected **Today** view. A Heart rate home tile was added to make that existing history accessible; this did not create or edit a measurement. The newer **Heart health** score is a different feature and was not used as a test of basic Watch4 heart-rate support.
+The existing Galaxy Watch4 Classic pairing reconnected after Bluetooth was enabled. Galaxy Wearable and Samsung Health both showed the watch as connected. Samsung Health's basic **Heart rate** history had entries under its selected **Today** view. Adding that tile to the home screen only made existing history easier to find; it did not create a measurement. The separate **Heart health** score was not used to assess basic heart-rate support.
 
-Ami's explicit Samsung-origin refresh and weekly heart-rate question still returned no usable shared data after the watch connection was restored. The inspected Health Connect step entries were attributed to the phone rather than Samsung Health. Existing Ami read and Samsung write permissions were present, but those grants did not establish that the requested records were available to Ami.
+Ami still found no usable Samsung-origin records after an explicit refresh and weekly heart-rate query. The Health Connect step entries inspected at that point came from the phone, not Samsung Health.
 
-This narrows the problem to the sharing/availability path without establishing its precise cause. Do not declare the real-data integration complete, infer that missing heart rate is normal, substitute fictional readings, widen the data-origin filter silently, or enable account sync just to produce a positive screenshot. No numerical health records, personal screenshots or account identifiers from this investigation belong in the publication package.
+A later native check was more conclusive: **Samsung Health settings → Health Connect → Samsung Health → See app data** showed **No data**, even though Samsung's write permissions and Ami's heart-rate read permission were granted.
 
-## Voice: distinguish an occupied audio session from ASR failure
+That explains why granting permission did not give Ami an answer: the requested source had no shared records in the inspected view. It does not establish why Samsung had not shared them. No new pairing, account sync, measurement or source-filter change was made to manufacture a successful result. No personal health value or screenshot was exported.
 
-The original microphone attempts did not establish a successful live turn. Android subsequently reported call and voice-communication audio modes. A labelled synthetic-file question was transcribed, but speaker playback was refused audio focus. This is not evidence that the user spoke an unrecognizable question, nor proof that Whisper or an offline voice is broken.
+The sample therefore keeps the missing-data reply for personal mode and uses explicitly fictional records for the published demo. Successful live-watch integration remains unverified.
 
-On the updated APK, a Talk tap during reserved communication audio showed the new guard without opening a microphone permission dialog or leaving a temporary recording. A typed greeting still worked. The speaker-guard assertion and complete microphone-to-audible-reply path were not established in that initial reserved-audio attempt. The later normal-audio tests above are separate evidence, not a relabelling of the earlier failure. The reserved-audio speaker guard still lacks a completed physical assertion.
+## Build and test changes
 
-The guard reads Android's audio mode, not call logs or conversation content. No `READ_PHONE_STATE` or call-log permission was added. Existing Android audio-focus handling remains in force. The engineering check does not establish subjective voice quality.
+Besides the audio check, [run-device.ps1](../scripts/run-device.ps1) now launches Ami with `--activity-clear-top`. Previously, returning from a Health Connect screen could leave that screen on top and prevent a debug suite from starting. A return-to-Ami test passed after the change. Host startup results are recorded separately from the app's JSONL output, including when no app result file was created.
 
-## Keep the evidence versions separate
+The recorded 0.3.4-preview build passed 171 JVM tests in 13 suites, debug/release builds and lint with 0 errors and 33 warnings per variant. Phone smoke tests passed 8/8 and monthly-conversation cases 3/3. The [build report](./validation-results.json) and [clean-source reproduction](./evidence/reproducibility.json) identify the APKs and inputs.
 
-- Current code/build: **0.3.4-preview**, [build manifest](./validation-results.json), [follow-up](./evidence/ami-device-followup.json).
-- Additional current-build microphone/output video and interruption checks: [reconnection evidence](./evidence/ami-reconnect-validation.json), [media provenance](./demo/ami-microphone-provenance.json).
-- Full synthetic SDK/media baseline: **0.3.3-preview**, [phone results](./evidence/ami-phone-validation.json), [capture results](./evidence/ami-capture-validation.json), [media provenance](./demo/ami-provenance.json).
-- The earlier failed auto-lock capture remains failed. A suggestion chip saying **Hello Ami** is not a newly recognized transcript; live recognition requires a new user bubble with **Edit heard question**.
+## Test records
 
-The controlled microphone, transcript, calculated answer, Android TTS completion and interruption checks are now established. Human speech, room noise and subjective listening remain separate gates. Do not terminate a call, record its content, force audio focus, or disable radios during a call to finish a test. Radio-off cold starts remain a separate, reversible test; none was performed here.
+| Record | App version | Contents |
+| --- | --- | --- |
+| [Initial device follow-up](./evidence/ami-device-followup.json) | 0.3.4-preview | Installation, smoke tests, audio warning and return-from-Health-Connect check |
+| [Reconnection tests](./evidence/ami-reconnect-validation.json) | 0.3.4-preview | Acoustic input, TTS completion, replay, interruption, Stop and empty Samsung source |
+| [Earlier SDK tests](./evidence/ami-phone-validation.json) | 0.3.3-preview | Five transcription/answer cases, recap contracts and voice styles |
+| [Earlier media capture](./evidence/ami-capture-validation.json) | 0.3.3-preview | Silent videos and screenshots, with [media notes](./demo/ami-provenance.json) |
 
-The two earlier `0.3.3-preview` recordings are silent and the offline voice introduction remains a separate WAV. The new `0.3.4-preview` video has its own captured device-output audio. Do not dub the unrelated introduction over an answer and label it a live conversation. Public GitHub access and licensing remain separate decisions.
+The earlier screen-lock capture remains a failed attempt; it does not supply the selected media. A suggestion chip such as **Hello Ami** is not a recognized question—recognition requires a new user bubble and editable transcript.
+
+After the final follow-up, the phone was left on Ami's sample welcome screen with the microphone off and capture stopped. That follow-up did not change the APK, radios or screen timeout. No radio-off cold-start test was performed. The [test summary](./SHOWCASE-VALIDATION.md) lists the work still to evaluate.

@@ -6,7 +6,7 @@
 
 That was the question I wanted to ask my phone. My watch already collects the readings. But finding the answer still means opening an app, choosing a date range and interpreting a chart. I wanted to say the question out loud and hear an answer based on the records, without sending that conversation to a cloud model.
 
-I built **Ami** to explore that experience with **Foundry Local for Android**. You tap to speak, Ami transcribes the question on the phone, looks up the relevant local context and reads the answer back. You can check the underlying numbers or ask a supported follow-up. The aim is a small, personal voice companion that feels comfortable to use, with an answer you can inspect.
+I built **Ami** with **Foundry Local for Android** to try it. You tap to speak, Ami transcribes the question on the phone, looks up the records and reads the answer back. If you want to check a number, you can open the calculation or ask a supported follow-up.
 
 This walkthrough uses fictional wearable records. You do not need a watch, a health account or access to anyone's personal data to reproduce it. The screenshots and recordings come from the Android app running on a Motorola g35; they are not interface mockups.
 
@@ -34,7 +34,7 @@ Let's build that flow, then add a short recap using Foundry Local's chat API.
 
 ## Foundry Local on an Android phone
 
-[Foundry Local](https://github.com/microsoft/FoundryLocalAndroid) lets an application run supported models on the device through an SDK. For Ami, the useful part is having model discovery, downloads, loading, speech transcription and chat completion available through Kotlin APIs. I can spend my application code on the interaction and the data, rather than implementing those model operations separately.
+[Foundry Local](https://github.com/microsoft/FoundryLocalAndroid) provides the Kotlin APIs I use to find, download and load models, transcribe speech and make a chat call on the phone. I do not have to build a model-serving layer before working on the conversation. The same SDK connection handles Whisper for a question and Qwen for the optional recap later in this walkthrough.
 
 There are two Android deployment options. **IPC mode**, used in this project, talks to the separately installed Foundry Local service app. **Embedded mode** packages the runtime inside your application. Both use the same Kotlin API; their installation and process boundaries differ. The [deployment guide](https://github.com/microsoft/FoundryLocalAndroid/blob/v0.1.6/docs/IPC_AND_EMBEDDED_MODES.md) explains the trade-offs. Everything shown here uses IPC.
 
@@ -58,7 +58,7 @@ Whisper is used on the voice path. Qwen is used only when the user requests the 
 
 ## Get the project running
 
-The [Ami repository](https://github.com/kalai4390/ami-foundry-local) contains the Android app, Kotlin calculation code, sample records, tests and build scripts. It is currently a private review repository.
+The [Ami repository](https://github.com/kalai4390/ami-foundry-local) contains the Android app, Kotlin calculation code, sample records, tests and build scripts.
 
 For this build, use JDK 17, Gradle 8.13, PowerShell 7.4 or newer, and Android SDK 36. The app requires Android 13 or newer; the recorded demo runs on Android 16. This is a native Android project, so there is no npm install or Docker container to set up.
 
@@ -162,11 +162,11 @@ This is where I chose to use ordinary Kotlin rather than ask the language model 
 
 Ami can keep the heart-rate question in context for a follow-up such as “What about last month?” It can also show the calculation behind the answer. It treats “high” as a request for the highest recorded sample, not a medical judgment, and it does not invent a cause when asked “Why?”
 
-This division keeps Foundry Local focused on the work that needs a model: recognizing speech and, in the recap we'll add next, using a chat model to select facts. Dates and arithmetic remain straightforward to test.
+That gives me ordinary unit tests for dates, missing readings and arithmetic. The model is not responsible for getting a maximum or a calendar boundary right.
 
 ## Give Ami a voice
 
-A voice companion needs to be pleasant to listen to, not just able to produce text. Ami uses Android's text-to-speech engine with an installed voice that does not require a network connection. That selection happens in [LocalSpeaker.kt](../app/src/main/java/dev/daylight/local/inference/LocalSpeaker.kt), using the voice's [`isNetworkConnectionRequired()`](https://developer.android.com/reference/android/speech/tts/Voice#isNetworkConnectionRequired()) property along with installation and language checks.
+Whisper turns speech into text; Android **text-to-speech (TTS)** turns Ami's answer text back into sound. Ami selects an installed voice that does not require a network connection. [LocalSpeaker.kt](../app/src/main/java/dev/daylight/local/inference/LocalSpeaker.kt) checks the voice's [`isNetworkConnectionRequired()`](https://developer.android.com/reference/android/speech/tts/Voice#isNetworkConnectionRequired()) property, installation and language before using it.
 
 **Voice & pace** offers Warm, Clear and Unhurried playback styles. These adjust how the Android voice speaks; they are not separate Foundry models. Here is the Warm preview generated on the phone:
 
@@ -232,17 +232,17 @@ In the normal voice flow, Whisper receives the recording and application code ha
 
 You still need connectivity to acquire the models. “Local” here describes how Ami processes a question, not a claim that every application on the phone has stopped using the network. The offline voice must also be installed before you use it.
 
-The repository includes a [Health Connect reader](../app/src/main/java/dev/daylight/local/data/HealthReader.kt) for a wearable-backed version. This article stays with the working sample-data flow rather than presenting a live Samsung feed as part of the demo. Device setup and integration findings are kept in the [author guide](./AUTHOR-RUNBOOK.md#6-keep-personal-watch-integration-separate).
+To connect wearable data, the repository includes a read-only [Health Connect reader](../app/src/main/java/dev/daylight/local/data/HealthReader.kt). The demo here uses the supplied fictional records. The [watch setup notes](./AUTHOR-RUNBOOK.md#6-connect-your-watch) explain the permissions and the missing Samsung-source data encountered on the test phone.
 
 ## Try it with your own application
 
-The part I want to take further is the conversation around context that already belongs on a device. A journal could use the same speech entry point to retrieve a saved reflection. A learning app could let someone ask about their recent practice. Each needs its own data access and answer logic, but the Foundry Local model lifecycle and voice integration shown here are reusable.
+A journal could use this speech path to look up a saved reflection. A learning app could answer a question about recent practice. The records and answer logic would change, but the Foundry Local setup, transcription call and playback controls could stay much the same.
 
-For Ami, the next useful experiment would be a more flexible local conversation over the calculated facts. The existing voice loop gives that experiment somewhere concrete to start: a working microphone path, local transcription, an answer with inspectable context and speech the user can interrupt.
+For Ami, I would next try a more flexible conversation over the calculated facts. That is a further experiment, not something the small recap model already does. The microphone, local transcription and interruptible reply are in place to test it.
 
-If you want to build along, start with the sample conversation and trace it through [FoundryRuntime.kt](../app/src/main/java/dev/daylight/local/inference/FoundryRuntime.kt). Then change one part: the records, a supported question or the recap prompt. That is a more useful starting point than an empty chat screen connected to a model.
+To try your own variation, run the sample conversation and trace it through [FoundryRuntime.kt](../app/src/main/java/dev/daylight/local/inference/FoundryRuntime.kt). Add a supported question or change the recap prompt, then run the tests and listen to the result on the phone.
 
-- [Full Android project](https://github.com/kalai4390/ami-foundry-local) — source, sample data, tests and scripts; private during review.
+- [Full Android project](https://github.com/kalai4390/ami-foundry-local) — source, sample data, tests and scripts.
 - [Hands-on and capture guide](./AUTHOR-RUNBOOK.md) — setup, repeatable demos and publication steps.
 - [Foundry Local Android API reference, pinned to 0.1.6](https://github.com/microsoft/FoundryLocalAndroid/blob/v0.1.6/docs/API_REFERENCE.md).
 - [Recorded test and device results](./DEVICE-FINDINGS.md) — build versions, measurements and media provenance.
