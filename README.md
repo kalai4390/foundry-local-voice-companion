@@ -1,18 +1,16 @@
-# Ami
-
-**An on-device voice companion built with Foundry Local.**
+# An On-Device Voice Companion with Foundry Local
 
 “When was my heartbeat high this week?”
 
-Ami lets you ask that question out loud and hear an answer drawn from local records. It is a native Android sample: Foundry Local transcribes your question on the phone, Kotlin looks up the relevant dates and numbers, and an installed Android voice reads the answer back. No cloud model sits in the middle of that conversation.
+Meet **Ami**, an Android app you can talk to about your wearable records. Foundry Local transcribes your question on the phone, Kotlin looks up the dates and numbers, and an installed offline Android voice reads the answer back. The conversation does not go to a cloud model.
 
 The included records are fictional, so you can build and try it without a watch or a health account. Ami supports a small set of questions about heart rate, sleep, walking and activity; it is not an open-ended health chatbot.
 
-[Read the walkthrough](./docs/BLOG.md) · [Watch the voice demo](./docs/demo/ami-microphone-preview.mp4) · [Build and capture guide](./docs/AUTHOR-RUNBOOK.md)
+[Read the walkthrough](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/BLOG.md) · [Watch the voice demo](https://github.com/kalai4390/foundry-local-voice-companion/issues/1) · [Build guide](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/BUILD-GUIDE.md)
 
-<img src="./docs/demo/ami-answer.png" width="320" alt="Ami answering a heart-rate question from fictional records on an Android phone">
+<img src="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-answer.png" width="320" alt="Ami answering a heart-rate question from fictional records on an Android phone">
 
-*The [46-second demo](./docs/demo/ami-microphone-preview.mp4) runs on a Motorola g35. Sound starts at 0:11. For a repeatable recording, the question was played from a laptop speaker into the phone microphone; the reply you hear is the phone's Android TTS output. More recordings and screenshots are in the [demo guide](./docs/DEMO-GUIDE.md).*
+*The [46-second demo](https://github.com/kalai4390/foundry-local-voice-companion/issues/1) runs on a Motorola g35. Sound starts at 0:11. For a repeatable recording, the question was played from a laptop speaker into the phone microphone; the reply you hear is the phone's Android TTS output. More recordings and screenshots are in the [demo guide](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/DEMO-GUIDE.md).*
 
 ## Try a conversation
 
@@ -28,11 +26,11 @@ There is also a **Recap my week** action. After confirmation, a small Qwen model
 
 ## How it works
 
-![Ami's on-device voice flow: microphone, Foundry Local Whisper, Kotlin calculations and offline Android speech](./docs/voice-flow.svg)
+![Ami's on-device voice flow: microphone, Foundry Local Whisper, Kotlin calculations and offline Android speech](https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/voice-flow.svg)
 
 The main voice path uses **Whisper Tiny through the Foundry Local Kotlin SDK**. This project uses IPC mode: the SDK connects to the separately installed Foundry Local service on the same phone. The integration handles model discovery, downloads, loading, transcription and the optional chat call.
 
-Whisper turns speech into text. **Android text-to-speech (TTS)** does the reverse: it reads the answer aloud using an installed offline voice. Kotlin handles dates, calculations and normal answer wording in between. The [walkthrough](./docs/BLOG.md) follows those calls in code.
+Whisper turns speech into text. **Android text-to-speech (TTS)** does the reverse: it reads the answer aloud using an installed offline voice. Kotlin handles dates, calculations and normal answer wording in between. The [walkthrough](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/BLOG.md) follows those calls in code.
 
 ## Build it
 
@@ -68,7 +66,7 @@ To build both variants and write a local test report, run:
   -FoundryAar 'C:\tools\foundry-local-ipc-sdk-0.1.6.aar'
 ```
 
-The [validator](./scripts/validate-build.ps1) writes `runtime/build-validation.json` for your APKs. Use that report with the installation and capture scripts in the [build guide](./docs/AUTHOR-RUNBOOK.md). The release APK is unsigned. This project uses Kotlin and Gradle; no npm packages are needed.
+The [validator](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/scripts/validate-build.ps1) writes `runtime/build-validation.json` for your APKs. Use that report with the installation and capture scripts in the [build guide](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/BUILD-GUIDE.md). The release APK is unsigned. This project uses Kotlin and Gradle; no npm packages are needed.
 
 ## Prepare the phone
 
@@ -108,26 +106,26 @@ With one authorized phone connected, Ami unlocked and the models prepared:
 
 These debug suites use fictional records. The audio suite sends five prerecorded WAVs through Whisper; it does not open the microphone. The voice suite writes Android TTS samples without playing them aloud. A completed suite reports `healthReadAttempts: 0`.
 
-The recorded `0.3.4-preview` build passed **171 JVM tests**, debug/release builds and lint with **0 errors and 33 warnings per variant**. Device and media results are tied to their individual app versions in the [test notes](./docs/VALIDATION.md). They are recorded results, not a promise that every Android phone will behave the same way.
+The recorded `0.3.4-preview` build passed **171 JVM tests**, debug/release builds and lint with **0 errors and 33 warnings per variant**. Device and media results are tied to their individual app versions in the [test notes](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/VALIDATION.md). They are recorded results, not a promise that every Android phone will behave the same way.
 
-## Find your way around the code
+## Where the code lives
 
 | Component | Source |
 | --- | --- |
-| SDK connection, catalog, cache, load, speech/chat calls and cleanup | [FoundryRuntime](./app/src/main/java/dev/daylight/local/inference/FoundryRuntime.kt) |
-| Voice input and output | [ShortRecorder](./app/src/main/java/dev/daylight/local/inference/ShortRecorder.kt), [LocalSpeaker](./app/src/main/java/dev/daylight/local/inference/LocalSpeaker.kt), [AudioReadiness](./app/src/main/java/dev/daylight/local/inference/AudioReadiness.kt) |
-| Read-only Health Connect integration | [HealthReader](./app/src/main/java/dev/daylight/local/data/HealthReader.kt) |
-| Pure Kotlin facts, dates, routing and strict model-output validation | [Core](./core/src/main/kotlin/dev/daylight/core/) |
-| Native UI and lifecycle | [MainActivity](./app/src/main/java/dev/daylight/local/MainActivity.kt), [UI](./app/src/main/java/dev/daylight/local/ui/) |
-| Reproducible device evaluation | [DebugRunner](./app/src/main/java/dev/daylight/local/DebugRunner.kt), [scripts](./scripts/) |
-| Synthetic regression tests | [Core tests](./core/src/test/kotlin/dev/daylight/core/) |
+| SDK connection, catalog, cache, load, speech/chat calls and cleanup | [FoundryRuntime](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/app/src/main/java/dev/daylight/local/inference/FoundryRuntime.kt) |
+| Voice input and output | [ShortRecorder](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/app/src/main/java/dev/daylight/local/inference/ShortRecorder.kt), [LocalSpeaker](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/app/src/main/java/dev/daylight/local/inference/LocalSpeaker.kt), [AudioReadiness](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/app/src/main/java/dev/daylight/local/inference/AudioReadiness.kt) |
+| Read-only Health Connect integration | [HealthReader](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/app/src/main/java/dev/daylight/local/data/HealthReader.kt) |
+| Pure Kotlin facts, dates, routing and strict model-output validation | [Core](https://github.com/kalai4390/foundry-local-voice-companion/tree/main/core/src/main/kotlin/dev/daylight/core/) |
+| Native UI and lifecycle | [MainActivity](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/app/src/main/java/dev/daylight/local/MainActivity.kt), [UI](https://github.com/kalai4390/foundry-local-voice-companion/tree/main/app/src/main/java/dev/daylight/local/ui/) |
+| Reproducible device evaluation | [DebugRunner](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/app/src/main/java/dev/daylight/local/DebugRunner.kt), [scripts](https://github.com/kalai4390/foundry-local-voice-companion/tree/main/scripts/) |
+| Synthetic regression tests | [Core tests](https://github.com/kalai4390/foundry-local-voice-companion/tree/main/core/src/test/kotlin/dev/daylight/core/) |
 
 The Android package remains `dev.daylight.local`, the project's earlier name. Keeping it avoids changing the installed app's identity.
 
 ## About watch data and privacy
 
-The optional Health Connect reader requests Samsung-origin records with explicit, read-only permission. It is separate from the sample-data experience. In the recorded device investigation, Samsung Health had not exposed usable records through Health Connect, so the demos do not claim a live watch feed. The [device notes](./docs/DEVICE-FINDINGS.md) explain what was checked.
+The optional Health Connect reader requests Samsung-origin records with explicit, read-only permission. It is separate from the sample-data experience. In the recorded device investigation, Samsung Health had not exposed usable records through Health Connect, so the demos do not claim a live watch feed. The [device notes](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/DEVICE-NOTES.md) explain what was checked.
 
 Ami records only after you tap to speak. It does not listen in the background, write health records or train a model on your data. Check-ins are saved only when requested, in encrypted local storage. Missing records produce a missing-data answer rather than a guessed number.
 
-This is an experimental app, not a clinical tool. Human speech in varied conditions, battery use and radio-off cold starts still need testing. There is no source license in the repository yet; the Microsoft SDK and model packages have separate terms. [Publication notes](./docs/PUBLICATION-REVIEW.md) track the release review.
+This is an experimental app, not a clinical tool. Speech in varied conditions, battery use and radio-off cold starts still need testing. There is no source license in the repository yet; the Microsoft SDK and model packages have separate terms. See the [release checklist](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/RELEASE-CHECKLIST.md) before sharing a build or recording.

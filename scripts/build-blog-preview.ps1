@@ -1,5 +1,5 @@
 param(
-    [string]$RepositoryUrl = 'https://github.com/kalai4390/ami-foundry-local',
+    [string]$RepositoryUrl = 'https://github.com/kalai4390/foundry-local-voice-companion',
     [switch]$InlineMedia
 )
 
@@ -11,13 +11,25 @@ $heading = Get-Content -LiteralPath $source -TotalCount 1
 if ($heading -notmatch '^# (.+)$') { throw 'Start the article with a level-one title.' }
 $articleTitle = [Net.WebUtility]::HtmlEncode($Matches[1].Trim())
 $content = (ConvertFrom-Markdown -LiteralPath $source).Html
+$articleDestination = Join-Path $root 'docs\BLOG.html'
+[IO.File]::WriteAllText($articleDestination, $content, [Text.UTF8Encoding]::new($false))
 if ($InlineMedia) {
-    $content = [regex]::Replace($content, 'src="(\./demo/[A-Za-z0-9-]+\.(mp4|wav))"', {
+    $repositoryPath = ([Uri]$RepositoryUrl).AbsolutePath.Trim('/')
+    $rawPrefix = 'https://raw.githubusercontent.com/' + $repositoryPath + '/main/'
+    $content = [regex]::Replace($content, 'src="(' + [regex]::Escape($rawPrefix) + '[^"]+)"', {
         param($match)
-        $mediaPath = Join-Path (Split-Path $source -Parent) $match.Groups[1].Value
+        $relative = [Uri]::UnescapeDataString($match.Groups[1].Value.Substring($rawPrefix.Length))
+        $mediaPath = [IO.Path]::GetFullPath((Join-Path $root $relative))
+        if (-not $mediaPath.StartsWith($root + [IO.Path]::DirectorySeparatorChar)) { throw 'Media must be inside the repository.' }
         $mediaFile = Get-Item -LiteralPath $mediaPath
         if ($mediaFile.Length -gt 10MB) { throw 'Inline preview media must be at most 10 MB per file.' }
-        $mimeType = if ($match.Groups[2].Value -eq 'mp4') { 'video/mp4' } else { 'audio/wav' }
+        $mimeType = switch ($mediaFile.Extension) {
+            '.mp4' { 'video/mp4' }
+            '.wav' { 'audio/wav' }
+            '.png' { 'image/png' }
+            '.svg' { 'image/svg+xml' }
+            default { throw 'Unsupported inline media type.' }
+        }
         $encoded = [Convert]::ToBase64String([IO.File]::ReadAllBytes($mediaFile.FullName))
         'src="data:' + $mimeType + ';base64,' + $encoded + '"'
     })
@@ -56,3 +68,4 @@ footer{font-size:14px;color:var(--muted)}@media(max-width:700px){header,main,foo
 "@
 [IO.File]::WriteAllText($destination, $html, [Text.UTF8Encoding]::new($false))
 Write-Output "Blog preview: $destination"
+Write-Output "Blog editor HTML: $articleDestination"

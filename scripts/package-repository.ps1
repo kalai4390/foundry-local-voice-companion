@@ -14,7 +14,7 @@ if ($ApprovedRepositoryUrl) {
     $approvedRepositoryName = "$($Matches[1])/$($Matches[2])"
 }
 if (-not $Destination) {
-    $Destination = Join-Path $root ('../publication/ami-foundry-local-' + [DateTime]::UtcNow.ToString('yyyyMMddTHHmmssZ'))
+    $Destination = Join-Path $root ('../publication/foundry-local-voice-companion-' + [DateTime]::UtcNow.ToString('yyyyMMddTHHmmssZ'))
 }
 $destinationPath = [IO.Path]::GetFullPath($Destination)
 $zipPath = "$destinationPath.zip"
@@ -42,7 +42,7 @@ foreach ($directory in @('app/src', 'core/src', 'scripts')) {
         $files[$relative] = $relative
     }
 }
-foreach ($name in @('BLOG.md', 'AUTHOR-RUNBOOK.md', 'DEMO-GUIDE.md', 'DEVICE-FINDINGS.md', 'VALIDATION.md', 'SHOWCASE-VALIDATION.md', 'PUBLICATION-REVIEW.md', 'validation-results.json', 'architecture.svg', 'architecture.png', 'voice-flow.svg', 'recap-flow.svg', 'voice-flow.png', 'recap-flow.png', 'index.html')) {
+foreach ($name in @('BLOG.md', 'BLOG.html', 'BUILD-GUIDE.md', 'DEMO-GUIDE.md', 'DEVICE-NOTES.md', 'VALIDATION.md', 'TEST-SUMMARY.md', 'RELEASE-CHECKLIST.md', 'validation-results.json', 'architecture.svg', 'architecture.png', 'voice-flow.svg', 'recap-flow.svg', 'voice-flow.png', 'recap-flow.png', 'index.html')) {
     $files["docs/$name"] = "docs/$name"
 }
 foreach ($name in @('audio.png', 'audio.mp4', 'debrief.png', 'debrief.mp4', 'today.png', 'evidence.png', 'privacy.png', 'warm.wav', 'provenance.json', 'ami-answer.png', 'ami-welcome.png', 'ami-recap.png', 'ami-today.png', 'ami-evidence.png', 'ami-privacy.png', 'ami-audio.mp4', 'ami-recap.mp4', 'ami-warm.wav', 'ami-provenance.json')) {
@@ -65,6 +65,11 @@ foreach ($entry in $files.GetEnumerator()) {
     $target = Join-Path $destinationPath $entry.Value
     New-Item -ItemType Directory -Path (Split-Path -Parent $target) -Force | Out-Null
     Copy-Item -LiteralPath $source -Destination $target
+}
+$linkReport = if ($ApprovedRepositoryUrl) {
+    & (Join-Path $destinationPath 'scripts/check-doc-links.ps1') -Root $destinationPath -RepositoryUrl $ApprovedRepositoryUrl
+} else {
+    & (Join-Path $destinationPath 'scripts/check-doc-links.ps1') -Root $destinationPath
 }
 $privateValues = @($env:USERNAME, $env:COMPUTERNAME, $env:USERPROFILE) + $PrivateDeviceIdentifiers
 $privatePatterns = @($privateValues | Where-Object { $_ -and $_.Length -ge 4 } | ForEach-Object { [regex]::Escape($_) })
@@ -132,11 +137,12 @@ $manifest = [ordered]@{
     product = 'Ami'
     generatedAtUtc = [DateTime]::UtcNow.ToString('o')
     policy = 'Explicit source/document/media allowlist; no Git history, runtime logs, SDK/model binaries, APKs, tools, caches or signing keys'
-    validation = [ordered]@{ localLinksChecked = $localLinksChecked; mediaChecksumsMatch = $true; reproducedBuildInputsMatch = $reproducedInputsMatch; configuredOwnerIdentifierScanPassed = $true; approvedRepositoryUrl = $ApprovedRepositoryUrl; ownerScanExemption = 'Only the exact explicitly approved repository URL and owner/repository label; unrelated owner/device metadata remains blocked'; scanIsNotAComprehensiveSecretAudit = $true }
+    validation = [ordered]@{ localLinksChecked = $localLinksChecked; repositoryLinksChecked = $linkReport.RepositoryLinksChecked; mediaChecksumsMatch = $true; reproducedBuildInputsMatch = $reproducedInputsMatch; configuredOwnerIdentifierScanPassed = $true; approvedRepositoryUrl = $ApprovedRepositoryUrl; ownerScanExemption = 'Only the exact explicitly approved repository URL and owner/repository label; unrelated owner/device metadata remains blocked'; scanIsNotAComprehensiveSecretAudit = $true }
     publication = 'This packaging step writes a local archive only. Remote publication requires a separate authorized operation; no license grant is implied.'
     fileCountExcludingThisManifest = $records.Count
     files = $records
 }
-$manifest | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $destinationPath 'PACKAGE-MANIFEST.json') -Encoding utf8
+$manifestJson = ($manifest | ConvertTo-Json -Depth 6).Replace("`r`n", "`n") + "`n"
+[IO.File]::WriteAllText((Join-Path $destinationPath 'PACKAGE-MANIFEST.json'), $manifestJson, [Text.UTF8Encoding]::new($false))
 [IO.Compression.ZipFile]::CreateFromDirectory($destinationPath, $zipPath, [IO.Compression.CompressionLevel]::Optimal, $true)
 [ordered]@{ directory = $destinationPath; archive = $zipPath; files = $records.Count + 1; localLinksChecked = $localLinksChecked; archiveSha256 = (Get-FileHash -LiteralPath $zipPath -Algorithm SHA256).Hash.ToLowerInvariant() } | ConvertTo-Json

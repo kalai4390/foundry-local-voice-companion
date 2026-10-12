@@ -1,0 +1,177 @@
+<h1 id="building-an-on-device-voice-companion-with-foundry-local">Building an On-Device Voice Companion with Foundry Local</h1>
+<p><em>Build an Android app that listens, answers from local records and speaks back, using Foundry Local on the phone.</em></p>
+<p>“When was my heartbeat high this week?”</p>
+<p>That was the question I wanted to ask my phone. My watch already collects the readings. But finding the answer still means opening an app, choosing a date range and interpreting a chart. I wanted to say the question out loud and hear an answer based on the records, without sending that conversation to a cloud model.</p>
+<p>I built <strong>Ami</strong> with <strong>Foundry Local for Android</strong> to try it. You tap to speak, Ami transcribes the question on the phone, looks up the records and reads the answer back. If you want to check a number, you can open the calculation or ask a supported follow-up.</p>
+<p>This walkthrough uses fictional wearable records. You do not need a watch, a health account or access to anyone's personal data to reproduce it. The screenshots and recordings come from the Android app running on a Motorola g35; they are not interface mockups.</p>
+<img src="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-welcome.png" width="320" alt="Ami's welcome screen on the phone, with the Talk to Ami button and microphone-off status">
+<h2 id="watch-ami-answer">Watch Ami answer</h2>
+<p>In this recording, Foundry Local transcribes a question and Ami answers from the sample records. You can watch the full conversation on GitHub.</p>
+<p><strong>Sound starts at 0:11</strong>, when Ami begins its reply. The opening listening and transcription steps are silent in this recording.</p>
+<p><a href="https://github.com/kalai4390/foundry-local-voice-companion/issues/1"><img src="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-microphone.png" width="400" alt="Watch Ami answer a spoken question on GitHub; the 46-second video includes sound"></a></p>
+<p><a href="https://github.com/kalai4390/foundry-local-voice-companion/issues/1">Watch Ami answer—with voice</a>.</p>
+<p><em>For this repeatable test, the question was played from a laptop speaker into the phone's microphone. The soundtrack captures the phone's actual Android speech output, not the question or an added voiceover. Playback volume was increased during editing; the <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/demo/ami-microphone-provenance.json">recording notes</a> describe the capture.</em></p>
+<p>The laptop is a build and recording tool here. It does not run the models or calculate the answer. Those operations happen on the phone.</p>
+<p>Let's build that flow, then add a short recap using Foundry Local's chat API.</p>
+<h2 id="foundry-local-on-an-android-phone">Foundry Local on an Android phone</h2>
+<p><a href="https://github.com/microsoft/FoundryLocalAndroid">Foundry Local</a> provides the Kotlin APIs I use to find, download and load models, transcribe speech and make a chat call on the phone. I do not have to build a model-serving layer before working on the conversation. The same SDK connection handles Whisper for a question and Qwen for the optional recap later in this walkthrough.</p>
+<p>There are two Android deployment options. <strong>IPC mode</strong>, used in this project, talks to the separately installed Foundry Local service app. <strong>Embedded mode</strong> packages the runtime inside your application. Both use the same Kotlin API; their installation and process boundaries differ. The <a href="https://github.com/microsoft/FoundryLocalAndroid/blob/v0.1.6/docs/IPC_AND_EMBEDDED_MODES.md">deployment guide</a> explains the trade-offs. Everything shown here uses IPC.</p>
+<p>I pinned the Android SDK to <strong>0.1.6</strong> and used two packages from the device's catalog:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Job in Ami</th>
+<th>Catalog identifier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Whisper Tiny</td>
+<td>Transcribe a spoken question</td>
+<td><code>openai-whisper-tiny-generic-cpu:4</code></td>
+</tr>
+<tr>
+<td>Qwen 2.5 0.5B Instruct</td>
+<td>Select calculated facts for an optional recap</td>
+<td><code>qwen2.5-0.5b-instruct-generic-cpu:4</code></td>
+</tr>
+</tbody>
+</table>
+<p>Both ran through the CPU execution provider on the test phone. Their combined advertised download size was 953 MB. These are the packages tested for this walkthrough, not a requirement to use the same models in every application.</p>
+<figure class="flow-diagram">
+  <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/voice-flow.svg" target="_blank" rel="noopener">
+    <img src="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/voice-flow.svg" width="1440" height="560" alt="Left to right on the Android phone: record a question, transcribe it with Whisper Tiny through the Foundry Local Kotlin SDK and IPC service, calculate an answer from local fictional records in Ami, and speak it with offline Android TTS.">
+  </a>
+  <figcaption>Figure 1. One voice turn, from the microphone to the spoken answer. All four steps run on the phone. <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/voice-flow.svg" target="_blank" rel="noopener">View full-size figure.</a></figcaption>
+</figure>
+<p>Whisper is used on the voice path. Qwen is used only when the user requests the optional model-organized recap. The spoken reply comes from an installed <strong>offline Android text-to-speech voice</strong>. Keeping those calls separate makes it possible to change the voice without changing transcription, or try another chat model without changing how the app calculates a heart-rate maximum.</p>
+<h2 id="get-the-project-running">Get the project running</h2>
+<p>The <a href="https://github.com/kalai4390/foundry-local-voice-companion">Ami repository</a> contains the Android app, Kotlin calculation code, sample records, tests and build scripts.</p>
+<p>For this build, use JDK 17, Gradle 8.13, PowerShell 7.4 or newer, and Android SDK 36. The app requires Android 13 or newer; the recorded demo runs on Android 16. This is a native Android project, so there is no npm install or Docker container to set up.</p>
+<p>Download the <strong>IPC 0.1.6 AAR</strong> from the <a href="https://github.com/microsoft/FoundryLocalAndroid/releases/tag/v0.1.6">official release</a>, and install the compatible Foundry Local companion app using the <a href="https://github.com/microsoft/FoundryLocalAndroid/blob/v0.1.6/docs/INTEGRATION_GUIDE.md#ipc-setup">IPC setup instructions</a>. The project checks the AAR's checksum before building.</p>
+<p>From PowerShell, substitute your installed JDK, Gradle and AAR paths:</p>
+<pre><code class="language-powershell">git clone https://github.com/kalai4390/foundry-local-voice-companion.git
+cd foundry-local-voice-companion
+
+$env:JAVA_HOME = 'C:\tools\jdk-17'
+$env:ANDROID_HOME = &quot;$env:LOCALAPPDATA\Android&quot;
+
+.\scripts\build.ps1 `
+  -GradlePath 'C:\tools\gradle-8.13\bin\gradle.bat' `
+  -FoundryAar 'C:\tools\foundry-local-ipc-sdk-0.1.6.aar'
+</code></pre>
+<p>The script runs the core tests, builds the debug app and runs Android lint. With USB debugging authorized on the phone, install and open it:</p>
+<pre><code class="language-powershell">$adb = Join-Path $env:ANDROID_HOME 'platform-tools\adb.exe'
+&amp; $adb install -r .\app\build\outputs\apk\debug\app-debug.apk
+&amp; $adb shell am start -n dev.daylight.local/.MainActivity
+</code></pre>
+<p>Leave Ami in <strong>Synthetic demo</strong> mode. Open <strong>Privacy → Prepare models</strong>, and let setup finish on unmetered Wi-Fi. Then open <strong>Talk</strong>, choose an installed offline voice under <strong>Voice &amp; pace</strong>, and tap <strong>Talk to Ami</strong>. Android asks for microphone permission when you use that feature. Health permissions are not needed for the sample conversation.</p>
+<p>Try “When was my heart rate highest last month?” or “How did my sleep change this week?” You can also use <strong>Play a sample conversation</strong> to run a bundled audio fixture through transcription without using the microphone.</p>
+<h2 id="connect-to-the-runtime-and-prepare-the-models">Connect to the runtime and prepare the models</h2>
+<p>The SDK integration is in <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/app/src/main/java/dev/daylight/local/inference/FoundryRuntime.kt">FoundryRuntime.kt</a>. It begins with a manager and a compatibility check:</p>
+<pre><code class="language-kotlin">val manager = FoundryLocalManager.create(
+    context = context.applicationContext,
+    config = Configuration(
+        appName = &quot;Ami&quot;,
+        disableTelemetry = true,
+        logLevel = &quot;Error&quot;
+    )
+)
+val compatibility = manager.checkCompatibility()
+check(compatibility.isCompatible)
+val catalog = manager.getCatalog()
+val availableModels = catalog.listModels()
+</code></pre>
+<p>The SDK types come from <code>com.microsoft.foundrylocal.api</code>. <code>listModels()</code> shows what the catalog offers; <code>getModel()</code> gives the application a handle for a selected model. Here is the download step for Whisper:</p>
+<pre><code class="language-kotlin">val audioModel = catalog.getModel(&quot;openai-whisper-tiny-generic-cpu:4&quot;)
+if (!audioModel.isCached()) {
+    audioModel.download(timeoutMinutes = 10)
+}
+check(audioModel.isCached())
+</code></pre>
+<p>This belongs in setup, not in the question handler. Someone asking about their week should not unexpectedly start a large download. Ami's <strong>Prepare models</strong> action prepares both packages, shows progress, checks the download budget and requires the app to be in the foreground on unmetered Wi-Fi.</p>
+<p>The model cache in IPC mode is isolated per client app. Downloading a model in another app does not establish that it is ready for Ami. Check the handle's cache state before enabling inference.</p>
+<p>The snippets show the SDK calls without the surrounding UI code. The full adapter runs them off the main thread, serializes model operations and applies timeouts. If the service disconnects, it obtains a new manager and model handles. When the app finishes with a loaded model, it calls <code>unload()</code>; manager cleanup calls <code>close()</code>.</p>
+<h2 id="turn-speech-into-a-question">Turn speech into a question</h2>
+<p>Ami records a short WAV after the user taps to speak. Once Whisper is cached, the transcription call is small:</p>
+<pre><code class="language-kotlin">if (!audioModel.isLoaded()) audioModel.load()
+
+val transcription = audioModel.createAudioClient().transcribe(
+    AudioTranscriptionRequest(
+        filePath = audioFile.absolutePath,
+        language = &quot;en&quot;,
+        temperature = 0.0f
+    )
+)
+val question = transcription.text.trim()
+</code></pre>
+<p><code>audioFile</code> is the local recording. Foundry Local loads Whisper on the phone and returns the transcript. There is no hosted speech endpoint in this flow.</p>
+<p><a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/app/src/main/java/dev/daylight/local/inference/ShortRecorder.kt">ShortRecorder.kt</a> handles recording, with a 20-second limit and explicit Done and Cancel controls. A short trailing pause can finish the turn too. Ami deletes the temporary microphone file after the turn or cancellation.</p>
+<p>I kept the transcript visible, with <strong>Edit heard question</strong> beside it. A wrong word in a general chat can be annoying; a wrong date in a question about personal records can change the answer. Letting the person correct what Ami heard is a useful part of the voice interface.</p>
+<h2 id="answer-from-the-records">Answer from the records</h2>
+<p>Once the question is text, the app needs to resolve the date range and calculate the requested result. For “When was my heart rate highest last month?”, it selects the previous calendar month, finds the highest available sample and keeps its timestamp and time zone.</p>
+<img src="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-answer.png" width="360" alt="Ami answering a last-month heart-rate question from fictional records, with an editable transcript and a Calculation and coverage button">
+<p><em>The sample answer includes the reading, when it was recorded and how much of the month has data.</em></p>
+<p>The answer in this screenshot is 153 beats per minute, recorded on August 10, 2026. It also says that readings are available on only one of the month's 31 days. That qualification belongs with the answer: a maximum over one observed day is not a complete account of the month.</p>
+<p>This is where I chose to use ordinary Kotlin rather than ask the language model to do the arithmetic. <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/core/src/main/kotlin/dev/daylight/core/HeartRateQueries.kt">HeartRateQueries.kt</a> resolves the supported questions and follow-ups; <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/core/src/main/kotlin/dev/daylight/core/HeartRateAnalysis.kt">HeartRateAnalysis.kt</a> calculates the result. The normal answer text is assembled from those results. Sleep and activity questions use the same approach of working from the records actually present.</p>
+<p>Ami can keep the heart-rate question in context for a follow-up such as “What about last month?” It can also show the calculation behind the answer. It treats “high” as a request for the highest recorded sample, not a medical judgment, and it does not invent a cause when asked “Why?”</p>
+<p>That gives me ordinary unit tests for dates, missing readings and arithmetic. The model is not responsible for getting a maximum or a calendar boundary right.</p>
+<h2 id="give-ami-a-voice">Give Ami a voice</h2>
+<p>Whisper turns speech into text; Android <strong>text-to-speech (TTS)</strong> turns Ami's answer text back into sound. Ami selects an installed voice that does not require a network connection. <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/app/src/main/java/dev/daylight/local/inference/LocalSpeaker.kt">LocalSpeaker.kt</a> checks the voice's <a href="https://developer.android.com/reference/android/speech/tts/Voice#isNetworkConnectionRequired()"><code>isNetworkConnectionRequired()</code></a> property, installation and language before using it.</p>
+<p><strong>Voice &amp; pace</strong> offers Warm, Clear and Unhurried playback styles. These adjust how the Android voice speaks; they are not separate Foundry models. Here is the Warm preview generated on the phone:</p>
+<audio controls preload="metadata">
+  <source src="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-warm.wav" type="audio/wav">
+  Your browser cannot play this audio. Use the WAV link below.
+</audio>
+<p><a href="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-warm.wav">Listen to Ami's Warm voice</a>.</p>
+<p>After a spoken question, Ami can speak the answer automatically. A typed question stays quiet. <strong>Listen again</strong>, <strong>Stop voice</strong> and <strong>Interrupt &amp; talk</strong> let the user control the exchange without finding a settings screen. Those details make a bigger difference to the experience than adding another paragraph to the answer.</p>
+<h2 id="use-the-chat-api-for-a-weekly-recap">Use the chat API for a weekly recap</h2>
+<p>The voice flow already works without a chat model. I also wanted to try a small local language model on the same device, so Ami includes a separate <strong>Recap my week</strong> action.</p>
+<figure class="flow-diagram">
+  <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/recap-flow.svg" target="_blank" rel="noopener">
+    <img src="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/recap-flow.svg" width="1440" height="500" alt="A separate left-to-right recap on the phone: Ami calculates fact cards, Qwen 2.5 0.5B selects two card IDs through Foundry Local after confirmation, and Ami validates the IDs before showing the original calculated text. Invalid selections use a labelled computed recap.">
+  </a>
+  <figcaption>Figure 2. The optional chat call selects facts for a recap; it does not calculate measurements or write new advice. <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/recap-flow.svg" target="_blank" rel="noopener">View full-size figure.</a></figcaption>
+</figure>
+<p>Before calling the model, the app calculates fact cards for the available activity, sleep and workout records. Each card has an ID, its calculated text and coverage information. With the user's confirmation, Ami passes the derived summaries to Qwen through Foundry Local's chat API:</p>
+<pre><code class="language-kotlin">val chatModel = catalog.getModel(&quot;qwen2.5-0.5b-instruct-generic-cpu:4&quot;)
+check(chatModel.isCached())
+if (!chatModel.isLoaded()) chatModel.load()
+
+val response = chatModel.createChatClient().completeChat(
+    ChatCompletionRequest(
+        messages = listOf(
+            ChatMessage.system(DebriefOrganizer.SYSTEM_PROMPT),
+            ChatMessage.user(DebriefOrganizer.prompt(cards))
+        ),
+        temperature = 0.0f,
+        maxTokens = 32,
+        topP = 1.0f
+    )
+)
+val recap = DebriefOrganizer.resolve(cards, response.message?.content)
+</code></pre>
+<p>Here, <code>cards</code> is the fact catalog created by the app. The prompt asks for two card IDs, such as <code>[1,2]</code>, rather than new health advice. <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/core/src/main/kotlin/dev/daylight/core/DebriefOrganizer.kt">DebriefOrganizer.kt</a> accepts only a valid selection and renders the original calculated text. Extra prose, duplicate IDs and unknown cards are rejected; the app can display a clearly labelled computed recap instead.</p>
+<p>I started with card selection to keep the model's job small and testable. It chooses which facts to show; the app has already calculated the numbers and written each card. A short reply is also a better fit for this small model.</p>
+<video controls preload="metadata" playsinline poster="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-recap.png" width="400">
+  <source src="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-recap.mp4" type="video/mp4">
+  Your browser cannot play this video. Use the MP4 link below.
+</video>
+<p><a href="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-recap.mp4">Watch or download the recap demo</a>. <em>This separate screen recording is silent.</em></p>
+<p>Both model calls use the same Foundry Local integration: select a model, make sure it is cached, load it and create the appropriate client. Speech and chat solve different parts of the experience without needing a cloud inference service between them.</p>
+<h2 id="personal-context-without-training-on-it">Personal context without training on it</h2>
+<p>Ami's answers change when its local records change. That personalization does not require fine-tuning: the records supply the current context, while the model weights stay the same. A new sleep session should be available to a question about the week without retraining a model.</p>
+<p>In the normal voice flow, Whisper receives the recording and application code handles the records. In the optional recap, Qwen receives derived fact cards after confirmation. Both model calls execute through the Foundry Local service on the phone; neither sends that content to a cloud model. SDK telemetry is disabled in the manager configuration, and the app has no cloud speech or inference fallback.</p>
+<p>You still need connectivity to acquire the models. “Local” here describes how Ami processes a question, not a claim that every application on the phone has stopped using the network. The offline voice must also be installed before you use it.</p>
+<p>To connect wearable data, the repository includes a read-only <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/app/src/main/java/dev/daylight/local/data/HealthReader.kt">Health Connect reader</a>. The demo here uses the supplied fictional records. The <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/BUILD-GUIDE.md#6-connect-your-watch">watch setup notes</a> explain the permissions and the missing Samsung-source data encountered on the test phone.</p>
+<h2 id="try-it-with-your-own-application">Try it with your own application</h2>
+<p>A journal could use this speech path to look up a saved reflection. A learning app could answer a question about recent practice. The records and answer logic would change, but the Foundry Local setup, transcription call and playback controls could stay much the same.</p>
+<p>For Ami, I would next try a more flexible conversation over the calculated facts. That is a further experiment, not something the small recap model already does. The microphone, local transcription and interruptible reply are in place to test it.</p>
+<p>To try your own variation, run the sample conversation and trace it through <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/app/src/main/java/dev/daylight/local/inference/FoundryRuntime.kt">FoundryRuntime.kt</a>. Add a supported question or change the recap prompt, then run the tests and listen to the result on the phone.</p>
+<ul>
+<li><a href="https://github.com/kalai4390/foundry-local-voice-companion">Full Android project</a> — source, sample data, tests and scripts.</li>
+<li><a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/BUILD-GUIDE.md">Hands-on and capture guide</a> — setup, repeatable demos and publication steps.</li>
+<li><a href="https://github.com/microsoft/FoundryLocalAndroid/blob/v0.1.6/docs/API_REFERENCE.md">Foundry Local Android API reference, pinned to 0.1.6</a>.</li>
+<li><a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/DEVICE-NOTES.md">Recorded test and device results</a> — build versions, measurements and media provenance.</li>
+</ul>

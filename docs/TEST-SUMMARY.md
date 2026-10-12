@@ -1,6 +1,6 @@
-# Test summary
+# Test results at a glance
 
-Ami's sample-data voice turn works on the tested Motorola g35: record a question, transcribe it through Foundry Local, calculate an answer and complete Android speech playback. The [voice demo](./demo/ami-microphone-preview.mp4) shows that path. This page is a short guide to the recorded checks; [test details](./VALIDATION.md) and [device notes](./DEVICE-FINDINGS.md) explain the individual runs.
+Ami's sample-data voice turn works on the tested Motorola g35: record a question, transcribe it through Foundry Local, calculate an answer and complete Android speech playback. The [voice demo](https://github.com/kalai4390/foundry-local-voice-companion/issues/1) shows that path. This page is a short guide to the recorded checks; [test details](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/VALIDATION.md) and [device notes](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/DEVICE-NOTES.md) explain the individual runs.
 
 ## Results by app version
 
@@ -21,7 +21,7 @@ The full 0.3.3-preview SDK run and the later 0.3.4-preview follow-up have differ
 
 ## Recordings
 
-The 46-second microphone video is from **0.3.4-preview** and includes captured Android TTS output. The earlier 32.47-second speech video and 22.10-second recap video are **0.3.3-preview** and silent. Five screenshots, a welcome video frame and a separate Warm voice sample belong to that earlier version. The [demo guide](./DEMO-GUIDE.md#recording-details) links each set to its capture notes.
+The 46-second microphone video is from **0.3.4-preview** and includes captured Android TTS output. The earlier 32.47-second speech video and 22.10-second recap video are **0.3.3-preview** and silent. Five screenshots, a welcome video frame and a separate Warm voice sample belong to that earlier version. The [demo guide](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/DEMO-GUIDE.md#recording-details) links each set to its capture notes.
 
 Selected images, sampled contact sheets and final frames were inspected, and the videos decoded end to end. Human watch-through and listening review on the publishing platform are still needed. The capture interrupted by screen lock remains failed and supplies none of the selected media.
 
@@ -34,7 +34,7 @@ Selected images, sampled contact sheets and final frames were inspected, and the
 
 ## Repeat the checks
 
-Supply the tools and IPC AAR using the [build guide](./AUTHOR-RUNBOOK.md), then run:
+Supply the tools and IPC AAR using the [build guide](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/BUILD-GUIDE.md), then run:
 
 ```powershell
 .\scripts\validate-build.ps1 `
