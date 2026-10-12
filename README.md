@@ -130,4 +130,4 @@ This is a developer sample, not a clinical tool or an open-ended health chatbot.
 
 ## License
 
-No source license has been selected. The Microsoft SDK and model packages have their own terms.
+This project is licensed under the [MIT License](./LICENSE). Third-party SDKs and model packages remain subject to their respective licenses.

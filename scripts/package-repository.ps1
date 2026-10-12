@@ -12,6 +12,7 @@ if ($ApprovedRepositoryUrl) {
         throw 'Approve one exact HTTPS GitHub owner/repository URL, without credentials, query or fragment.'
     }
     $approvedRepositoryName = "$($Matches[1])/$($Matches[2])"
+    $approvedRepositoryOwner = $Matches[1]
 }
 if (-not $Destination) {
     $Destination = Join-Path $root ('../publication/foundry-local-voice-companion-' + [DateTime]::UtcNow.ToString('yyyyMMddTHHmmssZ'))
@@ -23,6 +24,7 @@ if (Test-Path -LiteralPath $zipPath) { throw 'The archive already exists; choose
 $files = [ordered]@{
     '.gitignore' = '.gitignore'
     '.gitattributes' = '.gitattributes'
+    'LICENSE' = 'LICENSE'
     'build.gradle.kts' = 'build.gradle.kts'
     'settings.gradle.kts' = 'settings.gradle.kts'
     'gradle.properties' = 'gradle.properties'
@@ -73,11 +75,15 @@ $privatePatterns = @($privateValues | Where-Object { $_ -and $_.Length -ge 4 } |
 $textExtensions = @('.md', '.kt', '.java', '.kts', '.ps1', '.xml', '.json', '.html', '.svg', '.properties')
 $localLinksChecked = 0
 foreach ($file in (Get-ChildItem -LiteralPath $destinationPath -File -Recurse)) {
-    if ($file.Extension -notin $textExtensions -and $file.Name -notin @('.gitignore', '.gitattributes')) { continue }
+    if ($file.Extension -notin $textExtensions -and $file.Name -notin @('.gitignore', '.gitattributes', 'LICENSE')) { continue }
     $content = [IO.File]::ReadAllText($file.FullName)
     $ownerScanContent = if ($ApprovedRepositoryUrl) {
         $content.Replace($ApprovedRepositoryUrl, '[approved-repository-url]').Replace($approvedRepositoryName, '[approved-repository-name]')
     } else { $content }
+    if ($ApprovedRepositoryUrl -and $file.Name -eq 'LICENSE') {
+        $copyrightPattern = '(?m)^Copyright \(c\) [0-9]{4} ' + [regex]::Escape($approvedRepositoryOwner) + '\r?$'
+        $ownerScanContent = [regex]::Replace($ownerScanContent, $copyrightPattern, '[approved-copyright-notice]')
+    }
     foreach ($pattern in $privatePatterns) {
         if ($ownerScanContent -match $pattern) { throw "Owner/device metadata found in $([IO.Path]::GetRelativePath($destinationPath, $file.FullName)). No archive was created." }
     }
@@ -134,8 +140,8 @@ $manifest = [ordered]@{
     product = 'Ami'
     generatedAtUtc = [DateTime]::UtcNow.ToString('o')
     policy = 'Explicit source/document/media allowlist; no Git history, runtime logs, SDK/model binaries, APKs, tools, caches or signing keys'
-    validation = [ordered]@{ localLinksChecked = $localLinksChecked; repositoryLinksChecked = $linkReport.RepositoryLinksChecked; publicAccessChecked = $linkReport.PublicAccessChecked; mediaChecksumsMatch = $true; reproducedBuildInputsMatch = $reproducedInputsMatch; configuredOwnerIdentifierScanPassed = $true; approvedRepositoryUrl = $ApprovedRepositoryUrl; ownerScanExemption = 'Only the exact explicitly approved repository URL and owner/repository label; unrelated owner/device metadata remains blocked'; scanIsNotAComprehensiveSecretAudit = $true }
-    publication = 'This packaging step writes a local archive only. Remote publication requires a separate authorized operation; no license grant is implied.'
+    validation = [ordered]@{ localLinksChecked = $localLinksChecked; repositoryLinksChecked = $linkReport.RepositoryLinksChecked; publicAccessChecked = $linkReport.PublicAccessChecked; mediaChecksumsMatch = $true; reproducedBuildInputsMatch = $reproducedInputsMatch; configuredOwnerIdentifierScanPassed = $true; approvedRepositoryUrl = $ApprovedRepositoryUrl; ownerScanExemption = 'Only the exact approved repository URL, owner/repository label and LICENSE copyright line naming that owner; unrelated owner/device metadata remains blocked'; scanIsNotAComprehensiveSecretAudit = $true }
+    publication = 'This packaging step writes a local archive only. Remote publication requires a separate authorized operation. Project license terms are in LICENSE.'
     fileCountExcludingThisManifest = $records.Count
     files = $records
 }

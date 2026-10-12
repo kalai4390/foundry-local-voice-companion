@@ -1,20 +1,20 @@
 {
   "product": "Ami",
-  "generatedAtUtc": "2026-10-12T18:19:10.9099056Z",
+  "generatedAtUtc": "2026-10-12T18:33:16.8750888Z",
   "policy": "Explicit source/document/media allowlist; no Git history, runtime logs, SDK/model binaries, APKs, tools, caches or signing keys",
   "validation": {
-    "localLinksChecked": 11,
-    "repositoryLinksChecked": 169,
+    "localLinksChecked": 12,
+    "repositoryLinksChecked": 170,
     "publicAccessChecked": false,
     "mediaChecksumsMatch": true,
     "reproducedBuildInputsMatch": true,
     "configuredOwnerIdentifierScanPassed": true,
     "approvedRepositoryUrl": "https://github.com/kalai4390/foundry-local-voice-companion",
-    "ownerScanExemption": "Only the exact explicitly approved repository URL and owner/repository label; unrelated owner/device metadata remains blocked",
+    "ownerScanExemption": "Only the exact approved repository URL, owner/repository label and LICENSE copyright line naming that owner; unrelated owner/device metadata remains blocked",
     "scanIsNotAComprehensiveSecretAudit": true
   },
-  "publication": "This packaging step writes a local archive only. Remote publication requires a separate authorized operation; no license grant is implied.",
-  "fileCountExcludingThisManifest": 103,
+  "publication": "This packaging step writes a local archive only. Remote publication requires a separate authorized operation. Project license terms are in LICENSE.",
+  "fileCountExcludingThisManifest": 104,
   "files": [
     {
       "path": ".gitattributes",
@@ -472,9 +472,14 @@
       "sha256": "b7af64a3756b879ff74823e69c3d00e7e10c45977fbaa9648ecb14f1f360e2d4"
     },
     {
+      "path": "LICENSE",
+      "bytes": 1066,
+      "sha256": "fa8c80c29bee119491f1ad62c50bf7cfe6c8d4de9529517692dbea57394b1586"
+    },
+    {
       "path": "README.md",
-      "bytes": 10281,
-      "sha256": "007aa5fb03965a2b05b12b92d7318db14dfc3964e09b6062b43bec44a5b082aa"
+      "bytes": 10327,
+      "sha256": "5730290bc81cd456ae1f2b3103d8fb790f823e68e5abee76c740556450f8d874"
     },
     {
       "path": "scripts/build-blog-preview.ps1",
@@ -503,8 +508,8 @@
     },
     {
       "path": "scripts/package-repository.ps1",
-      "bytes": 10301,
-      "sha256": "d30af0e1971c3cb6fb0d5af7f61cc1d743596de0364d3cb4141b1a99b836938c"
+      "bytes": 10719,
+      "sha256": "f63557b7a8b339e230d5c89717fb921e4601f2b0547edaff042b43ca3f6db020"
     },
     {
       "path": "scripts/prepare-demo-video.ps1",
