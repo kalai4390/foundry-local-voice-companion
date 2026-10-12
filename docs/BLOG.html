@@ -124,7 +124,7 @@ val question = transcription.text.trim()
   <source src="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-warm.wav" type="audio/wav">
   Your browser cannot play this audio. Use the WAV link below.
 </audio>
-<p><a href="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-warm.wav">Listen to Ami's Warm voice</a>.</p>
+<p><a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/demo/ami-warm.wav">Listen to Ami's Warm voice</a>.</p>
 <p>After a spoken question, Ami can speak the answer automatically. A typed question stays quiet. <strong>Listen again</strong>, <strong>Stop voice</strong> and <strong>Interrupt &amp; talk</strong> let the user control the exchange without finding a settings screen. Those details make a bigger difference to the experience than adding another paragraph to the answer.</p>
 <h2 id="use-the-chat-api-for-a-weekly-recap">Use the chat API for a weekly recap</h2>
 <p>The voice flow already works without a chat model. I also wanted to try a small local language model on the same device, so Ami includes a separate <strong>Recap my week</strong> action.</p>
@@ -158,7 +158,7 @@ val recap = DebriefOrganizer.resolve(cards, response.message?.content)
   <source src="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-recap.mp4" type="video/mp4">
   Your browser cannot play this video. Use the MP4 link below.
 </video>
-<p><a href="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-recap.mp4">Watch or download the recap demo</a>. <em>This separate screen recording is silent.</em></p>
+<p><a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/demo/ami-recap.mp4">Watch or download the recap demo</a>. <em>This separate screen recording is silent.</em></p>
 <p>Both model calls use the same Foundry Local integration: select a model, make sure it is cached, load it and create the appropriate client. Speech and chat solve different parts of the experience without needing a cloud inference service between them.</p>
 <h2 id="personal-context-without-training-on-it">Personal context without training on it</h2>
 <p>Ami's answers change when its local records change. That personalization does not require fine-tuning: the records supply the current context, while the model weights stay the same. A new sleep session should be available to a question about the week without retraining a model.</p>

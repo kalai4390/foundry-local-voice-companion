@@ -42,7 +42,7 @@ foreach ($directory in @('app/src', 'core/src', 'scripts')) {
         $files[$relative] = $relative
     }
 }
-foreach ($name in @('BLOG.md', 'BLOG.html', 'BUILD-GUIDE.md', 'DEMO-GUIDE.md', 'DEVICE-NOTES.md', 'VALIDATION.md', 'TEST-SUMMARY.md', 'RELEASE-CHECKLIST.md', 'validation-results.json', 'architecture.svg', 'architecture.png', 'voice-flow.svg', 'recap-flow.svg', 'voice-flow.png', 'recap-flow.png', 'index.html')) {
+foreach ($name in @('BLOG.md', 'BLOG-PUBLISH.md', 'BLOG.html', 'BUILD-GUIDE.md', 'DEMO-GUIDE.md', 'DEVICE-NOTES.md', 'VALIDATION.md', 'TEST-SUMMARY.md', 'RELEASE-CHECKLIST.md', 'validation-results.json', 'architecture.svg', 'architecture.png', 'voice-flow.svg', 'recap-flow.svg', 'voice-flow.png', 'recap-flow.png', 'index.html')) {
     $files["docs/$name"] = "docs/$name"
 }
 foreach ($name in @('audio.png', 'audio.mp4', 'debrief.png', 'debrief.mp4', 'today.png', 'evidence.png', 'privacy.png', 'warm.wav', 'provenance.json', 'ami-answer.png', 'ami-welcome.png', 'ami-recap.png', 'ami-today.png', 'ami-evidence.png', 'ami-privacy.png', 'ami-audio.mp4', 'ami-recap.mp4', 'ami-warm.wav', 'ami-provenance.json')) {
@@ -137,7 +137,7 @@ $manifest = [ordered]@{
     product = 'Ami'
     generatedAtUtc = [DateTime]::UtcNow.ToString('o')
     policy = 'Explicit source/document/media allowlist; no Git history, runtime logs, SDK/model binaries, APKs, tools, caches or signing keys'
-    validation = [ordered]@{ localLinksChecked = $localLinksChecked; repositoryLinksChecked = $linkReport.RepositoryLinksChecked; mediaChecksumsMatch = $true; reproducedBuildInputsMatch = $reproducedInputsMatch; configuredOwnerIdentifierScanPassed = $true; approvedRepositoryUrl = $ApprovedRepositoryUrl; ownerScanExemption = 'Only the exact explicitly approved repository URL and owner/repository label; unrelated owner/device metadata remains blocked'; scanIsNotAComprehensiveSecretAudit = $true }
+    validation = [ordered]@{ localLinksChecked = $localLinksChecked; repositoryLinksChecked = $linkReport.RepositoryLinksChecked; publicAccessChecked = $linkReport.PublicAccessChecked; mediaChecksumsMatch = $true; reproducedBuildInputsMatch = $reproducedInputsMatch; configuredOwnerIdentifierScanPassed = $true; approvedRepositoryUrl = $ApprovedRepositoryUrl; ownerScanExemption = 'Only the exact explicitly approved repository URL and owner/repository label; unrelated owner/device metadata remains blocked'; scanIsNotAComprehensiveSecretAudit = $true }
     publication = 'This packaging step writes a local archive only. Remote publication requires a separate authorized operation; no license grant is implied.'
     fileCountExcludingThisManifest = $records.Count
     files = $records

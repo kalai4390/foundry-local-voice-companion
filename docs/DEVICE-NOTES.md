@@ -6,7 +6,7 @@ These notes describe the September 30, 2026 tests on a Motorola g35 running Ami 
 
 With Android audio in `MODE_NORMAL`, a laptop speaker played a known heartbeat question into the phone's physical microphone. Ami displayed a new question bubble with **Edit heard question**, calculated the answer and completed Android TTS playback. That first turn ran without screen or audio mirroring, and no temporary microphone file remained afterward.
 
-A second turn produced the [46-second video](https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-microphone.mp4) and [poster](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/demo/ami-microphone.png). The soundtrack is captured Android TTS output, not a voiceover. The capture tool redirected phone audio, so the recording does not tell us how loud the handset speaker was. The external question is not part of that output track.
+A second turn produced the [46-second video](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/demo/ami-microphone.mp4) and [poster](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/demo/ami-microphone.png). The soundtrack is captured Android TTS output, not a voiceover. The capture tool redirected phone audio, so the recording does not tell us how loud the handset speaker was. The external question is not part of that output track.
 
 The [recording notes](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/demo/ami-microphone-provenance.json) document cropping, resampling to 20 fps, trimming the idle tail and amplifying the quiet track by 24 dB. The final clip decoded without errors; its sampled frames and full-size poster were inspected.
 

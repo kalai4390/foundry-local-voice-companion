@@ -1,6 +1,7 @@
 param(
     [string]$Root = (Join-Path $PSScriptRoot '..'),
-    [string]$RepositoryUrl = 'https://github.com/kalai4390/foundry-local-voice-companion'
+    [string]$RepositoryUrl = 'https://github.com/kalai4390/foundry-local-voice-companion',
+    [switch]$CheckPublicAccess
 )
 
 $ErrorActionPreference = 'Stop'
@@ -15,6 +16,7 @@ $files = @(Get-ChildItem -LiteralPath $rootPath -Filter '*.md' -File) +
 $failures = [Collections.Generic.List[string]]::new()
 $checked = 0
 $external = [Collections.Generic.HashSet[string]]::new()
+$publicUrls = [Collections.Generic.HashSet[string]]::new()
 foreach ($file in $files) {
     $content = if ($file.Extension -eq '.md') {
         (ConvertFrom-Markdown -LiteralPath $file.FullName).Html
@@ -33,6 +35,7 @@ foreach ($file in $files) {
         $relative = $null
         $fragment = ''
         if ($target -match '^https?://') {
+            [void]$publicUrls.Add($target)
             $uri = [Uri]$target
             $fragment = $uri.Fragment
             $prefix = '/' + $repositoryName + '/'
@@ -49,7 +52,7 @@ foreach ($file in $files) {
             $parts = $target -split '#', 2
             if ($parts.Count -gt 1) { $fragment = '#' + $parts[1] }
             $resolved = [IO.Path]::GetFullPath((Join-Path $file.DirectoryName ([Uri]::UnescapeDataString($parts[0]))))
-            if ($file.Name -in @('BLOG.md', 'BLOG.html', 'index.html')) {
+            if ($file.Name -in @('BLOG-PUBLISH.md', 'BLOG.html', 'index.html')) {
                 $failures.Add("${label}: article link must be a full GitHub URL: $target")
             }
         }
@@ -71,4 +74,16 @@ foreach ($file in $files) {
     }
 }
 if ($failures.Count) { throw ($failures -join "`n") }
-[pscustomobject]@{ Documents = $files.Count; RepositoryLinksChecked = $checked; ExternalLinks = @($external | Sort-Object) }
+$publicChecked = 0
+if ($CheckPublicAccess) {
+    $response = Invoke-WebRequest -Uri $RepositoryUrl -SkipHttpErrorCheck -TimeoutSec 20
+    if ($response.StatusCode -ne 200) {
+        throw "Public access check failed: $RepositoryUrl returned HTTP $($response.StatusCode) without authentication. File-target checks do not establish reader access. Check repository visibility before publishing."
+    }
+    foreach ($url in ($publicUrls | Sort-Object)) {
+        $response = Invoke-WebRequest -Uri $url -SkipHttpErrorCheck -TimeoutSec 20
+        if ($response.StatusCode -ne 200) { throw "Public access check failed: $url returned HTTP $($response.StatusCode)." }
+        $publicChecked++
+    }
+}
+[pscustomobject]@{ Documents = $files.Count; RepositoryLinksChecked = $checked; PublicAccessChecked = [bool]$CheckPublicAccess; PublicUrlsChecked = $publicChecked; ExternalLinks = @($external | Sort-Object) }

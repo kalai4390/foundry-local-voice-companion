@@ -8,7 +8,7 @@ The included records are fictional, so you can build and try it without a watch 
 
 [Read the walkthrough](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/BLOG.md) · [Watch the voice demo](https://github.com/kalai4390/foundry-local-voice-companion/issues/1) · [Build guide](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/BUILD-GUIDE.md)
 
-<img src="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-answer.png" width="320" alt="Ami answering a heart-rate question from fictional records on an Android phone">
+<img src="./docs/demo/ami-answer.png" width="320" alt="Ami answering a heart-rate question from fictional records on an Android phone">
 
 *The [46-second demo](https://github.com/kalai4390/foundry-local-voice-companion/issues/1) runs on a Motorola g35. Sound starts at 0:11. For a repeatable recording, the question was played from a laptop speaker into the phone microphone; the reply you hear is the phone's Android TTS output. More recordings and screenshots are in the [demo guide](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/DEMO-GUIDE.md).*
 
@@ -26,7 +26,7 @@ There is also a **Recap my week** action. After confirmation, a small Qwen model
 
 ## How it works
 
-![Ami's on-device voice flow: microphone, Foundry Local Whisper, Kotlin calculations and offline Android speech](https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/voice-flow.svg)
+[![Ami's on-device voice flow: microphone, Foundry Local Whisper, Kotlin calculations and offline Android speech](./docs/voice-flow.svg)](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/voice-flow.svg)
 
 The main voice path uses **Whisper Tiny through the Foundry Local Kotlin SDK**. This project uses IPC mode: the SDK connects to the separately installed Foundry Local service on the same phone. The integration handles model discovery, downloads, loading, transcription and the optional chat call.
 

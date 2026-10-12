@@ -10,12 +10,21 @@ $destination = Join-Path $root 'docs\index.html'
 $heading = Get-Content -LiteralPath $source -TotalCount 1
 if ($heading -notmatch '^# (.+)$') { throw 'Start the article with a level-one title.' }
 $articleTitle = [Net.WebUtility]::HtmlEncode($Matches[1].Trim())
-$content = (ConvertFrom-Markdown -LiteralPath $source).Html
+$repositoryPath = ([Uri]$RepositoryUrl).AbsolutePath.Trim('/')
+$rawPrefix = 'https://raw.githubusercontent.com/' + $repositoryPath + '/main/'
+$publicMarkdown = [regex]::Replace([IO.File]::ReadAllText($source), '(?<attribute>src|poster)="(?<path>\./[^"]+)"', {
+    param($match)
+    $mediaPath = [IO.Path]::GetFullPath((Join-Path (Split-Path $source -Parent) $match.Groups['path'].Value))
+    if (-not $mediaPath.StartsWith($root + [IO.Path]::DirectorySeparatorChar)) { throw 'Media must be inside the repository.' }
+    $relative = [IO.Path]::GetRelativePath($root, $mediaPath).Replace('\', '/')
+    $match.Groups['attribute'].Value + '="' + $rawPrefix + $relative + '"'
+})
+$publishSource = Join-Path $root 'docs\BLOG-PUBLISH.md'
+[IO.File]::WriteAllText($publishSource, $publicMarkdown, [Text.UTF8Encoding]::new($false))
+$content = (ConvertFrom-Markdown -LiteralPath $publishSource).Html
 $articleDestination = Join-Path $root 'docs\BLOG.html'
 [IO.File]::WriteAllText($articleDestination, $content, [Text.UTF8Encoding]::new($false))
 if ($InlineMedia) {
-    $repositoryPath = ([Uri]$RepositoryUrl).AbsolutePath.Trim('/')
-    $rawPrefix = 'https://raw.githubusercontent.com/' + $repositoryPath + '/main/'
     $content = [regex]::Replace($content, 'src="(' + [regex]::Escape($rawPrefix) + '[^"]+)"', {
         param($match)
         $relative = [Uri]::UnescapeDataString($match.Groups[1].Value.Substring($rawPrefix.Length))
@@ -69,3 +78,4 @@ footer{font-size:14px;color:var(--muted)}@media(max-width:700px){header,main,foo
 [IO.File]::WriteAllText($destination, $html, [Text.UTF8Encoding]::new($false))
 Write-Output "Blog preview: $destination"
 Write-Output "Blog editor HTML: $articleDestination"
+Write-Output "Blog editor Markdown: $publishSource"

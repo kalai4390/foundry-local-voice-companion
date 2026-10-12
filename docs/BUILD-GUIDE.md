@@ -156,7 +156,7 @@ try { $player.PlaySync() } finally { $player.Dispose() }
 
 ### Preview audio compatibility
 
-The article embeds [ami-microphone-preview.mp4](https://github.com/kalai4390/foundry-local-voice-companion/issues/1). It has the same video as the [original](https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-microphone.mp4), with the existing AAC audio converted to MP3 at 192 kb/s. This avoids silent playback in the VS Code preview; see its [media-format guidance](https://code.visualstudio.com/api/extension-guides/webview#supported-media-formats).
+The article links to the [GitHub video player](https://github.com/kalai4390/foundry-local-voice-companion/issues/1), which uses the original H.264/AAC recording. The separate [editor-preview MP4](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/demo/ami-microphone-preview.mp4) keeps the same video and converts AAC audio to MP3 at 192 kb/s for editors whose preview cannot decode AAC. See the [media-format guidance](https://code.visualstudio.com/api/extension-guides/webview#supported-media-formats).
 
 Sound begins around **0:11**, when Android TTS starts. The conversion adds no voiceover, gain, cuts or speed changes; the original capture's disclosed gain still applies. To reproduce it, use a new output path (`-n` prevents overwriting):
 
@@ -197,7 +197,11 @@ Use the PNG if the publishing editor does not support SVG. Choose the full artic
 
 Open the generated `docs/index.html` to preview the article. Its links point to GitHub, not your computer. `-InlineMedia` embeds images and supported media from the checkout so you can see them while the repository is private. The main voice recording opens in GitHub's video player.
 
-For the blog editor, use `docs/BLOG.md` or the generated `docs/BLOG.html` article body. Both use complete GitHub URLs for source links and image files. Use **Watch Ami answer** as an ordinary hyperlink, not in the editor's video-URL field. The repository must be public for readers to open these links and images. A separate GitHub Pages website is not required.
+Read `docs/BLOG.md` on GitHub. Its images use repository-relative paths so GitHub can serve them to signed-in readers of a private repository. These are paths inside the repository, not links to the author's computer.
+
+For the blog editor, use the generated `docs/BLOG-PUBLISH.md` or `docs/BLOG.html`. These exports use complete GitHub URLs. Their images require a public repository; they will return 404 while it is private. Use **Watch Ami answer** as an ordinary hyperlink, not in the editor's video-URL field. A separate GitHub Pages website is not required.
+
+After making the repository public, run `./scripts/check-doc-links.ps1 -CheckPublicAccess`. The default check verifies file targets and headings only. The public-access check also requests the URLs without authentication, as a reader would.
 
 Create a fresh source archive:
 

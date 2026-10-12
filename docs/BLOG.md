@@ -10,7 +10,7 @@ I built **Ami** with **Foundry Local for Android** to try it. You tap to speak, 
 
 This walkthrough uses fictional wearable records. You do not need a watch, a health account or access to anyone's personal data to reproduce it. The screenshots and recordings come from the Android app running on a Motorola g35; they are not interface mockups.
 
-<img src="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-welcome.png" width="320" alt="Ami's welcome screen on the phone, with the Talk to Ami button and microphone-off status">
+<img src="./demo/ami-welcome.png" width="320" alt="Ami's welcome screen on the phone, with the Talk to Ami button and microphone-off status">
 
 ## Watch Ami answer
 
@@ -18,7 +18,7 @@ In this recording, Foundry Local transcribes a question and Ami answers from the
 
 **Sound starts at 0:11**, when Ami begins its reply. The opening listening and transcription steps are silent in this recording.
 
-<a href="https://github.com/kalai4390/foundry-local-voice-companion/issues/1"><img src="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-microphone.png" width="400" alt="Watch Ami answer a spoken question on GitHub; the 46-second video includes sound"></a>
+<a href="https://github.com/kalai4390/foundry-local-voice-companion/issues/1"><img src="./demo/ami-microphone.png" width="400" alt="Watch Ami answer a spoken question on GitHub; the 46-second video includes sound"></a>
 
 [Watch Ami answer—with voice](https://github.com/kalai4390/foundry-local-voice-companion/issues/1).
 
@@ -45,7 +45,7 @@ Both ran through the CPU execution provider on the test phone. Their combined ad
 
 <figure class="flow-diagram">
   <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/voice-flow.svg" target="_blank" rel="noopener">
-    <img src="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/voice-flow.svg" width="1440" height="560" alt="Left to right on the Android phone: record a question, transcribe it with Whisper Tiny through the Foundry Local Kotlin SDK and IPC service, calculate an answer from local fictional records in Ami, and speak it with offline Android TTS.">
+    <img src="./voice-flow.svg" width="1440" height="560" alt="Left to right on the Android phone: record a question, transcribe it with Whisper Tiny through the Foundry Local Kotlin SDK and IPC service, calculate an answer from local fictional records in Ami, and speak it with offline Android TTS.">
   </a>
   <figcaption>Figure 1. One voice turn, from the microphone to the spoken answer. All four steps run on the phone. <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/voice-flow.svg" target="_blank" rel="noopener">View full-size figure.</a></figcaption>
 </figure>
@@ -148,7 +148,7 @@ I kept the transcript visible, with **Edit heard question** beside it. A wrong w
 
 Once the question is text, the app needs to resolve the date range and calculate the requested result. For “When was my heart rate highest last month?”, it selects the previous calendar month, finds the highest available sample and keeps its timestamp and time zone.
 
-<img src="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-answer.png" width="360" alt="Ami answering a last-month heart-rate question from fictional records, with an editable transcript and a Calculation and coverage button">
+<img src="./demo/ami-answer.png" width="360" alt="Ami answering a last-month heart-rate question from fictional records, with an editable transcript and a Calculation and coverage button">
 
 *The sample answer includes the reading, when it was recorded and how much of the month has data.*
 
@@ -167,11 +167,11 @@ Whisper turns speech into text; Android **text-to-speech (TTS)** turns Ami's ans
 **Voice & pace** offers Warm, Clear and Unhurried playback styles. These adjust how the Android voice speaks; they are not separate Foundry models. Here is the Warm preview generated on the phone:
 
 <audio controls preload="metadata">
-  <source src="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-warm.wav" type="audio/wav">
+  <source src="./demo/ami-warm.wav" type="audio/wav">
   Your browser cannot play this audio. Use the WAV link below.
 </audio>
 
-[Listen to Ami's Warm voice](https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-warm.wav).
+[Listen to Ami's Warm voice](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/demo/ami-warm.wav).
 
 After a spoken question, Ami can speak the answer automatically. A typed question stays quiet. **Listen again**, **Stop voice** and **Interrupt & talk** let the user control the exchange without finding a settings screen. Those details make a bigger difference to the experience than adding another paragraph to the answer.
 
@@ -181,7 +181,7 @@ The voice flow already works without a chat model. I also wanted to try a small 
 
 <figure class="flow-diagram">
   <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/recap-flow.svg" target="_blank" rel="noopener">
-    <img src="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/recap-flow.svg" width="1440" height="500" alt="A separate left-to-right recap on the phone: Ami calculates fact cards, Qwen 2.5 0.5B selects two card IDs through Foundry Local after confirmation, and Ami validates the IDs before showing the original calculated text. Invalid selections use a labelled computed recap.">
+    <img src="./recap-flow.svg" width="1440" height="500" alt="A separate left-to-right recap on the phone: Ami calculates fact cards, Qwen 2.5 0.5B selects two card IDs through Foundry Local after confirmation, and Ami validates the IDs before showing the original calculated text. Invalid selections use a labelled computed recap.">
   </a>
   <figcaption>Figure 2. The optional chat call selects facts for a recap; it does not calculate measurements or write new advice. <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/recap-flow.svg" target="_blank" rel="noopener">View full-size figure.</a></figcaption>
 </figure>
@@ -211,12 +211,12 @@ Here, `cards` is the fact catalog created by the app. The prompt asks for two ca
 
 I started with card selection to keep the model's job small and testable. It chooses which facts to show; the app has already calculated the numbers and written each card. A short reply is also a better fit for this small model.
 
-<video controls preload="metadata" playsinline poster="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-recap.png" width="400">
-  <source src="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-recap.mp4" type="video/mp4">
+<video controls preload="metadata" playsinline poster="./demo/ami-recap.png" width="400">
+  <source src="./demo/ami-recap.mp4" type="video/mp4">
   Your browser cannot play this video. Use the MP4 link below.
 </video>
 
-[Watch or download the recap demo](https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-recap.mp4). *This separate screen recording is silent.*
+[Watch or download the recap demo](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/demo/ami-recap.mp4). *This separate screen recording is silent.*
 
 Both model calls use the same Foundry Local integration: select a model, make sure it is cached, load it and create the appropriate client. Speech and chat solve different parts of the experience without needing a cloud inference service between them.
 

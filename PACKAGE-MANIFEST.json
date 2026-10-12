@@ -1,10 +1,11 @@
 {
   "product": "Ami",
-  "generatedAtUtc": "2026-10-12T17:57:10.0521507Z",
+  "generatedAtUtc": "2026-10-12T18:04:38.2023841Z",
   "policy": "Explicit source/document/media allowlist; no Git history, runtime logs, SDK/model binaries, APKs, tools, caches or signing keys",
   "validation": {
-    "localLinksChecked": 0,
-    "repositoryLinksChecked": 195,
+    "localLinksChecked": 12,
+    "repositoryLinksChecked": 222,
+    "publicAccessChecked": false,
     "mediaChecksumsMatch": true,
     "reproducedBuildInputsMatch": true,
     "configuredOwnerIdentifierScanPassed": true,
@@ -13,7 +14,7 @@
     "scanIsNotAComprehensiveSecretAudit": true
   },
   "publication": "This packaging step writes a local archive only. Remote publication requires a separate authorized operation; no license grant is implied.",
-  "fileCountExcludingThisManifest": 116,
+  "fileCountExcludingThisManifest": 117,
   "files": [
     {
       "path": ".gitattributes",
@@ -321,24 +322,29 @@
       "sha256": "cd6a357cee110dde54c5da7aa570fa42936437125e2a777773f0041bd51bdbf5"
     },
     {
+      "path": "docs/BLOG-PUBLISH.md",
+      "bytes": 20564,
+      "sha256": "4b3f66a0f621131944b8f120abd98c9a89e3fe0240ac7f224d766bb6dc5bccb5"
+    },
+    {
       "path": "docs/BLOG.html",
-      "bytes": 22512,
-      "sha256": "5bfc375ed61cf7f1d7bfa016ca8b5c2b52c9d1c5ce08dad7f7c6d8cb4312fccd"
+      "bytes": 22492,
+      "sha256": "7c63fc6e69d2e1b403692d51bc67514fa3f5b89e424024c376f089c2b1d090a6"
     },
     {
       "path": "docs/BLOG.md",
-      "bytes": 20584,
-      "sha256": "bb843ad373b52ed0d5f133981fc2a5c874560a273c042590d3bf86bed369d702"
+      "bytes": 19908,
+      "sha256": "2a59c852cf0ca8c0442ce84e10c53f14f031a38c9a2746cb60002e76c084322f"
     },
     {
       "path": "docs/BUILD-GUIDE.md",
-      "bytes": 19666,
-      "sha256": "406773efcb998bdc5113c70e86736e1f43e7fd3b3982db1ddf78d3484e5a8700"
+      "bytes": 20141,
+      "sha256": "2d2ab9fb6f8dfeab4c63296b9a7ed022599852c72f2c15c7b972940bc65391f9"
     },
     {
       "path": "docs/DEMO-GUIDE.md",
-      "bytes": 8046,
-      "sha256": "f44f030ccf944c7605cf9c2f1cfb6abab37e6c1791e24245de2d2dc062c204a8"
+      "bytes": 7802,
+      "sha256": "89a17415a0b12da00f920af36f53d6659263274efb48305dec26bfda82b35afd"
     },
     {
       "path": "docs/demo/ami-answer.png",
@@ -457,8 +463,8 @@
     },
     {
       "path": "docs/DEVICE-NOTES.md",
-      "bytes": 7769,
-      "sha256": "2dc50e2ec515c287974fd91a6bbb1d6796d809291b12e32a38d03d73c5bd2b2a"
+      "bytes": 7759,
+      "sha256": "7d925e9cf6fdd13cd98ac74237b1ac84aa6068eda614a31464dc9e49be782975"
     },
     {
       "path": "docs/evidence/ami-capture-validation.json",
@@ -487,8 +493,8 @@
     },
     {
       "path": "docs/index.html",
-      "bytes": 24896,
-      "sha256": "2e79f2a5c5b61d3859ddd1f6d6529712a4aaf9f49d07b09183040c952b430a74"
+      "bytes": 24876,
+      "sha256": "9095223e3ebceb70da3773626ca7138bb941d3786caa7f16cd5c4e63dae25953"
     },
     {
       "path": "docs/recap-flow.png",
@@ -517,8 +523,8 @@
     },
     {
       "path": "docs/VALIDATION.md",
-      "bytes": 8130,
-      "sha256": "85829e17586a95f7b34ca085835c0d6a5bac3b0c3c1aed94ae56dcf261217fe5"
+      "bytes": 8120,
+      "sha256": "b27714cbe4a24ed9ab30d44d2149928e57c828ee1dd5832d276337e3322942dc"
     },
     {
       "path": "docs/voice-flow.png",
@@ -537,13 +543,13 @@
     },
     {
       "path": "README.md",
-      "bytes": 10939,
-      "sha256": "0f58ccd6f78423ca30b3a992434c90ff1f21bdbd3ce9347f6c337edda689ba1c"
+      "bytes": 10877,
+      "sha256": "a8d597f288229b2573a8776568d1e60e53122fcd8d985ceb3f61f55077bbdf79"
     },
     {
       "path": "scripts/build-blog-preview.ps1",
-      "bytes": 4704,
-      "sha256": "5aec4cc887ac7b92b8883e31c0bacbb97542996dbb433d76b917375bd060c0e4"
+      "bytes": 5434,
+      "sha256": "88db491a407e6beb850d876244126e30fa41a191880330ec630bee9be6b86bb3"
     },
     {
       "path": "scripts/build.ps1",
@@ -557,8 +563,8 @@
     },
     {
       "path": "scripts/check-doc-links.ps1",
-      "bytes": 4167,
-      "sha256": "bab8a19d5a1f415d65c1bc8a168778508dda765e14a4eb91f53997add64dfc85"
+      "bytes": 5086,
+      "sha256": "9552031e693bb403aee7ab3806cecc9ac5bb3a32d4bf6ab9bffd29a062bf8189"
     },
     {
       "path": "scripts/make-fixtures.ps1",
@@ -567,8 +573,8 @@
     },
     {
       "path": "scripts/package-repository.ps1",
-      "bytes": 10725,
-      "sha256": "45fd3b9c8b5195225d42bcdf9b5638ef48f7f3f52afa184e84eec246f355e0ae"
+      "bytes": 10799,
+      "sha256": "7f8bf45e6c285dfe0bd2d7f48b4a46327f16f5c54561d862245ccb0126993c35"
     },
     {
       "path": "scripts/prepare-demo-video.ps1",
