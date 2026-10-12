@@ -262,6 +262,5 @@
       "sha256": "ef58f78af3ecc2969b1ed9757062f77d340b58292d8d6e012177bb75152d1dcf"
     }
   ],
-  "privacy": "No personal records, device identifiers, raw logs, credentials, owner paths or signing keys are included.",
   "allGradleTasksExecuted": 104
 }

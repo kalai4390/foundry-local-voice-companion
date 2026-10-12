@@ -28,7 +28,7 @@ footer{font-size:14px;color:var(--muted)}@media(max-width:700px){header,main,foo
 <img src="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-welcome.png" width="320" alt="Ami's welcome screen on the phone, with the Talk to Ami button and microphone-off status">
 <h2 id="watch-ami-answer">Watch Ami answer</h2>
 <p>In this recording, Foundry Local transcribes a question and Ami answers from the sample records. You can watch the full conversation on GitHub.</p>
-<p><strong>Sound starts at 0:11</strong>, when Ami begins its reply. The opening listening and transcription steps are silent in this recording.</p>
+<p><strong>Unmute the GitHub player and listen from 0:11</strong>, when Ami begins its reply. The opening listening and transcription steps are silent in this recording.</p>
 <p><a href="https://github.com/kalai4390/foundry-local-voice-companion/issues/1"><img src="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-microphone.png" width="400" alt="Watch Ami answer a spoken question on GitHub; the 46-second video includes sound"></a></p>
 <p><a href="https://github.com/kalai4390/foundry-local-voice-companion/issues/1">Watch Ami answer—with voice</a>.</p>
 <p><em>For this repeatable test, the question was played from a laptop speaker into the phone's microphone. The soundtrack captures the phone's actual Android speech output, not the question or an added voiceover. Playback volume was increased during editing; the <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/demo/ami-microphone-provenance.json">recording notes</a> describe the capture.</em></p>
@@ -179,22 +179,23 @@ val recap = DebriefOrganizer.resolve(cards, response.message?.content)
   <source src="https://raw.githubusercontent.com/kalai4390/foundry-local-voice-companion/main/docs/demo/ami-recap.mp4" type="video/mp4">
   Your browser cannot play this video. Use the MP4 link below.
 </video>
-<p><a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/demo/ami-recap.mp4">Watch or download the recap demo</a>. <em>This separate screen recording is silent.</em></p>
+<p><a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/demo/ami-recap.mp4">Download the recap demo</a> from its GitHub file page to play it locally. <em>This separate screen recording is silent.</em></p>
 <p>Both model calls use the same Foundry Local integration: select a model, make sure it is cached, load it and create the appropriate client. Speech and chat solve different parts of the experience without needing a cloud inference service between them.</p>
 <h2 id="personal-context-without-training-on-it">Personal context without training on it</h2>
 <p>Ami's answers change when its local records change. That personalization does not require fine-tuning: the records supply the current context, while the model weights stay the same. A new sleep session should be available to a question about the week without retraining a model.</p>
 <p>In the normal voice flow, Whisper receives the recording and application code handles the records. In the optional recap, Qwen receives derived fact cards after confirmation. Both model calls execute through the Foundry Local service on the phone; neither sends that content to a cloud model. SDK telemetry is disabled in the manager configuration, and the app has no cloud speech or inference fallback.</p>
 <p>You still need connectivity to acquire the models. “Local” here describes how Ami processes a question, not a claim that every application on the phone has stopped using the network. The offline voice must also be installed before you use it.</p>
-<p>To connect wearable data, the repository includes a read-only <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/app/src/main/java/dev/daylight/local/data/HealthReader.kt">Health Connect reader</a>. The demo here uses the supplied fictional records. The <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/BUILD-GUIDE.md#6-connect-your-watch">watch setup notes</a> explain the permissions and the missing Samsung-source data encountered on the test phone.</p>
+<p>The repository also includes a read-only <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/app/src/main/java/dev/daylight/local/data/HealthReader.kt">Health Connect reader</a> for experimenting with wearable data. This walkthrough uses the supplied fictional records; see the <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/BUILD-GUIDE.md#6-connect-your-watch">build guide</a> for the optional integration and its current limits.</p>
 <h2 id="try-it-with-your-own-application">Try it with your own application</h2>
 <p>A journal could use this speech path to look up a saved reflection. A learning app could answer a question about recent practice. The records and answer logic would change, but the Foundry Local setup, transcription call and playback controls could stay much the same.</p>
 <p>For Ami, I would next try a more flexible conversation over the calculated facts. That is a further experiment, not something the small recap model already does. The microphone, local transcription and interruptible reply are in place to test it.</p>
 <p>To try your own variation, run the sample conversation and trace it through <a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/app/src/main/java/dev/daylight/local/inference/FoundryRuntime.kt">FoundryRuntime.kt</a>. Add a supported question or change the recap prompt, then run the tests and listen to the result on the phone.</p>
 <ul>
 <li><a href="https://github.com/kalai4390/foundry-local-voice-companion">Full Android project</a> — source, sample data, tests and scripts.</li>
-<li><a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/BUILD-GUIDE.md">Hands-on and capture guide</a> — setup, repeatable demos and publication steps.</li>
+<li><a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/BUILD-GUIDE.md">Build guide</a> — install the app, prepare the models and try a conversation.</li>
+<li><a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/RECORDING-GUIDE.md">Recording guide</a> — capture your own demo and prepare the article figures.</li>
 <li><a href="https://github.com/microsoft/FoundryLocalAndroid/blob/v0.1.6/docs/API_REFERENCE.md">Foundry Local Android API reference, pinned to 0.1.6</a>.</li>
-<li><a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/DEVICE-NOTES.md">Recorded test and device results</a> — build versions, measurements and media provenance.</li>
+<li><a href="https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/VALIDATION.md">Test results</a> — build versions and checks run on the phone.</li>
 </ul>
 </main>
 <footer>Ami · Foundry Local for Android · Fictional demo records</footer>

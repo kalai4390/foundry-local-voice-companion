@@ -3,7 +3,7 @@
   "version": "0.3.4-preview",
   "versionCode": 9,
   "atUtc": "2026-09-30T05:03:40.9607571Z",
-  "scope": "Current source and host validation, with limited physical-phone follow-up. Full SDK/media baseline remains 0.3.3-preview.",
+  "scope": "Build and lint results for Ami 0.3.4-preview.",
   "tasks": [
     ":core:test",
     ":app:assembleDebug",
@@ -129,30 +129,5 @@
     "sha256": "2d0d7eb5578ebb832ebf87853f76c452d25ed1395ee6b9f47bc03f329eed2134",
     "bytes": 10203220,
     "distributionSigned": false
-  },
-  "phone": {
-    "status": "installed_hash_verified_smoke_and_monthly_conversation_passed",
-    "installedApkHashMatches": true,
-    "evidence": "evidence/ami-device-followup.json",
-    "smokePassed": 8,
-    "monthlyConversationPassed": 3,
-    "healthReadAttemptsPerCompletedSyntheticRun": 0,
-    "reservedAudioMicrophoneGuardObserved": true,
-    "fullAsrRecapVoiceSuiteReplayed": false,
-    "personalHeartRateVerified": false,
-    "completeLiveMicrophoneToSpeakerVerified": false,
-    "radioIsolationEstablished": false
-  },
-  "privacy": "No owner identifiers, raw build logs, credentials or personal records are included.",
-  "media": {
-    "version": "0.3.3-preview",
-    "status": "retained_original_synthetic_capture_not_recaptured_for_current_build",
-    "provenance": "demo/ami-provenance.json",
-    "evidence": "evidence/ami-capture-validation.json",
-    "silentPhoneVideos": 2,
-    "compositorScreenshots": 5,
-    "welcomeVideoFrames": 1,
-    "separateOfflineVoicePreview": true,
-    "humanAvReviewComplete": false
   }
 }

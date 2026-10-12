@@ -10,7 +10,7 @@ The included records are fictional, so you can build and try it without a watch 
 
 <img src="./docs/demo/ami-answer.png" width="320" alt="Ami answering a heart-rate question from fictional records on an Android phone">
 
-*The [46-second demo](https://github.com/kalai4390/foundry-local-voice-companion/issues/1) runs on a Motorola g35. Sound starts at 0:11. For a repeatable recording, the question was played from a laptop speaker into the phone microphone; the reply you hear is the phone's Android TTS output. More recordings and screenshots are in the [demo guide](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/DEMO-GUIDE.md).*
+**The [voice demo](https://github.com/kalai4390/foundry-local-voice-companion/issues/1) starts muted on GitHub. Unmute the player and listen from 0:11.** The question was played from a laptop speaker into the phone microphone; the reply is captured Android TTS output. See the [demo guide](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/DEMO-GUIDE.md) for the recordings and screenshots.
 
 ## Try a conversation
 
@@ -106,7 +106,7 @@ With one authorized phone connected, Ami unlocked and the models prepared:
 
 These debug suites use fictional records. The audio suite sends five prerecorded WAVs through Whisper; it does not open the microphone. The voice suite writes Android TTS samples without playing them aloud. A completed suite reports `healthReadAttempts: 0`.
 
-The recorded `0.3.4-preview` build passed **171 JVM tests**, debug/release builds and lint with **0 errors and 33 warnings per variant**. Device and media results are tied to their individual app versions in the [test notes](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/VALIDATION.md). They are recorded results, not a promise that every Android phone will behave the same way.
+The recorded `0.3.4-preview` build passed **171 JVM tests**, debug/release builds and lint with **0 errors and 33 warnings per variant**. The [test results](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/VALIDATION.md) list the app versions and device conditions tested.
 
 ## Where the code lives
 
@@ -120,12 +120,14 @@ The recorded `0.3.4-preview` build passed **171 JVM tests**, debug/release build
 | Reproducible device evaluation | [DebugRunner](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/app/src/main/java/dev/daylight/local/DebugRunner.kt), [scripts](https://github.com/kalai4390/foundry-local-voice-companion/tree/main/scripts/) |
 | Synthetic regression tests | [Core tests](https://github.com/kalai4390/foundry-local-voice-companion/tree/main/core/src/test/kotlin/dev/daylight/core/) |
 
-The Android package remains `dev.daylight.local`, the project's earlier name. Keeping it avoids changing the installed app's identity.
-
 ## About watch data and privacy
 
-The optional Health Connect reader requests Samsung-origin records with explicit, read-only permission. It is separate from the sample-data experience. In the recorded device investigation, Samsung Health had not exposed usable records through Health Connect, so the demos do not claim a live watch feed. The [device notes](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/DEVICE-NOTES.md) explain what was checked.
+The optional Health Connect reader requests read-only access to Samsung-origin records. **Live Samsung Health integration has not been validated; the published demo uses fictional records.**
 
 Ami records only after you tap to speak. It does not listen in the background, write health records or train a model on your data. Check-ins are saved only when requested, in encrypted local storage. Missing records produce a missing-data answer rather than a guessed number.
 
-This is an experimental app, not a clinical tool. Speech in varied conditions, battery use and radio-off cold starts still need testing. There is no source license in the repository yet; the Microsoft SDK and model packages have separate terms. See the [release checklist](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/RELEASE-CHECKLIST.md) before sharing a build or recording.
+This is a developer sample, not a clinical tool or an open-ended health chatbot. See [test coverage](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/VALIDATION.md#test-coverage) for its limits.
+
+## License
+
+No source license has been selected. The Microsoft SDK and model packages have their own terms.

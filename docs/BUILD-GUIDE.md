@@ -83,7 +83,7 @@ These debug suites neither open the microphone nor play sound. They do not grant
 
 The [fixture manifest](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/app/src/main/assets/fixtures.json) holds expected text and hashes. The five English fixtures cover sleep, walking, an overview, this week's heartbeat and last month's heartbeat. They were synthesized on a desktop; they are not recordings of different speakers. Running [make-fixtures.ps1](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/scripts/make-fixtures.ps1) creates new assets and a different test baseline.
 
-Raw results go to ignored `runtime/results/`. They can include device and permission details. For sharing, keep a small reviewed report such as the existing [phone test results](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/evidence/ami-phone-validation.json), not the whole runtime directory.
+Raw results go to ignored `runtime/results/` and may contain device or permission details. Keep that directory out of public uploads. The [test results](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/VALIDATION.md) summarize the recorded runs.
 
 ## 5. Have a conversation
 
@@ -96,7 +96,7 @@ Raw results go to ignored `runtime/results/`. They can include device and permis
 
 The microphone stops after at most 20 seconds; trailing quiet can end the turn sooner. This is tap-to-talk, not an always-listening or wake-word feature. Test pauses, quiet speech and room noise separately from the prerecorded fixtures, and note whether the voice is comfortable to listen to.
 
-If a call or voice session is using the phone's audio, Ami refuses to open its microphone or speaker. Wait until that session has ended. The [device notes](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/DEVICE-NOTES.md) explain the audio checks and why a reserved session should not be mistaken for a Whisper failure.
+If a call or voice session is using the phone's audio, wait until it ends before starting a conversation with Ami.
 
 **Play a sample conversation** is another way to try the app without recording your voice. It deliberately plays a prerecorded question and a reply. Keep it labelled as a sample when demonstrating it.
 
@@ -104,119 +104,15 @@ If a call or voice session is using the phone's audio, Ami refuses to open its m
 
 The optional data path is Galaxy Watch4 → Samsung Health → Health Connect → Ami. Ami requests read-only access to Samsung-origin records, with heart rate and older history handled separately. Start with the [Samsung Health Connect FAQ](https://developer.samsung.com/health/health-connect-faq.html) and the app's permission controls.
 
-A connected watch does not guarantee that Health Connect has received its records. In the September 30 investigation, the watch was connected and Samsung Health showed heart-rate entries, but its Health Connect source displayed **No data**. Ami therefore kept its missing-readings response. That is why the published demos use fictional records. The [device notes](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/DEVICE-NOTES.md) preserve the investigation without exposing personal readings.
+Live Samsung Health integration has not been validated in this sample. Check that Samsung Health shares the requested record types with Health Connect before granting Ami read access. The published demo uses fictional records.
 
-Use real records only with the phone owner's consent. Keep that work separate from recording a public demo; do not broaden the source filter or substitute sample values to make a missing-data screen look successful. Ami's saved-memory controls do not delete the original Health Connect records.
+Use real records only with the phone owner's consent. Ami's saved-memory controls do not delete the original Health Connect records.
 
-## 7. Record screenshots and video
+## Troubleshooting
 
-Start with one unlocked phone, Ami foreground and the sample-data badge visible. Use your local build report:
+- **No models available:** check that the Foundry Local service is installed, then prepare the models from inside Ami. IPC model caches are per client app.
+- **No spoken reply:** choose an installed offline voice under **Voice & pace**. A typed question stays quiet; use **Listen again** to hear it. If another call or voice session owns the phone's audio, wait for it to finish.
+- **Transcript is wrong:** use **Edit heard question** and try again in a quiet room. The fixture tests cover known English questions, not every speaker or environment.
+- **No watch records:** check that Samsung Health has shared the requested data with Health Connect and that Ami has read permission. Permission alone does not create records. Use sample mode to try the app independently of watch sync.
 
-```powershell
-.\scripts\capture-demo.ps1 `
-  -ValidationPath .\runtime\build-validation.json `
-  -FfmpegPath 'C:\tools\ffmpeg\bin\ffmpeg.exe' `
-  -PreventAutoLock
-```
-
-The capture profile fits the tested 1080 × 2400 portrait display, cropping 108 pixels from the top and 102 from the bottom. Measure the insets before using it on another phone. The script checks the installed APK and foreground app; it never unlocks the device.
-
-`-PreventAutoLock` temporarily raises a shorter idle timeout to three minutes and verifies restoration in `finally`. The recorded phone already had a ten-minute timeout, so it was left unchanged. If USB disconnects before restoration, use the original value retained in the capture manifest to restore it after reconnecting.
-
-The script saves screenshots and two **silent** test recordings under ignored `runtime/publication-…/`. [prepare-demo-video.ps1](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/scripts/prepare-demo-video.ps1) crops the system bars, resamples to 30 fps and holds the final frame to preserve source duration. It does not speed up inference or add answers. Host and ADB waits are still present, so these recordings are not latency benchmarks.
-
-The voice suite produces separate WAV previews. Keep the preview from the matching build rather than dubbing an unrelated introduction over an answer. The [demo guide](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/DEMO-GUIDE.md) lists the recordings already selected for the article.
-
-### Capture the physical-microphone demonstration
-
-This is a separate recording from the scripted tests. Use sample mode, cached models and no active call. First complete a turn without mirroring, including Android's microphone-permission dialog.
-
-1. Run `run-device.ps1 -Mode welcome` to open an empty sample conversation. Check the badge and microphone-off status.
-2. Start a bounded scrcpy recording of device-output audio. This example keeps the helper window hidden and does not wake the phone. Its crop is for the tested display.
-
-```powershell
-New-Item -ItemType Directory -Path .\runtime -Force | Out-Null
-$recording = Join-Path (Resolve-Path .\runtime).Path ('microphone-' + (Get-Date -Format yyyyMMdd-HHmmss) + '.mp4')
-$capture = Start-Process -FilePath 'C:\tools\scrcpy\scrcpy.exe' -WindowStyle Hidden -PassThru -ArgumentList "--select-usb --no-power-on --no-window --no-control --no-audio-playback --audio-source=output --audio-codec=aac --time-limit=70 --max-size=1600 --crop=1080:2190:0:108 --record=`"$recording`""
-```
-
-3. Tap **Talk to Ami**. To reproduce the controlled question, play the fixture through the laptop speaker near the phone:
-
-```powershell
-Add-Type -AssemblyName System.Windows.Extensions
-$player = [System.Media.SoundPlayer]::new((Resolve-Path .\app\src\main\assets\heartbeat-question.wav).Path)
-try { $player.PlaySync() } finally { $player.Dispose() }
-```
-
-4. Check the new question bubble, editable transcript, calculated answer, speaking status and return to microphone-off. This records sound through the physical microphone; it is not a direct-file Whisper test.
-5. Let the capture finish before opening another app. Reject a recording that contains a personal notification, lock screen or unrelated data. Review the raw file before editing.
-6. Without mirroring, try **Listen again**, **Interrupt & talk**, a different question and **Stop voice**. Keep a short result note rather than a private raw recording.
-
-`--audio-source=output` redirects the phone's output during capture. The video hears the reply, not the laptop's input question, and does not measure the handset speaker's loudness. The selected 46-second clip was resampled to 20 fps, trimmed after the turn and amplified by 24 dB because its output track was quiet. Do not apply that gain blindly to a new recording. The [capture notes](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/demo/ami-microphone-provenance.json) retain the settings, hashes and review results.
-
-### Preview audio compatibility
-
-The article links to the [GitHub video player](https://github.com/kalai4390/foundry-local-voice-companion/issues/1), which uses the original H.264/AAC recording. The separate [editor-preview MP4](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/demo/ami-microphone-preview.mp4) keeps the same video and converts AAC audio to MP3 at 192 kb/s for editors whose preview cannot decode AAC. See the [media-format guidance](https://code.visualstudio.com/api/extension-guides/webview#supported-media-formats).
-
-Sound begins around **0:11**, when Android TTS starts. The conversion adds no voiceover, gain, cuts or speed changes; the original capture's disclosed gain still applies. To reproduce it, use a new output path (`-n` prevents overwriting):
-
-```powershell
-& 'C:\tools\ffmpeg\bin\ffmpeg.exe' -n -hide_banner -nostats `
-  -i .\docs\demo\ami-microphone.mp4 `
-  -map 0:v:0 -map 0:a:0 -map_metadata -1 `
-  -c:v copy -c:a libmp3lame -b:a 192k -movflags +faststart `
-  .\runtime\ami-microphone-preview.mp4
-```
-
-Decode the files end to end and compare the extracted H.264 hashes. Then watch and listen on the intended publishing platform. A successful encode or audio decode is not a listening-quality review.
-
-## 8. Prepare the article and source package
-
-The article is [Building an On-Device Voice Companion with Foundry Local](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/BLOG.md). Its examples follow the sample-data voice turn, then the optional chat recap. Keep the fictional-data label beside the recordings and give each component its correct name: Foundry Local runs Whisper and Qwen; Kotlin calculates the normal answers; Android TTS speaks them.
-
-Before selecting media, inspect every image and the full recordings for personal notifications, account screens, consent dialogs and private health values. Preserve the original capture privately, document any crop or audio adjustment, and retain the APK version and checksums with the published files. Use actual results, including a labelled fallback when that is what ran.
-
-### Prepare the diagrams
-
-Use these as full-width landscape figures, not as portrait screenshots:
-
-| Figure | Editable source | Upload-ready PNG |
-| --- | --- | --- |
-| Voice flow | [1440 × 560 SVG](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/voice-flow.svg) | [2880 × 1120 PNG](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/voice-flow.png) |
-| Optional recap | [1440 × 500 SVG](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/recap-flow.svg) | [2880 × 1000 PNG](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/recap-flow.png) |
-
-Put the voice diagram beside the Android introduction and the recap beside the chat API example. Keep the aspect ratio, numbered captions and alt text. The preview uses the same landscape image at every width; on a small screen, open the full-size link and zoom to read the labels.
-
-Use the PNG if the publishing editor does not support SVG. Choose the full article-column width and keep a link to the full-resolution figure. Regenerate the PNG whenever its SVG changes. The broader [reference architecture](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/architecture.svg) includes the optional watch integration; it is not evidence of a live data feed.
-
-### Build the preview and package
-
-```powershell
-.\scripts\build-blog-preview.ps1 -InlineMedia
-```
-
-Open the generated `docs/index.html` to preview the article. Its links point to GitHub, not your computer. `-InlineMedia` embeds images and supported media from the checkout so you can see them while the repository is private. The main voice recording opens in GitHub's video player.
-
-Read `docs/BLOG.md` on GitHub. Its images use repository-relative paths so GitHub can serve them to signed-in readers of a private repository. These are paths inside the repository, not links to the author's computer.
-
-For the blog editor, use the generated `docs/BLOG-PUBLISH.md` or `docs/BLOG.html`. These exports use complete GitHub URLs. Their images require a public repository; they will return 404 while it is private. Use **Watch Ami answer** as an ordinary hyperlink, not in the editor's video-URL field. A separate GitHub Pages website is not required.
-
-After making the repository public, run `./scripts/check-doc-links.ps1 -CheckPublicAccess`. The default check verifies file targets and headings only. The public-access check also requests the URLs without authentication, as a reader would.
-
-Create a fresh source archive:
-
-```powershell
-.\scripts\package-repository.ps1 -ApprovedRepositoryUrl 'https://github.com/kalai4390/foundry-local-voice-companion'
-```
-
-[package-repository.ps1](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/scripts/package-repository.ps1) copies an explicit list of source, docs and media into a new folder and ZIP. It checks local links, original media hashes and the recorded build inputs, then writes `PACKAGE-MANIFEST.json`. It also checks configured owner identifiers. That pattern check complements, rather than replaces, a secret scan and content review.
-
-The package excludes tools, SDK AARs, models, APKs, build caches, runtime diagnostics and signing keys. It does not initialize Git, commit or upload anything. `-ApprovedRepositoryUrl` exempts only the exact repository URL and owner/repository label from the owner-name check, not arbitrary personal information.
-
-The recorded [clean-source build](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/evidence/reproducibility.json) ran all 104 Gradle tasks with task-output caching disabled and reproduced both APK hashes. It used the same machine, downloaded dependencies and debug signing environment. It is a source-reproduction check, not a fresh-workstation test. Packaging checks the same 59 Android/core build inputs.
-
-## 9. Before you share
-
-Check the [release checklist](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/RELEASE-CHECKLIST.md) for repository access, licensing, privacy and media checks. The code is still in a private repository with no source license. A public article needs a source link its readers can open and a deliberate licensing decision; this guide does not make either change automatically.
-
-Keep `.gitattributes` unchanged when importing the package: it preserves the exact file bytes used by the recorded checksums. New builds should generate new local reports. The [test notes](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/VALIDATION.md) and [recording notes](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/DEMO-GUIDE.md#recording-details) identify which results belong to each app version.
+For screenshots, voiced recordings and blog exports, follow the [recording guide](https://github.com/kalai4390/foundry-local-voice-companion/blob/main/docs/RECORDING-GUIDE.md).

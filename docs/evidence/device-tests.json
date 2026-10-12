@@ -1,0 +1,39 @@
+{
+  "product": "Ami",
+  "deviceClass": "Motorola moto g35 5G, Android 16",
+  "syntheticOnly": true,
+  "currentBuild": {
+    "version": "0.3.4-preview",
+    "apkSha256": "67b9093a7ffbbac0cb177226f92b567b79a173445fd24e6c0111e9d2762f35fa",
+    "smokePassed": 8,
+    "monthlyConversationPassed": 3,
+    "fullSdkSuiteRerun": false,
+    "physicalMicrophoneUsed": true,
+    "spokenReplyCompleted": true,
+    "listenAgainEnteredSpeaking": true,
+    "interruptionRecognizedNewQuestion": true,
+    "stopReturnedToMicrophoneOff": true,
+    "acousticInput": "Known question played from a laptop speaker into the phone microphone"
+  },
+  "sdkBaseline": {
+    "version": "0.3.3-preview",
+    "apkSha256": "1789c0ea6bc254fbbf1adbae13f0947feb0dfef2e8b0bf33d965c4466637bd28",
+    "prerecordedTranscriptionCasesPassed": 5,
+    "calculatedAnswerCasesPassed": 5,
+    "recapSelectionCasesPassed": 4,
+    "ttsStylesGenerated": 3,
+    "ttsCancellationAndRecoveryPassed": true,
+    "models": [
+      "openai-whisper-tiny-generic-cpu:4",
+      "qwen2.5-0.5b-instruct-generic-cpu:4"
+    ],
+    "executionProvider": "CPUExecutionProvider"
+  },
+  "testCoverage": {
+    "liveSamsungHealthValidated": false,
+    "humanAccentAndNoiseStudyCompleted": false,
+    "subjectiveListeningStudyCompleted": false,
+    "radioOffColdStartTestCompleted": false,
+    "batteryStudyCompleted": false
+  }
+}
